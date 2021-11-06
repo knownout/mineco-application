@@ -1,0 +1,45 @@
+$default-dark: #1d1e2c;
+$default-light: #e5deba;
+$default-link: #3da9e2;
+
+@mixin use-transition($time: 100ms)
+{
+    transition: $time ease all;
+}
+
+@mixin content-block($justifyContent: center, $alignItems: center, $scrollable: false, $flexDirection: column)
+{
+    position: relative;
+    display: flex;
+
+    justify-content: $justifyContent;
+    align-items: $alignItems;
+    flex-direction: $flexDirection;
+
+    width: 100%;
+
+    @if $scrollable
+    {
+        overflow: hidden;
+        overflow-y: auto;
+
+        height: 100%;
+        max-height: 100%;
+    } @else
+    {
+        height: fit-content;
+    }
+}
+
+@mixin static-content-block($justifyContent: unset, $alignItems: unset, $scrollable: false, $flexDirection: "column")
+{
+    @include content-block($justifyContent, $alignItems, $scrollable, $flexDirection);
+
+    @if not $scrollable
+    {
+        overflow: hidden;
+
+        max-height: 100%;
+        height: 100%;
+    }
+}

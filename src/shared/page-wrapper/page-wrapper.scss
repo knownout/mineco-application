@@ -1,0 +1,61 @@
+@import "../common";
+@import "./default-handlers/handler-styles";
+
+/*
+ * Style sheet for PageWrapper component
+ */
+div.page-wrapper
+{
+    @include content-block(center, flex-start, true);
+    padding: 10px;
+
+    &.centering
+    {
+        align-items: center;
+    }
+
+    div.content-wrapper
+    {
+        @include content-block();
+        @include use-transition();
+
+        width: fit-content;
+        max-width: 100%;
+
+        &.fade-in
+        {
+            animation: fade-in 100ms linear forwards;
+        }
+
+        &.fade-out
+        {
+            animation: fade-out 100ms linear forwards;
+        }
+
+        @keyframes fade-in
+        {
+            from
+            {
+                opacity: 0;
+            }
+
+            to
+            {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fade-out
+        {
+            from
+            {
+                opacity: 1;
+            }
+
+            to
+            {
+                opacity: 0;
+            }
+        }
+    }
+}
