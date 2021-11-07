@@ -84,6 +84,19 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
             this.setState({ pageCenteringState: true });
     }
 
+    /**
+     * Call page fade-out animation and then call fade-in animation with pageLoadingComplete true
+     */
+    private async callPageAnimation ()
+    {
+        if (!this.state.pageLoadingException) this.setState({ fadeOut: true });
+
+        // Wait 100 (+50 for more smooth animation) milliseconds for animation end
+        await this.wait(150);
+        if (!this.state.pageLoadingComplete)
+            this.setState({ pageLoadingComplete: true, fadeOut: false });
+    }
+
     constructor (props: PageWrapper.Properties)
     {
         super(props);
@@ -99,18 +112,19 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         window.addEventListener("resize", this.pageCenteringController);
         this.pageCenteringController();
 
-        if (this.props.asyncContent) await this.props.asyncContent();
+        if (this.props.asyncContent) await this.props.asyncContent().catch(async error => {
+            await this.callPageAnimation();
+
+            console.error("Exception while processing asyncContent property:\n", error);
+            this.setState({ pageLoadingException: error });
+        });
 
         // Wait 500 milliseconds for more smooth animation
         // Based on relative timing, the user will not wait too
         // long if the content is loaded for more than 500ms.
         await this.wait(500 - (Date.now() - mountInitialTime));
-        if (!this.state.pageLoadingException) this.setState({ fadeOut: true });
 
-        // Wait 100 (+50 for more smooth animation) milliseconds for animation end
-        await this.wait(150);
-        if (!this.state.pageLoadingComplete)
-            this.setState({ pageLoadingComplete: true, fadeOut: false });
+        await this.callPageAnimation();
     }
 
     componentWillUnmount (): void

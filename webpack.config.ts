@@ -150,6 +150,6 @@ module.exports = {
             directory: "./public"
         },
 
-        https: certificates
+        // https: certificates
     }
 } as Webpack.Configuration;

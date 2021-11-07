@@ -27,6 +27,7 @@ export namespace Requests
         DataTimeStart: "Data:TimeStart",
         DataTimeEnd: "Data:TimeEnd",
         DataIdentifier: "Data:Identifier",
+        DataOffset: "Data:Offset",
 
         UpdateIdentifier: "Update:Identifier",
         UpdateContent: "Update:Content",
@@ -36,4 +37,33 @@ export namespace Requests
         UpdateTags: "Update:Tags",
         UpdateShort: "Update:Short"
     };
+
+    export interface RequestResult<T = any>
+    {
+        success: boolean,
+        meta: T | string
+    }
+}
+
+export namespace Material
+{
+    export interface Core
+    {
+        title: string,
+        tags: string[],
+        time: number,
+    }
+
+    export interface Preview extends Core
+    {
+        identifier: string,
+        short: string,
+        pinned: number
+    }
+
+    export interface Full
+    {
+        content: { [key: string]: any },
+        data: Core
+    }
 }
