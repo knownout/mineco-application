@@ -1,0 +1,115 @@
+@import "../common";
+
+div.text-input
+{
+    @include content-block(center, center);
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    min-width: 160px;
+    width: fit-content;
+
+    background: rgba($default-light, .3);
+    color: darken($default-light, 60%);
+
+    border-radius: 3px;
+
+    gap: 10px;
+    padding: 10px;
+
+    cursor: text;
+
+    div.icon-holder
+    {
+        @include content-block();
+        width: 16px;
+        height: 100%;
+
+        min-height: 16px;
+        min-width: 16px;
+
+        font-size: 14px;
+
+        &::after
+        {
+            content: "";
+            position: absolute;
+            display: block;
+
+            right: -5px;
+            top: 0;
+
+            height: 100%;
+            width: 1px;
+
+            background: linear-gradient(to top, transparent, rgba(darken($default-light, 50%), .5), transparent);
+        }
+    }
+
+    div.input-holder
+    {
+        @include content-block(flex-start, center);
+        @include use-transition();
+
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        color: inherit;
+
+        padding-top: 10px;
+
+        &.active
+        {
+            padding-top: 0;
+            opacity: .7;
+
+            span.placeholder
+            {
+                font-size: 14px;
+                top: 0;
+            }
+        }
+
+        span.placeholder
+        {
+            @include use-transition();
+            position: absolute;
+            display: block;
+
+            width: fit-content;
+            max-width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            opacity: .5;
+            pointer-events: none;
+
+            left: 2px;
+            top: -4px;
+
+            font-size: 11px;
+
+        }
+
+        input
+        {
+            position: relative;
+            display: block;
+            z-index: 2;
+
+            border: none;
+            border-radius: initial;
+
+            background: transparent;
+            font-size: 14px;
+
+            color: inherit;
+
+            &::selection
+            {
+                background-color: rgba(#111, .12)
+            }
+        }
+    }
+}

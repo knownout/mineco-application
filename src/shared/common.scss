@@ -31,7 +31,7 @@ $default-link: #3da9e2;
     }
 }
 
-@mixin static-content-block($justifyContent: unset, $alignItems: unset, $scrollable: false, $flexDirection: "column")
+@mixin static-content-block($justifyContent: unset, $alignItems: unset, $scrollable: false, $flexDirection: column)
 {
     @include content-block($justifyContent, $alignItems, $scrollable, $flexDirection);
 

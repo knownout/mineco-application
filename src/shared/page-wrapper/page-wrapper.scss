@@ -7,7 +7,9 @@
 div.page-wrapper
 {
     @include content-block(center, flex-start, true);
-    padding: 10px;
+    //padding: 10px;
+
+    background: rgba(#000, .05);
 
     &.centering
     {

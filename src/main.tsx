@@ -5,7 +5,8 @@ import { render } from "react-dom";
 
 import "normalize.css";
 import "./main.scss";
-import ContentManagementSystem from "./content-management-system";
+import AuthenticationForm from "./authentication-form/authentication-form";
+import PageWrapper from "./shared/page-wrapper";
 
 namespace Main
 {
@@ -22,7 +23,7 @@ namespace Main
 
 class Main extends PureComponent<Main.Properties, Main.State>
 {
-    state: Main.State = {};
+    state: Main.State = { };
 
     render (): React.ReactNode
     {
@@ -46,7 +47,11 @@ class Main extends PureComponent<Main.Properties, Main.State>
 
                 <title>Министерство СХ и ПР</title>
             </Helmet>
-            <ContentManagementSystem />
+
+        <PageWrapper>
+            <AuthenticationForm />
+        </PageWrapper>
+
         </React.Fragment>;
     }
 }

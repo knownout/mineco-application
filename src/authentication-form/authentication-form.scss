@@ -1,0 +1,37 @@
+@import "../shared/common";
+
+div.cms-authentication-form
+{
+    @include content-block();
+
+    padding: 30px;
+    background-color: #fff;
+
+    border-radius: 3px;
+    gap: 20px;
+
+    span.form-title
+    {
+        font-size: 14px;
+        opacity: .6;
+        text-transform: uppercase;
+
+        font-weight: 600;
+    }
+
+    div.form-content-wrapper
+    {
+        @include content-block();
+
+        gap: 10px;
+    }
+
+    div.form-buttons-holder
+    {
+        @include content-block();
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        gap: 10px;
+    }
+}

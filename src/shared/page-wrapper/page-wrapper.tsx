@@ -19,6 +19,9 @@ namespace PageWrapper
 
         /** If provided, loading is completed only after specific function is resolved */
         asyncContent? (): Promise<void>;
+
+        className?: string,
+        contentClassName?: string,
     }
 
     export interface State
@@ -157,12 +160,18 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         }
 
         // Include one of fade-(in|out) class names to show fade animation
-        const className = classNames({ "fade-out": this.state.fadeOut, "fade-in": !this.state.fadeOut });
+        const className = classNames(this.props.contentClassName, {
+            "fade-out": this.state.fadeOut,
+            "fade-in": !this.state.fadeOut
+        });
 
         return (
-            <div className={ classNames("page-wrapper", { "centering": this.state.pageCenteringState }) }
-                 ref={ this.pageWrapper }>
-                <div className={ classNames("content-wrapper", className) }>
+            <div
+                className={ classNames(
+                    this.props.className, "page-wrapper", { "centering": this.state.pageCenteringState }
+                ) }
+                ref={ this.pageWrapper }>
+                <div className={ classNames(className, "content-wrapper") }>
                     { content }
                 </div>
             </div>
