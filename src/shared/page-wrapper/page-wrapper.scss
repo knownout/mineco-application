@@ -4,58 +4,48 @@
 /*
  * Style sheet for PageWrapper component
  */
-div.page-wrapper
-{
+div.page-wrapper {
     @include content-block(center, flex-start, true);
     //padding: 10px;
 
-    background: rgba(#000, .05);
+    background: #f6f6f6;
+    overflow: hidden;
 
-    &.centering
-    {
+    &.centering {
         align-items: center;
     }
 
-    div.content-wrapper
-    {
+    div.content-wrapper {
         @include content-block();
         @include use-transition();
 
         width: fit-content;
         max-width: 100%;
 
-        &.fade-in
-        {
+        &.fade-in {
             animation: fade-in 100ms linear forwards;
         }
 
-        &.fade-out
-        {
+        &.fade-out {
             animation: fade-out 100ms linear forwards;
         }
 
-        @keyframes fade-in
-        {
-            from
-            {
+        @keyframes fade-in {
+            from {
                 opacity: 0;
             }
 
-            to
-            {
+            to {
                 opacity: 1;
             }
         }
 
-        @keyframes fade-out
-        {
-            from
-            {
+        @keyframes fade-out {
+            from {
                 opacity: 1;
             }
 
-            to
-            {
+            to {
                 opacity: 0;
             }
         }

@@ -20,10 +20,10 @@ import { resolve } from "path";
 
 const distPath = "dist";
 const entryPoints = { main: "./src/main.tsx" };
-const certificates = {
-    key: readFileSync(`E:\\Certificates\\localhost+3-key.pem`, "utf8"),
-    cert: readFileSync(`E:\\Certificates\\localhost+3.pem`, "utf8")
-};
+// const certificates = {
+//     key: readFileSync(`E:\\Certificates\\localhost+3-key.pem`, "utf8"),
+//     cert: readFileSync(`E:\\Certificates\\localhost+3.pem`, "utf8")
+// };
 
 // Webpack configuration
 module.exports = {

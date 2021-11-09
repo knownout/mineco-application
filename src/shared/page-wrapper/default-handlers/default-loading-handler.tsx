@@ -6,12 +6,12 @@ import React from "react";
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 1.0.0
  */
-export default function DefaultLoadingHandler ()
+export default function DefaultLoadingHandler (props: { loadingLabel?: string })
 {
     return (
         <div className="default-loading-handler">
             <div className="loading-spinner" />
-            <span className="loading-label">Загрузка страницы</span>
+            <span className="loading-label">{ props.loadingLabel || "Загрузка страницы" }</span>
         </div>
     );
 }

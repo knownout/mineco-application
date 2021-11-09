@@ -22,6 +22,8 @@ namespace PageWrapper
 
         className?: string,
         contentClassName?: string,
+
+        loadingLabel?: string
     }
 
     export interface State
@@ -63,7 +65,8 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
     };
 
     private pageWrapper = React.createRef<HTMLDivElement>();
-    private wait = (time: number) => new Promise(resolve => {
+    private wait = (time: number) => new Promise(resolve =>
+    {
         setTimeout(resolve, time);
     });
 
@@ -107,7 +110,6 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         this.pageCenteringController = this.pageCenteringController.bind(this);
     }
 
-
     async componentDidMount (): Promise<void>
     {
         const mountInitialTime = Date.now();
@@ -115,7 +117,8 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         window.addEventListener("resize", this.pageCenteringController);
         this.pageCenteringController();
 
-        if (this.props.asyncContent) await this.props.asyncContent().catch(async error => {
+        if (this.props.asyncContent) await this.props.asyncContent().catch(async error =>
+        {
             await this.callPageAnimation();
 
             console.error("Exception while processing asyncContent property:\n", error);
@@ -156,7 +159,7 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
             else content = <DefaultExceptionHandler error={ this.state.pageLoadingException } />;
         } else if (!this.state.pageLoadingComplete)
         {
-            content = <DefaultLoadingHandler />;
+            content = <DefaultLoadingHandler loadingLabel={ this.props.loadingLabel } />;
         }
 
         // Include one of fade-(in|out) class names to show fade animation

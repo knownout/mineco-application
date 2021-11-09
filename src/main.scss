@@ -55,11 +55,11 @@ p, code, pre
     }
 }
 
-button
+button, a.button
 {
     @include use-transition();
 
-    border: none;
+    border: 3px solid transparent;
     background-color: lighten($default-light, 10%);
     color: #111;
 
@@ -77,6 +77,10 @@ button
     &:active
     {
         background-color: $default-light;
+    }
+    
+    &:focus {
+        border: 3px solid rgba($default-link, .2);
     }
 
     &.simple

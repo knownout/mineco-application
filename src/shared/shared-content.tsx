@@ -26,13 +26,45 @@ export function classNames (...classNames: (undefined | string | { [key: string]
         {
             // ... otherwise check the expressions and based on the
             // result add the keys to the resulting array
-            Object.keys(className).forEach(key => {
+            Object.keys(className).forEach(key =>
+            {
                 if (className[key]) resultingClassNames.push(key);
             });
         }
     }
 
     return resultingClassNames.filter(e => e.length > 0).join(" ").trim();
+}
+
+/**
+ * Function for filtrate input element value in realtime with saving caret position
+ * @param input native input element
+ * @param filters list of filters (key - string for RegExp object constructor)
+ */
+export function filterInputValue (input: HTMLInputElement, filters: { [key: string]: string })
+{
+    // Get value of the element
+    let text = input.value;
+
+    // Apply filters to retrieved value
+    Object.keys(filters).forEach(key => text = text.replace(new RegExp(key, "gi"), filters[key]));
+
+    // Trim left part of the result
+    text = text.trimLeft();
+
+    // Get current caret position (before value reset)
+    const caretPosition = (input.selectionStart || text.length),
+
+        // Calculate caret offset
+        offset = input.value.length - text.length;
+
+    // Reset element value
+    input.value = text;
+
+    // Reset caret position
+    input.setSelectionRange(caretPosition - offset, caretPosition - offset);
+
+    return text.trim();
 }
 
 /**
@@ -51,7 +83,8 @@ export class RequestBody
      */
     private appendEntries (entries: { [key: string]: any })
     {
-        Object.keys(entries).forEach(key => {
+        Object.keys(entries).forEach(key =>
+        {
             let entry = entries[key];
 
             // If key not File instance, convert it to string

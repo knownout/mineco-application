@@ -2,11 +2,13 @@ $default-dark: #1d1e2c;
 $default-light: #e5deba;
 $default-link: #3da9e2;
 
+// Common transition mixin (should be used by all elements to provide fast change ability)
 @mixin use-transition($time: 100ms)
 {
     transition: $time ease all;
 }
 
+// Scalable flex content block with or without scroll ability
 @mixin content-block($justifyContent: center, $alignItems: center, $scrollable: false, $flexDirection: column)
 {
     position: relative;
@@ -18,19 +20,24 @@ $default-link: #3da9e2;
 
     width: 100%;
 
+    // If scroll ability required
     @if $scrollable
     {
+        // Allow scroll by y axis
         overflow: hidden;
         overflow-y: auto;
 
+        // Set block max height
         height: 100%;
         max-height: 100%;
     } @else
     {
+        // Disable max height if no scroll required
         height: fit-content;
     }
 }
 
+// Not scalable flex content block with or without scroll ability and with default-disabled centering
 @mixin static-content-block($justifyContent: unset, $alignItems: unset, $scrollable: false, $flexDirection: column)
 {
     @include content-block($justifyContent, $alignItems, $scrollable, $flexDirection);
