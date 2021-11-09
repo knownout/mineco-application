@@ -47,7 +47,7 @@ class Main extends PureComponent<Main.Properties, Main.State>
                 <title>Министерство СХ и ПР</title>
             </Helmet>
 
-            <PageWrapper>
+            <PageWrapper className="root-wrapper">
                 Web application entry point
             </PageWrapper>
         </React.Fragment>;

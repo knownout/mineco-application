@@ -3,8 +3,8 @@
 @import "./shared/common";
 
 /*
-                        GLOBAL STYLES
-*/
+ * Global styles for all elements and for html & body
+ */
 
 *
 {
@@ -13,9 +13,10 @@
     outline: none;
 
     -webkit-tap-highlight-color: transparent;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
 
     font-weight: 500;
+    color: $default-dark;
 }
 
 html,
@@ -32,12 +33,14 @@ body
     bottom: 0;
     right: 0;
 
+    background-color: $default-light-gray;
+
     overflow: hidden;
 }
 
 /*
-                        STYLES FOR SPECIFIC ELEMENTS
-*/
+ * Styles for specific html elements
+ */
 
 b, strong
 {
@@ -61,7 +64,7 @@ button, a.button
 
     border: 3px solid transparent;
     background-color: lighten($default-light, 10%);
-    color: #111;
+    color: $default-dark;
 
     font-size: 14px;
     padding: 10px;
@@ -70,18 +73,13 @@ button, a.button
     cursor: pointer;
 
     &:hover
-    {
-        background-color: lighten($default-light, 5%);
-    }
+    { background-color: lighten($default-light, 5%) }
 
     &:active
-    {
-        background-color: $default-light;
-    }
-    
-    &:focus {
-        border: 3px solid rgba($default-link, .2);
-    }
+    { background-color: $default-light }
+
+    &:focus
+    { border: 3px solid rgba($default-link, .2) }
 
     &.simple
     {
@@ -89,14 +87,10 @@ button, a.button
         color: $default-link;
 
         &:hover
-        {
-            background-color: rgba($default-link, .1);
-        }
+        { background-color: rgba($default-link, .1) }
 
         &:active
-        {
-            background-color: rgba($default-link, .15);
-        }
+        { background-color: rgba($default-link, .15) }
     }
 }
 
@@ -116,19 +110,16 @@ a
     font-style: normal;
 
     &:hover
-    {
-        background-color: rgba($default-link, .3);
-        color: darken($default-link, 10%);
-    }
+    { background-color: rgba($default-link, .3); color: darken($default-link, 10%) }
 }
 
 /*
-                        APPLICATION ROOT ELEMENT STYLES
-*/
+ * Application root element styles
+ */
 
 div#app-root
 {
-    @include static-content-block();
+    @include static-content-block(flex-start, flex-start);
 
     top: 0;
     left: 0;
@@ -139,6 +130,6 @@ div#app-root
 
     div.root-wrapper
     {
-        @include static-content-block();
+        @include static-content-block(center, center);
     }
 }

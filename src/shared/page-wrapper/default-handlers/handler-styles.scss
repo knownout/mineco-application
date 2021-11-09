@@ -12,29 +12,27 @@ div.page-wrapper div.default-exception-handler
 
     span.handler-title
     {
-        font-size: 20px;
-        font-weight: 600;
+        opacity: .8;
 
         text-transform: uppercase;
-        opacity: .8;
+
+        font-size: 20px;
+        font-weight: 600;
     }
 
     div.recommendation
     {
         opacity: .9;
+
         margin: 8px 0;
 
         font-size: 14px;
 
         span.group-title
-        {
-            font-size: 12px;
-        }
+        { font-size: 12px }
 
         code
-        {
-            user-select: all;
-        }
+        { user-select: all }
     }
 }
 
@@ -42,8 +40,8 @@ div.page-wrapper div.default-exception-handler
 div.page-wrapper div.default-loading-handler
 {
     @include content-block(center, center, false, row);
-    flex-wrap: nowrap;
 
+    flex-wrap: nowrap;
     gap: 10px;
 
     div.loading-spinner
@@ -58,78 +56,66 @@ div.page-wrapper div.default-loading-handler
         height: 16px;
 
         border-radius: 50%;
-        border: 2px solid rgba(#000, .75);
+        border: 2px solid rgba($default-dark, .75);
 
         animation: loading-spinner-spin 1s linear infinite;
 
         &::after
         {
-            position: absolute;
             content: "";
+
+            position: absolute;
 
             width: calc(100% - 8px);
             height: calc(100% - 8px);
 
-            border: 2px solid rgba(#000, .65);
-            border-radius: 50%;
-
             opacity: .5;
 
+            border: 2px solid rgba($default-dark, .65);
+            border-radius: 50%;
+
             animation: loading-spinner-spin 1.5s linear infinite;
-        }
-
-        @keyframes loading-spinner-spin
-        {
-            0%
-            {
-                transform: rotate(0);
-                border-color: rgba(#000, .75);
-                border-bottom-color: transparent;
-            }
-
-            50%
-            {
-                border-color: rgba(#000, .7);
-                border-bottom-color: transparent;
-            }
-
-            100%
-            {
-                transform: rotate(360deg);
-                border-color: rgba(#000, .75);
-                border-bottom-color: transparent;
-            }
         }
     }
 
     span.loading-label
     {
-        white-space: nowrap;
-        text-wrap: none;
+        opacity: .75;
+
+        font-weight: 600;
 
         text-overflow: ellipsis;
         overflow: hidden;
 
-        font-weight: 600;
-        opacity: .75;
+        white-space: nowrap;
+        text-wrap: none;
     }
 
     animation: loading-opacity-twitching 2s linear infinite;
-    @keyframes loading-opacity-twitching
-    {
-        0%
-        {
-            opacity: 1;
-        }
+}
 
-        50%
-        {
-            opacity: .6;
-        }
+// Animation keyframes for loading spinner
+@keyframes loading-spinner-spin
+{
+    0%
+    { transform: rotate(0); border-color: rgba($default-dark, .75); border-bottom-color: transparent }
 
-        100%
-        {
-            opacity: 1;
-        }
-    }
+    50%
+    { border-color: rgba($default-dark, .7); border-bottom-color: transparent }
+
+    100%
+    { transform: rotate(360deg); border-color: rgba($default-dark, .75); border-bottom-color: transparent }
+}
+
+// Animation keyframes for loading label fade-out-in animation
+@keyframes loading-opacity-twitching
+{
+    0%
+    { opacity: 1 }
+
+    50%
+    { opacity: .6 }
+
+    100%
+    { opacity: 1 }
 }

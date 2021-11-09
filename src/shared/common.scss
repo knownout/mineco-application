@@ -1,6 +1,7 @@
-$default-dark: #1d1e2c;
+$default-dark: #1a1a1d;
 $default-light: #e5deba;
 $default-link: #3da9e2;
+$default-light-gray: #f6f6f6;
 
 // Common transition mixin (should be used by all elements to provide fast change ability)
 @mixin use-transition($time: 100ms)
