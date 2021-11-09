@@ -1,3 +1,5 @@
+import React from "react";
+
 /**
  * Function for processing class names from strings and objects
  *
@@ -134,6 +136,11 @@ export class RequestBody
 export class FetchError
 {
     constructor (public readonly message: string) {}
+}
+
+export function createBootstrapIcon (shortClassName: string)
+{
+    return <i className={ `bi bi-${ shortClassName }` } />;
 }
 
 /** Raw path to API server */

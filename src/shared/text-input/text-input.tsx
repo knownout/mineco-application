@@ -14,7 +14,7 @@ interface ITextInputProps
     onInput?: (element: HTMLInputElement, value: string) => void
 
     /** Type of the input element */
-    type?: "text" | "tel" | "number" | "email" | "password"
+    type?: "text" | "tel" | "number" | "email" | "password" | string
 
     /** Placeholder for the input element */
     placeholder?: string
@@ -32,13 +32,11 @@ interface ITextInputProps
  */
 export default function TextInput (props: ITextInputProps)
 {
-    // Placeholder visibility state
     const [ placeholder, setPlaceholder ] = React.useState(true);
+    const [ focusState, setFocusState ] = React.useState(false);
 
-    // Reference to native input element
     const inputElement = React.createRef<HTMLInputElement>();
 
-    // Wrapper for the native input event
     function onInput ()
     {
         // If no native input element, skip
@@ -48,15 +46,12 @@ export default function TextInput (props: ITextInputProps)
         const element = inputElement.current,
             text = filterInputValue(element, props.filters || {});
 
-        // Determine new placeholder state and update it, if changed
         if (text.length > 0 && placeholder) setPlaceholder(false);
         else if (text.length < 1 && !placeholder) setPlaceholder(true);
 
-        // Call onInput function from properties, if provided
         if (props.onInput) props.onInput(element, text);
     }
 
-    // Wrapper for the native keyPress event
     function onKeyPress (event: React.KeyboardEvent<HTMLInputElement>)
     {
         // If pressed key is Enter and onReturn callback provided, call it
@@ -64,10 +59,10 @@ export default function TextInput (props: ITextInputProps)
             props.onReturn(inputElement.current.value.trim());
     }
 
-    // Get classname for input element holder
     const className = classNames("input-holder", { "active": placeholder });
+    const wrapperClassName = classNames("text-input", { "focus": focusState });
 
-    return <div className="text-input" onClick={ () => inputElement.current && inputElement.current.focus() }>
+    return <div className={ wrapperClassName } onClick={ () => inputElement.current && inputElement.current.focus() }>
         {/* If icon provided, render it */ }
         { props.icon && <div className="icon-holder">{ props.icon }</div> }
 
@@ -76,7 +71,9 @@ export default function TextInput (props: ITextInputProps)
             { props.placeholder && <span className="placeholder">{ props.placeholder }</span> }
 
             <input type={ props.type || "text" } onInput={ onInput } ref={ inputElement }
-                   onKeyPress={ onKeyPress } />
+                   onKeyPress={ onKeyPress }
+                   onFocus={ () => setFocusState(true) }
+                   onBlur={ () => setFocusState(false) } />
         </div>
     </div>;
 }
@@ -84,5 +81,6 @@ export default function TextInput (props: ITextInputProps)
 /** Text input filter presets */
 export const FilterPreset = {
     /** Preset includes only: numbers, latin large and small letters and _ symbol */
-    onlyLatinWithoutSymbols: { "\s{2,}": " ", "[^A-Za-z0-9_]": "", "\_{2,}": "_" }
+    onlyLatin: { "\s{2,}": " ", "[^A-Za-z0-9_]": "", "\\_{2,}": "_" },
+    latinWithSymbols: { "\s{2,}": " ", "[^A-Za-z0-9_@\\-]": "", "\\-{2,}": "-", "@{2,}": "@" }
 };

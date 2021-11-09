@@ -43,9 +43,7 @@ body
  */
 
 b, strong
-{
-    font-weight: 600;
-}
+{ font-weight: 600 }
 
 p, code, pre
 {
@@ -60,7 +58,10 @@ p, code, pre
 
 button, a.button
 {
+    @include content-block();
     @include use-transition();
+
+    width: fit-content;
 
     border: 3px solid transparent;
     background-color: lighten($default-light, 10%);

@@ -1,7 +1,7 @@
 @import "../../common";
 
 // Style sheet for exceptions handler
-div.page-wrapper div.default-exception-handler
+div.page-wrapper div.handler
 {
     @include content-block(center, flex-start);
 
@@ -44,40 +44,6 @@ div.page-wrapper div.default-loading-handler
     flex-wrap: nowrap;
     gap: 10px;
 
-    div.loading-spinner
-    {
-        position: relative;
-        display: flex;
-
-        justify-content: center;
-        align-items: center;
-
-        width: 16px;
-        height: 16px;
-
-        border-radius: 50%;
-        border: 2px solid rgba($default-dark, .75);
-
-        animation: loading-spinner-spin 1s linear infinite;
-
-        &::after
-        {
-            content: "";
-
-            position: absolute;
-
-            width: calc(100% - 8px);
-            height: calc(100% - 8px);
-
-            opacity: .5;
-
-            border: 2px solid rgba($default-dark, .65);
-            border-radius: 50%;
-
-            animation: loading-spinner-spin 1.5s linear infinite;
-        }
-    }
-
     span.loading-label
     {
         opacity: .75;
@@ -92,19 +58,6 @@ div.page-wrapper div.default-loading-handler
     }
 
     animation: loading-opacity-twitching 2s linear infinite;
-}
-
-// Animation keyframes for loading spinner
-@keyframes loading-spinner-spin
-{
-    0%
-    { transform: rotate(0); border-color: rgba($default-dark, .75); border-bottom-color: transparent }
-
-    50%
-    { border-color: rgba($default-dark, .7); border-bottom-color: transparent }
-
-    100%
-    { transform: rotate(360deg); border-color: rgba($default-dark, .75); border-bottom-color: transparent }
 }
 
 // Animation keyframes for loading label fade-out-in animation

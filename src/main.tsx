@@ -1,11 +1,23 @@
+// Library import
 import React, { PureComponent } from "react";
+import { render } from "react-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+
+// External components import
 import Helmet from "react-helmet";
 
-import { render } from "react-dom";
+// Internal components import
+import PageWrapper from "./shared/page-wrapper";
 
+// Stylesheets import
 import "normalize.css";
 import "./main.scss";
-import PageWrapper from "./shared/page-wrapper";
+
+// Other imports
+import "./account-provider";
+import { AccountProvider } from "./account-provider";
+import NotFoundHandler from "./shared/page-wrapper/default-handlers/not-found-handler";
+import ContentManagementSystem from "./content-management-system/content-management-system";
 
 namespace Main
 {
@@ -47,9 +59,19 @@ class Main extends PureComponent<Main.Properties, Main.State>
                 <title>Министерство СХ и ПР</title>
             </Helmet>
 
-            <PageWrapper className="root-wrapper">
-                Web application entry point
-            </PageWrapper>
+            <AccountProvider>
+                <PageWrapper>
+                    <Router>
+                        <Routes>
+                            <Route path="/" element={<span>1223</span>} />
+
+                            <Route path="/content-management-system/*" element={<ContentManagementSystem />} />
+
+                            <Route path="*" element={<NotFoundHandler />} />
+                        </Routes>
+                    </Router>
+                </PageWrapper>
+            </AccountProvider>
         </React.Fragment>;
     }
 }

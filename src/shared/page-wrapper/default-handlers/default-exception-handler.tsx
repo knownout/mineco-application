@@ -9,7 +9,7 @@ import Group from "../../group-component/group-component";
  */
 export default function DefaultExceptionHandler (props: { error: Error }) {
     return (
-        <div className="default-exception-handler">
+        <div className="default-exception-handler handler">
             <span className="handler-title">Произошла ошибка { props.error.name }</span>
 
             <Group title="Что делать?" className="recommendation semi-transparent">

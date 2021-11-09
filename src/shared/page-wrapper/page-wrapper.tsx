@@ -15,15 +15,17 @@ namespace PageWrapper
         children: any;
 
         /** Will be called when the componentDidCatch method is triggered */
-        onLoadingException? (name: string, message: string): JSX.Element,
+        onLoadingException? (name: string, message: string): JSX.Element;
 
         /** If provided, loading is completed only after specific function is resolved */
         asyncContent? (): Promise<void>;
 
-        className?: string,
-        contentClassName?: string,
+        className?: string;
+        contentClassName?: string;
 
-        loadingLabel?: string
+        loadingLabel?: string;
+
+        fadeOut?: boolean;
     }
 
     export interface State
@@ -65,6 +67,8 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
     };
 
     private pageWrapper = React.createRef<HTMLDivElement>();
+    private contentWrapper = React.createRef<HTMLDivElement>();
+
     private wait = (time: number) => new Promise(resolve =>
     {
         setTimeout(resolve, time);
@@ -162,19 +166,19 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
             content = <DefaultLoadingHandler loadingLabel={ this.props.loadingLabel } />;
         }
 
+        const wrapperClassNames = classNames(
+            this.props.className, "page-wrapper", { "centering": this.state.pageCenteringState }
+        );
+
         // Include one of fade-(in|out) class names to show fade animation
         const className = classNames(this.props.contentClassName, {
-            "fade-out": this.state.fadeOut,
+            "fade-out": this.props.fadeOut ? this.props.fadeOut : this.state.fadeOut,
             "fade-in": !this.state.fadeOut
         });
 
         return (
-            <div
-                className={ classNames(
-                    this.props.className, "page-wrapper", { "centering": this.state.pageCenteringState }
-                ) }
-                ref={ this.pageWrapper }>
-                <div className={ classNames(className, "content-wrapper") }>
+            <div className={ wrapperClassNames } ref={ this.pageWrapper }>
+                <div className={ classNames(className, "content-wrapper") } ref={ this.contentWrapper }>
                     { content }
                 </div>
             </div>

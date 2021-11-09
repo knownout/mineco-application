@@ -11,7 +11,8 @@ export namespace Requests
         uploadFile,
         getFilesList,
         getImagesList,
-        getFullMaterial
+        getFullMaterial,
+        verifyAccountData
     }
 
     export const TypesList = {
@@ -41,7 +42,7 @@ export namespace Requests
     export interface RequestResult<T = any>
     {
         success: boolean,
-        meta: T | string
+        meta: T
     }
 }
 

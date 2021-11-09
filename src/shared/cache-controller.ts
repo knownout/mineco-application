@@ -21,7 +21,7 @@ export default class CacheController
      * Load content from specific browser storage and parse
      * @param key content number (LocalCacheKeys item) in storage
      */
-    public fromCache<T = string | null> (key: CacheKeys)
+    public fromCache<T = object> (key: CacheKeys): T | null
     {
         const cache = this.localCacheStorage.getItem(key.toString());
 
@@ -41,5 +41,6 @@ export default class CacheController
 
 export enum CacheKeys
 {
-    loadedMaterialsList
+    loadedMaterialsList,
+    accountData
 }

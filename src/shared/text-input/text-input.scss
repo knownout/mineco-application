@@ -4,6 +4,7 @@
 div.text-input
 {
     @include content-block(center, center);
+    @include use-transition();
 
     // Styles for root wrapper of the component
 
@@ -22,6 +23,12 @@ div.text-input
     padding: 10px;
 
     cursor: text;
+
+    border: 3px solid transparent;
+
+    &.focus {
+        border: 3px solid rgba($default-link, .2);
+    }
 
     div.icon-holder
     {
