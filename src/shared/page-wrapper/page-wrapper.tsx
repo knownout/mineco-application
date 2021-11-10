@@ -99,11 +99,12 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
      */
     private async callPageAnimation ()
     {
-        if (!this.state.pageLoadingException) this.setState({ fadeOut: true });
+        if (!this.state.pageLoadingException && this.contentWrapper.current) this.setState({ fadeOut: true });
 
         // Wait 100 (+50 for more smooth animation) milliseconds for animation end
         await this.wait(150);
-        if (!this.state.pageLoadingComplete)
+
+        if (!this.state.pageLoadingComplete && this.contentWrapper.current)
             this.setState({ pageLoadingComplete: true, fadeOut: false });
     }
 

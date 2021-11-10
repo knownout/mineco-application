@@ -16,12 +16,13 @@ namespace CMS
     export interface State
     {
         fadeOut: boolean;
+        menuItemIndex: number;
     }
 }
 
 export default class ContentManagementSystem extends React.Component<{}, CMS.State>
 {
-    state: CMS.State = { fadeOut: false };
+    state: CMS.State = { fadeOut: false, menuItemIndex: -1 };
 
     private verifyStoredAccountData ()
     {
@@ -37,11 +38,25 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
 
     render (): React.ReactNode
     {
+        const actionBlocksList = [
+            <span>Блок аккаунта</span>,
+            <span>Блок материалов</span>,
+            <span>Блок настроек</span>,
+            <span>Блок файлового менеджера</span>
+        ].map(e => <PageWrapper key={Math.random()}>{ e }</PageWrapper>);
+
         return <PageWrapper loadingLabel="Загрузка данных авторизации" fadeOut={ this.state.fadeOut }
                             asyncContent={ this.verifyStoredAccountData } className="cms-root-wrapper">
-            <SideMenu onItemChange={ console.log } />
+
+            <SideMenu itemIndex={ this.state.menuItemIndex }
+                      itemIndexChange={ index => this.setState({ menuItemIndex: index }) } />
+
             <div className="control-wrapper">
-                <span className="no-selection">Выберите один из пунктов меню, чтобы начать</span>
+                {
+                    this.state.menuItemIndex in actionBlocksList
+                        ? actionBlocksList[this.state.menuItemIndex]
+                        : <span className="no-selection">Выберите один из пунктов меню, чтобы начать</span>
+                }
             </div>
         </PageWrapper>;
     }
