@@ -60,7 +60,7 @@ class Main extends PureComponent<Main.Properties, Main.State>
             </Helmet>
 
             <AccountProvider>
-                <PageWrapper>
+                <PageWrapper className="root-wrapper">
                     <Router>
                         <Routes>
                             <Route path="/" element={ <span>Website entry point</span> } />

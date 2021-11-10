@@ -129,7 +129,7 @@ div#app-root
 
     user-select: none;
 
-    div.root-wrapper
+    div.root-wrapper, div.root-wrapper > div.content-wrapper
     {
         @include static-content-block(center, center);
     }
