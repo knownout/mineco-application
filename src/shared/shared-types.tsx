@@ -30,6 +30,8 @@ export namespace Requests
         DataIdentifier: "Data:Identifier",
         DataOffset: "Data:Offset",
 
+        CaptchaToken: "Captcha:ResponseToken",
+
         UpdateIdentifier: "Update:Identifier",
         UpdateContent: "Update:Content",
         UpdatePinned: "Update:Pinned",

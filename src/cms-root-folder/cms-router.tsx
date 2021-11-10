@@ -2,43 +2,39 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { AccountContext, AccountProvider } from "../account-provider";
+// Context data import
+import { AccountContext } from "../account-provider";
+
+// External components import
+import { Helmet } from "react-helmet";
 
 // Internal components import
 import NotFoundHandler from "../shared/page-wrapper/default-handlers/not-found-handler";
 import AuthenticationForm from "./authentication-form/authentication-form";
+import ContentManagementSystem from "./content-management-system/content-management-system";
 
 // Stylesheets import
-import "./content-management-system.scss";
+import "./cms-router.scss";
 
-namespace CMS
+export default class CmsRouter extends React.PureComponent
 {
-    export interface Properties
-    {
-
-    }
-
-    export interface State
-    {
-        fadeOut: boolean
-    }
-}
-
-export default class ContentManagementSystem extends React.PureComponent<CMS.Properties, CMS.State>
-{
-    state: CMS.State = { fadeOut: false };
 
     declare context: React.ContextType<typeof AccountContext>;
     static contextType = AccountContext;
 
     render (): React.ReactNode
     {
-        return <AccountProvider>
+        return <React.Fragment>
+            <Helmet>
+                <link rel="icon" href="/public/cms-favicon.ico" />
+                <title>Панель управления МСХ и ПР</title>
+            </Helmet>
+
             <Routes>
                 <Route path="/auth" element={ <AuthenticationForm /> } />
-                <Route path="/" element={ <span>CMS</span> } />
+                <Route path="/" element={ <ContentManagementSystem /> } />
                 <Route path="*" element={ <NotFoundHandler /> } />
             </Routes>
-        </AccountProvider>;
+        </React.Fragment>;
     }
 }

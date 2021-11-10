@@ -759,6 +759,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/grecaptcha@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/grecaptcha/-/grecaptcha-3.0.3.tgz#9b487b1d20f7813ea382e8cf7a4b621ae61782c4"
+  integrity sha512-osLqWRzsRsDtCfiCl1lbtUY8ANGCQsG/hhht3E7g1pVT7fD5SXgAg53S2grKjjSkXcm0fvMDbhUeL9NyAJvzGQ==
+
 "@types/history@*":
   version "4.7.9"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.9.tgz#1cfb6d60ef3822c589f18e70f8b12f9a28ce8724"
@@ -875,13 +880,6 @@
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-6.1.4.tgz#3e54a3eb37ba7fb34ffafc64f425be4e68df03b9"
   integrity sha512-jyx50RNZXVaTGHY3MsoRPNpeiVk8b0XTPgD/O6KHF6COTDnG/+lRjPYvTK5nfWtR3xDOux0w6bHLAsaHo2ZLTA==
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-recaptcha@^2.3.4":
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/@types/react-recaptcha/-/react-recaptcha-2.3.4.tgz#7c7e89e37c26a9d3b6e2c2e26fe84a3a308f7edd"
-  integrity sha512-RLnUgfFeQwg22+Mp+IvFlXz25+JrcwyxeYe9oAjbvCsIxK5tGrXWb44bK3VusdWCWIiufbMtEG8i4PFXSCBUNA==
   dependencies:
     "@types/react" "*"
 
@@ -6738,11 +6736,6 @@ react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-
-react-recaptcha@^2.3.10:
-  version "2.3.10"
-  resolved "https://registry.yarnpkg.com/react-recaptcha/-/react-recaptcha-2.3.10.tgz#1f7a001f24ab7e1a323fcf1fd8644afecb56f7da"
-  integrity sha512-IyanbozsYCuHvTYDuskZTIEcRAMG/sdvAu5b29iQWoC8Kd3Zk9WGCv2oNxh6RfGHvSvgHAyaLjmC6ei/yMsJ7g==
 
 react-router-dom@^6.0.1:
   version "6.0.1"

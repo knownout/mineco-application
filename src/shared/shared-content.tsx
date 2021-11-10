@@ -1,4 +1,15 @@
+// Library and helpers import
 import React from "react";
+
+import { MD5 } from "crypto-js";
+import { Requests } from "./shared-types";
+
+// Context and cache data import
+import { IAccountData } from "../account-provider";
+import CacheController, { CacheKeys } from "./cache-controller";
+
+// Shortcuts
+import RequestResult = Requests.RequestResult;
 
 /**
  * Function for processing class names from strings and objects
@@ -135,12 +146,83 @@ export class RequestBody
  */
 export class FetchError
 {
+    public readonly name = "FetchError";
+
     constructor (public readonly message: string) {}
 }
 
+/**
+ * Function for creating html elements from class names of the bootstrap icons
+ * @param shortClassName name of the icon (without "bi bi-")
+ */
 export function createBootstrapIcon (shortClassName: string)
 {
     return <i className={ `bi bi-${ shortClassName }` } />;
+}
+
+/**
+ * Execute request with google recaptcha
+ * @param action recaptcha action type
+ */
+export async function executeWithRecaptcha (action: "submit" | "login" | "homepage" | "social"): Promise<string>
+{
+    return new Promise(resolve =>
+    {
+        // @ts-ignore
+        grecaptcha.ready(() =>
+        {
+            // @ts-ignore
+            grecaptcha.execute("6Lf41iIdAAAAACNhIqTPtW6ynSo1RI5RP9-l9DHJ", { action }).then(resolve);
+        });
+    });
+}
+
+/**
+ * Get stored account data from cache and request server for data verification
+ * @param callback fired when request value retrieved
+ */
+export function verifyStoredAccountData (callback: (result: boolean) => void): Promise<void>
+{
+    const cacheController = new CacheController(window.localStorage);
+    const initialAccountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData);
+
+    // Create new promise (for PageWrapper asyncContent property)
+    return new Promise(resolve =>
+    {
+
+        // Shortcut for resolving promise
+        const makeResolve = (result: boolean, innerCallback?: () => any) =>
+        {
+            resolve();
+            if (innerCallback) innerCallback();
+            return callback(result);
+        };
+
+        if (initialAccountData)
+        {
+            executeWithRecaptcha("login").then(token =>
+            {
+                // Send request to server
+                fetch(defaultPathsList.request, new RequestBody({
+                    [Requests.TypesList.Action]: Requests.ActionsList.verifyAccountData,
+                    [Requests.TypesList.AccountLogin]: initialAccountData.login,
+                    [Requests.TypesList.AccountHash]: MD5(initialAccountData.password),
+                    [Requests.TypesList.CaptchaToken]: token
+                }).postFormData).then(request => request.json()).then((result: RequestResult<IAccountData>) =>
+                {
+                    if (!result.success) makeResolve(false, () =>
+                        cacheController.removeCachedContent(CacheKeys.accountData));
+
+                    else makeResolve(true);
+
+                    // (for security reasons) if server can not respond, reset account data
+                }).catch(() =>
+                    makeResolve(false, () =>
+                        cacheController.removeCachedContent(CacheKeys.accountData))
+                );
+            }).catch(() => { throw new FetchError("Errro"); });
+        } else makeResolve(false);
+    });
 }
 
 /** Raw path to API server */

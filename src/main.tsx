@@ -1,7 +1,7 @@
 // Library import
 import React, { PureComponent } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // External components import
 import Helmet from "react-helmet";
@@ -17,7 +17,7 @@ import "./main.scss";
 import "./account-provider";
 import { AccountProvider } from "./account-provider";
 import NotFoundHandler from "./shared/page-wrapper/default-handlers/not-found-handler";
-import ContentManagementSystem from "./content-management-system/content-management-system";
+import CmsRouter from "./cms-root-folder/cms-router";
 
 namespace Main
 {
@@ -63,11 +63,9 @@ class Main extends PureComponent<Main.Properties, Main.State>
                 <PageWrapper>
                     <Router>
                         <Routes>
-                            <Route path="/" element={<span>1223</span>} />
-
-                            <Route path="/content-management-system/*" element={<ContentManagementSystem />} />
-
-                            <Route path="*" element={<NotFoundHandler />} />
+                            <Route path="/" element={ <span>Website entry point</span> } />
+                            <Route path="/content-management-system/*" element={ <CmsRouter /> } />
+                            <Route path="*" element={ <NotFoundHandler /> } />
                         </Routes>
                     </Router>
                 </PageWrapper>

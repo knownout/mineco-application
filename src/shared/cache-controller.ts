@@ -29,6 +29,11 @@ export default class CacheController
         return JSON.parse(cache) as T;
     }
 
+    public removeCachedContent (key: CacheKeys)
+    {
+        this.localCacheStorage.removeItem(key.toString());
+    }
+
     /**
      * Set storage for current class instance
      * @param storage object of global type Storage
