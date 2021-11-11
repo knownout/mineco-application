@@ -103,6 +103,7 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
 
         // Wait 100 (+50 for more smooth animation) milliseconds for animation end
         await this.wait(150);
+        setTimeout(this.pageCenteringController, 10);
 
         if (!this.state.pageLoadingComplete && this.contentWrapper.current)
             this.setState({ pageLoadingComplete: true, fadeOut: false });
@@ -120,7 +121,6 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         const mountInitialTime = Date.now();
 
         window.addEventListener("resize", this.pageCenteringController);
-        this.pageCenteringController();
 
         if (this.props.asyncContent) await this.props.asyncContent().catch(async error =>
         {

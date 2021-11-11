@@ -13,9 +13,6 @@ import NotFoundHandler from "../shared/page-wrapper/default-handlers/not-found-h
 import AuthenticationForm from "./authentication-form/authentication-form";
 import ContentManagementSystem from "./content-management-system/content-management-system";
 
-// Stylesheets import
-import "./cms-router.scss";
-
 export default class CmsRouter extends React.PureComponent
 {
 

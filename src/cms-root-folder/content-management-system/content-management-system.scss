@@ -2,22 +2,10 @@
 
 div.cms-root-wrapper.page-wrapper
 {
-    &, & > div.content-wrapper
-    { @include static-content-block(center, center); flex-direction: row; }
+    overflow-y: auto;
 
-    div.side-menu-wrapper, div.control-wrapper
-    { @include content-block(); height: 100%; }
-
-    span.no-selection
+    & > div.content-wrapper
     {
-        opacity: .4;
-        font-size: 14px;
-
-        font-weight: 600;
-    }
-
-    div.control-wrapper
-    {
-        width: 100%;
+        height: 100%;
     }
 }

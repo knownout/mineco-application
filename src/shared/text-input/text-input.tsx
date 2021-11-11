@@ -81,6 +81,6 @@ export default function TextInput (props: ITextInputProps)
 /** Text input filter presets */
 export const FilterPreset = {
     /** Preset includes only: numbers, latin large and small letters and _ symbol */
-    onlyLatin: { "\s{2,}": " ", "[^A-Za-z0-9_]": "", "\\_{2,}": "_" },
-    latinWithSymbols: { "\s{2,}": " ", "[^A-Za-z0-9_@\\-]": "", "\\-{2,}": "-", "@{2,}": "@" }
+    onlyLatin: { "\\s{2,}": " ", "[^A-Za-z0-9_]": "", "\\_{2,}": "_" },
+    latinWithSymbols: { "\\s{2,}": " ", "[^A-Za-z0-9_@\\-]": "", "\\-{2,}": "-", "@{2,}": "@" }
 };

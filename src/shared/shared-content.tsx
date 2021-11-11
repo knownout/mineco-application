@@ -220,15 +220,15 @@ export function verifyStoredAccountData (callback: (result: boolean) => void): P
                     makeResolve(false, () =>
                         cacheController.removeCachedContent(CacheKeys.accountData))
                 );
-            }).catch(() => { throw new FetchError("Errro"); });
+            }).catch(() => { throw new FetchError("Server cannot respond to this request"); });
         } else makeResolve(false);
     });
 }
 
 /** Raw path to API server */
-export const defaultServerPath = window.location.origin.replace(`:${ window.location.port }`, "") + "/";
+export const defaultServerPath = window.location.origin.replace(`:${ window.location.port }`, "");
 
 /** List of paths to different API routes */
 export const defaultPathsList = {
-    request: defaultServerPath + "request"
+    request: defaultServerPath + "/request"
 };

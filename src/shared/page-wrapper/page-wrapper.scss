@@ -6,14 +6,14 @@
  */
 div.page-wrapper
 {
-    @include content-block(center, flex-start, true);
+    @include content-block(flex-start, center, true);
 
     background: $default-light-gray;
     overflow: hidden;
 
     &.centering
     {
-        align-items: center;
+        justify-content: center;
     }
 
     div.content-wrapper

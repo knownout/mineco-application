@@ -6,10 +6,11 @@ import { verifyStoredAccountData } from "../../shared/shared-content";
 
 // Internal components import
 import PageWrapper from "../../shared/page-wrapper";
-import SideMenu from "./cms-side-menu/cms-side-menu";
 
 // Stylesheets import
 import "./content-management-system.scss";
+
+import MenuRouter, { MenuRoute } from "../menu-router/menu-router";
 
 namespace CMS
 {
@@ -30,34 +31,31 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
         {
             if (result) return;
 
+            window.location.href = "/content-management-system/auth";
             this.setState({ fadeOut: true });
-            setTimeout(() =>
-                window.location.href = "/content-management-system/auth", 100);
         });
     }
 
     render (): React.ReactNode
     {
-        const actionBlocksList = [
-            <span>Блок аккаунта</span>,
-            <span>Блок материалов</span>,
-            <span>Блок настроек</span>,
-            <span>Блок файлового менеджера</span>
-        ].map(e => <PageWrapper key={Math.random()}>{ e }</PageWrapper>);
-
         return <PageWrapper loadingLabel="Загрузка данных авторизации" fadeOut={ this.state.fadeOut }
                             asyncContent={ this.verifyStoredAccountData } className="cms-root-wrapper">
-
-            <SideMenu itemIndex={ this.state.menuItemIndex }
-                      itemIndexChange={ index => this.setState({ menuItemIndex: index }) } />
-
-            <div className="control-wrapper">
-                {
-                    this.state.menuItemIndex in actionBlocksList
-                        ? actionBlocksList[this.state.menuItemIndex]
-                        : <span className="no-selection">Выберите один из пунктов меню, чтобы начать</span>
-                }
-            </div>
+            <MenuRouter>
+                <MenuRoute icon="person-bounding-box" title="Аккаунт">
+                    Аккаунт
+                </MenuRoute>
+                <MenuRoute icon="newspaper" title="Материалы">
+                    Материалы
+                </MenuRoute>
+                <MenuRoute icon="gear-fill" title="Настройки">
+                    Настройки
+                </MenuRoute>
+                <MenuRoute icon="folder-fill" title="Файлы">
+                    Файлы
+                </MenuRoute>
+            </MenuRouter>
         </PageWrapper>;
     }
 }
+
+

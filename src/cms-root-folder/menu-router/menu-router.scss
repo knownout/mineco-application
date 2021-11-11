@@ -1,0 +1,99 @@
+@import "../../shared/common";
+
+div.side-menu-router
+{
+    @include static-content-block(center, center);
+
+    flex-direction: row;
+
+    width: 100vw;
+    height: fit-content;
+
+    min-height: 100vh;
+
+    div.side-menu-selector
+    {
+        @include content-block();
+
+        background-color: rgba(#000, .05);
+
+        width: 100px;
+
+        min-height: 100vh;
+        height: 100%;
+
+        div.menu-item
+        {
+            @include content-block();
+            @include use-transition();
+
+            flex-wrap: nowrap;
+
+            opacity: .5;
+            cursor: pointer;
+
+            padding: 10px 0;
+
+            border: 3px solid transparent;
+
+            &:hover
+            {
+                opacity: 1;
+                padding: 20px 0;
+
+                border-color: rgba(#000, .5);
+            }
+
+            &.select
+            {
+                opacity: 1;
+                pointer-events: none;
+
+                padding: 20px 0;
+
+                background: darken($default-light, 3%);
+            }
+
+            i.bi
+            { font-size: 28px }
+
+            span.item-title
+            { opacity: .85; font-size: 13px; font-weight: 600 }
+        }
+    }
+
+    div.router-content
+    {
+        @include content-block(flex-start, flex-start);
+
+        width: calc(100% - 100px);
+        height: fit-content;
+    }
+
+    @media screen and (max-width: 640px)
+    {
+        flex-direction: column-reverse;
+
+        height: 100%;
+        min-height: unset;
+
+        div.side-menu-selector
+        {
+            flex-direction: row;
+
+            width: 100vw;
+
+            min-height: unset;
+            height: 50px;
+
+            div.menu-item i.bi
+            { font-size: 20px }
+
+            div.menu-item
+            { height: 50px }
+        }
+
+        div.router-content
+        { height: calc(100% - 50px); width: 100vw }
+    }
+}
