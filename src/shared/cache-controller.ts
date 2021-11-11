@@ -47,5 +47,6 @@ export default class CacheController
 export enum CacheKeys
 {
     loadedMaterialsList,
-    accountData
+    accountData,
+    cmsMenuRouterPage
 }

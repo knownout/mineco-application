@@ -1,16 +1,15 @@
 // Library import
 import React from "react";
-
 // Helpers import
 import { verifyStoredAccountData } from "../../shared/shared-content";
-
 // Internal components import
 import PageWrapper from "../../shared/page-wrapper";
-
 // Stylesheets import
 import "./content-management-system.scss";
 
-import MenuRouter, { MenuRoute } from "../menu-router/menu-router";
+import MenuRouter, { MenuRoute } from "./menu-router/menu-router";
+import AccountBlock from "./content-blocks/account-block";
+import CacheController, { CacheKeys } from "../../shared/cache-controller";
 
 namespace CMS
 {
@@ -24,6 +23,7 @@ namespace CMS
 export default class ContentManagementSystem extends React.Component<{}, CMS.State>
 {
     state: CMS.State = { fadeOut: false, menuItemIndex: -1 };
+    private cacheController = new CacheController(window.localStorage);
 
     private verifyStoredAccountData ()
     {
@@ -38,11 +38,13 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
 
     render (): React.ReactNode
     {
+        const cmsMenuRouterPage = this.cacheController.fromCache<number>(CacheKeys.cmsMenuRouterPage);
+
         return <PageWrapper loadingLabel="Загрузка данных авторизации" fadeOut={ this.state.fadeOut }
                             asyncContent={ this.verifyStoredAccountData } className="cms-root-wrapper">
-            <MenuRouter>
+            <MenuRouter initialIndex={ Number.isInteger(cmsMenuRouterPage) ? cmsMenuRouterPage as number : -1 }>
                 <MenuRoute icon="person-bounding-box" title="Аккаунт">
-                    Аккаунт
+                    <AccountBlock />
                 </MenuRoute>
                 <MenuRoute icon="newspaper" title="Материалы">
                     Материалы

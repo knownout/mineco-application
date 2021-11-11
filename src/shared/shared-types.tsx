@@ -70,3 +70,10 @@ export namespace Material
         data: Core
     }
 }
+
+export interface IAccountData
+{
+    name: string;
+    password: string;
+    login: string;
+}

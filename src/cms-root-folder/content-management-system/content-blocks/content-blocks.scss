@@ -1,0 +1,44 @@
+@import "../../../shared/common";
+
+div.content-block {
+    @include content-block(flex-start, flex-start);
+    width: fit-content;
+
+    gap: 10px;
+
+    span.block-title
+    {
+        text-transform: uppercase;
+        font-weight: 600;
+
+        font-size: 14px;
+        opacity: .8;
+
+        padding: 5px 0;
+
+        margin-left: -5px;
+    }
+
+    div.group-component
+    {
+        width: 100%;
+
+        span.group-title {
+            font-size: 12px;
+        }
+    }
+
+    &.account-block {
+        div.text-input
+        {
+            margin-bottom: 10px;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        &.backdoor div.group-component
+        {
+            &.name { background: linear-gradient(to right, rgba(red, .15), transparent); }
+        }
+    }
+}

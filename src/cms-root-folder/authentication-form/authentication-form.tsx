@@ -1,9 +1,7 @@
 // Import library
 import React from "react";
-
 // Context data import
-import { AccountContext, IAccountData } from "../../account-provider";
-
+import { IAccountData } from "../../shared/shared-types";
 // Import helper functions
 import {
     createBootstrapIcon,
@@ -15,14 +13,13 @@ import {
 
 import { MD5 } from "crypto-js";
 import { Requests } from "../../shared/shared-types";
-
 // Import internal components
 import TextInput, { FilterPreset } from "../../shared/text-input/text-input";
 import Button from "../../shared/button-component/button-component";
 import PageWrapper from "../../shared/page-wrapper";
-
 // Import stylesheets
 import "./authentication-form.scss";
+import CacheController, { CacheKeys } from "../../shared/cache-controller";
 
 // Shortcuts
 import RequestResult = Requests.RequestResult;
@@ -94,9 +91,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
     }
 
     private loginButtonReference = React.createRef<HTMLButtonElement>();
-
-    static contextType = AccountContext;
-    declare context: React.ContextType<typeof AccountContext>;
+    private cacheController = new CacheController(window.localStorage);
 
     render (): React.ReactNode
     {
@@ -137,7 +132,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
         const requestAuthentication = () => this.requestAuthentication(
             textInputValue.login, textInputValue.password, result =>
             {
-                if (this.context.setAccountData) this.context.setAccountData(result.meta);
+                this.cacheController.cacheContent(CacheKeys.accountData, result.meta)
                 this.setState({ fadeOut: true }, () =>
                     window.location.href = "/content-management-system"
                 );

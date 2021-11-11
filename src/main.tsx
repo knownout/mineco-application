@@ -14,8 +14,6 @@ import "normalize.css";
 import "./main.scss";
 
 // Other imports
-import "./account-provider";
-import { AccountProvider } from "./account-provider";
 import NotFoundHandler from "./shared/page-wrapper/default-handlers/not-found-handler";
 import CmsRouter from "./cms-root-folder/cms-router";
 
@@ -59,17 +57,15 @@ class Main extends PureComponent<Main.Properties, Main.State>
                 <title>Министерство СХ и ПР</title>
             </Helmet>
 
-            <AccountProvider>
-                <PageWrapper className="root-wrapper">
-                    <Router>
-                        <Routes>
-                            <Route path="/" element={ <span>Website entry point</span> } />
-                            <Route path="/content-management-system/*" element={ <CmsRouter /> } />
-                            <Route path="*" element={ <NotFoundHandler /> } />
-                        </Routes>
-                    </Router>
-                </PageWrapper>
-            </AccountProvider>
+            <PageWrapper className="root-wrapper">
+                <Router>
+                    <Routes>
+                        <Route path="/" element={ <span>Website entry point</span> } />
+                        <Route path="/content-management-system/*" element={ <CmsRouter /> } />
+                        <Route path="*" element={ <NotFoundHandler /> } />
+                    </Routes>
+                </Router>
+            </PageWrapper>
         </React.Fragment>;
     }
 }

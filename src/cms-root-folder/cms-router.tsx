@@ -3,7 +3,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 // Context data import
-import { AccountContext } from "../account-provider";
 
 // External components import
 import { Helmet } from "react-helmet";
@@ -16,8 +15,6 @@ import ContentManagementSystem from "./content-management-system/content-managem
 export default class CmsRouter extends React.PureComponent
 {
 
-    declare context: React.ContextType<typeof AccountContext>;
-    static contextType = AccountContext;
 
     render (): React.ReactNode
     {

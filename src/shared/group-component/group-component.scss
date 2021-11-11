@@ -18,6 +18,13 @@ div.group-component
         border-radius: 3px;
     }
 
+    &.border-only {
+        background: transparent;
+        border: none;
+
+        padding: 0;
+    }
+
     span.group-title
     {
         font-size: inherit;

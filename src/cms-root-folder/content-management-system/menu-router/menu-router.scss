@@ -1,4 +1,4 @@
-@import "../../shared/common";
+@import "../../../shared/common";
 
 div.side-menu-router
 {
@@ -68,6 +68,14 @@ div.side-menu-router
 
         width: calc(100% - 100px);
         height: fit-content;
+
+        & > div.page-wrapper
+        {
+            overflow-y: auto;
+
+            padding-bottom: 30px;
+            padding-top: 10px;
+        }
     }
 
     @media screen and (max-width: 640px)
@@ -95,5 +103,17 @@ div.side-menu-router
 
         div.router-content
         { height: calc(100% - 50px); width: 100vw }
+    }
+
+    span.no-selection
+    {
+        @include content-block();
+        height: 100%;
+        width: 100%;
+
+        font-weight: 600;
+        font-size: 14px;
+
+        opacity: .4;
     }
 }
