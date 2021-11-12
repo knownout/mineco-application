@@ -1,8 +1,6 @@
 import React from "react";
 import { classNames, createBootstrapIcon } from "../../../shared/shared-content";
 
-import PageWrapper from "../../../shared/page-wrapper";
-
 import "./menu-router.scss";
 import CacheController, { CacheKeys } from "../../../shared/cache-controller";
 
@@ -31,9 +29,7 @@ export default function MenuRouter (props: { children: JSX.Element | JSX.Element
         children = Array.isArray(props.children) ? props.children : [ props.children ];
 
     // Get each route content
-    const contentItems = children.map(child => <PageWrapper key={ Math.random() }>
-        { child.props.children }
-    </PageWrapper>);
+    const contentItems = children.map(child => child.props.children);
 
     // Get each route selector item data
     const selectorMenuItems = children.map((child, index) =>

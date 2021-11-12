@@ -10,6 +10,7 @@ import "./content-management-system.scss";
 import MenuRouter, { MenuRoute } from "./menu-router/menu-router";
 import AccountBlock from "./content-blocks/account-block";
 import CacheController, { CacheKeys } from "../../shared/cache-controller";
+import PropertiesBlock from "./content-blocks/properties-block";
 
 namespace CMS
 {
@@ -42,7 +43,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
 
         return <PageWrapper loadingLabel="Загрузка данных авторизации" fadeOut={ this.state.fadeOut }
                             asyncContent={ this.verifyStoredAccountData } className="cms-root-wrapper">
-            <MenuRouter initialIndex={ Number.isInteger(cmsMenuRouterPage) ? cmsMenuRouterPage as number : -1 }>
+            <MenuRouter initialIndex={ Number.isInteger(cmsMenuRouterPage) ? cmsMenuRouterPage as number : 0 }>
                 <MenuRoute icon="person-bounding-box" title="Аккаунт">
                     <AccountBlock />
                 </MenuRoute>
@@ -50,7 +51,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
                     Материалы
                 </MenuRoute>
                 <MenuRoute icon="gear-fill" title="Настройки">
-                    Настройки
+                    <PropertiesBlock />
                 </MenuRoute>
                 <MenuRoute icon="folder-fill" title="Файлы">
                     Файлы

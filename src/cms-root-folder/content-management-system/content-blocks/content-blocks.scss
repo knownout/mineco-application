@@ -1,10 +1,18 @@
 @import "../../../shared/common";
 
-div.content-block {
+div.content-block
+{
     @include content-block(flex-start, flex-start);
     width: fit-content;
 
+    max-width: 100%;
+
     gap: 10px;
+
+    table, th, td
+    {
+        border: 1px solid rgba(#000, .4);
+    }
 
     span.block-title
     {
@@ -23,12 +31,14 @@ div.content-block {
     {
         width: 100%;
 
-        span.group-title {
+        span.group-title
+        {
             font-size: 12px;
         }
     }
 
-    &.account-block {
+    &.account-block
+    {
         div.text-input
         {
             margin-bottom: 10px;
@@ -38,7 +48,54 @@ div.content-block {
 
         &.backdoor div.group-component
         {
-            &.name { background: linear-gradient(to right, rgba(red, .15), transparent); }
+            &.name
+            { background: linear-gradient(to right, rgba(red, .15), transparent); }
+        }
+    }
+
+    &.properties-block
+    {
+        .ce-toolbar__plus, .ce-toolbar, .ce-toolbar__actions-buttons
+        {
+            display: none;
+        }
+
+        div.group-component.editor-js-group
+        {
+            max-width: 100%;
+            width: 360px;
+
+            div.group-content {
+                position: relative;
+                display: flex;
+
+                flex-direction: column;
+
+                gap: 10px;
+
+                margin-top: 10px;
+            }
+        }
+
+        div#editor-js-holder-rich-text
+        {
+            background: rgba(#fff, .9);
+            box-shadow: 0.7px 0.7px 3.6px rgba(0, 0, 0, 0.007),
+            1.9px 1.9px 10px rgba(0, 0, 0, 0.01),
+            4.5px 4.5px 24.1px rgba(0, 0, 0, 0.013),
+            15px 15px 80px rgba(0, 0, 0, 0.02);
+
+            padding: 0 10px;
+            border-radius: 3px;
+
+            text-align: justify;
+
+            div.codex-editor__redactor {
+                width: 100%;
+                margin: 0;
+
+                padding-bottom: 247px !important;
+            }
         }
     }
 }

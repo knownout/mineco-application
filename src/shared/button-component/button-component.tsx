@@ -51,8 +51,10 @@ export default function Button (props: IButtonProps)
     const buttonClickFunction = (event: React.MouseEvent<HTMLButtonElement>) => onClickEvent(event)
 
         // Catch rejections (will not catch throw inside event)
-        .catch(() =>
+        .catch(error =>
         {
+            console.error("Failed to execute onAsyncClick event:", error)
+
             setException(true);
             setTimeout(() => setException(false), 400);
         })

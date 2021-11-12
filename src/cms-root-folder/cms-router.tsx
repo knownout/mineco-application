@@ -1,20 +1,17 @@
 // Library import
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-
-// Context data import
-
+import { Route, Routes } from "react-router-dom";
 // External components import
 import { Helmet } from "react-helmet";
-
 // Internal components import
 import NotFoundHandler from "../shared/page-wrapper/default-handlers/not-found-handler";
 import AuthenticationForm from "./authentication-form/authentication-form";
 import ContentManagementSystem from "./content-management-system/content-management-system";
 
+// Context data import
+
 export default class CmsRouter extends React.PureComponent
 {
-
 
     render (): React.ReactNode
     {

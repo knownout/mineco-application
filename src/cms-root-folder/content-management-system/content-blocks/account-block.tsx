@@ -1,32 +1,34 @@
+// Library import
 import React from "react";
-
+// Helpers import
 import CacheController, { CacheKeys } from "../../../shared/cache-controller";
-import { IAccountData } from "../../../shared/shared-types";
-import {
-    classNames,
-    createBootstrapIcon,
-    defaultPathsList,
-    executeWithRecaptcha,
-    RequestBody
-} from "../../../shared/shared-content";
-import { Requests } from "../../../shared/shared-types";
+import { IAccountData, Requests } from "../../../shared/shared-types";
+import * as Shared from "../../../shared/shared-content";
 import { MD5 } from "crypto-js";
-
+// Internal components import
 import Group from "../../../shared/group-component";
 import TextInput, { FilterPreset } from "../../../shared/text-input/text-input";
 import Button from "../../../shared/button-component/button-component";
+import PageWrapper from "../../../shared/page-wrapper";
 
-import "./content-blocks.scss";
-import RequestResult = Requests.RequestResult;
-
+/**
+ * Action block for display user account data with ability of password changing
+ *
+ * @author re-knownout "knownOut" knownout@hotmail.com
+ * @version 0.0.1
+ */
 export default function AccountBlock ()
 {
     const cacheController = new CacheController(window.localStorage);
-    const accountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData) as IAccountData;
-    const [ password, setPassword ] = React.useState<string | null>(null);
 
+    // Account data from localStorage
+    const accountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData) as IAccountData;
+
+    // State for new password input field
+    const [ password, setPassword ] = React.useState<string | null>(null);
     const passwordButtonReference = React.createRef<HTMLButtonElement>();
 
+    // New password field input handler
     const onTextInputReturn = () =>
     {
         if (passwordButtonReference.current)
@@ -36,28 +38,34 @@ export default function AccountBlock ()
         }
     };
 
+    // Password change button click handler
     const onPasswordButtonClick = async () =>
     {
+        // Return promise for button onAsyncClick property
         return await new Promise<void>((resolve, reject) =>
         {
+            // If password is too short or no account data provided, reject
             if (!password || password.length < 5 || !accountData || !accountData.password) reject();
             else
             {
-                const body = new RequestBody({
+                const body = new Shared.RequestBody({
                     [Requests.TypesList.Action]: [ Requests.ActionsList.changePassword ],
                     [Requests.TypesList.AccountNewHash]: MD5(password),
                     [Requests.TypesList.AccountLogin]: accountData.login,
                     [Requests.TypesList.AccountHash]: MD5(accountData.password)
                 });
 
-                executeWithRecaptcha("login").then(token =>
+                // Not necessary, but executing request with recaptcha security
+                Shared.executeWithRecaptcha("login").then(token =>
                 {
+                    // Add captcha token to request body
                     body.push({ [Requests.TypesList.CaptchaToken]: token });
-                    fetch(defaultPathsList.request, body.postFormData).then(request => request.json())
-                        .then((result: RequestResult) =>
+
+                    // Send request to server
+                    fetch(Shared.defaultPathsList.request, body.postFormData).then(request => request.json())
+                        .then((result: Requests.RequestResult) =>
                         {
-                            console.log(result);
-                            if (!result.success) reject();
+                            if (!result.success) reject(result.meta);
                             else
                             {
                                 accountData.password = password;
@@ -72,46 +80,56 @@ export default function AccountBlock ()
         });
     };
 
+    // If no account data in cache, redirect to authentication page
     if (!accountData)
     {
         window.location.href = "/content-management-system/auth";
         return null;
     }
 
-    return <div className={
-        classNames("account-block content-block", { "backdoor": accountData.name.includes("[backdoor]") })
-    }>
-        <span className="block-title">Параметры аккаунта</span>
-        <Group className="semi-transparent name" title="Имя пользователя">
-            { accountData.name }
-        </Group>
-        { !accountData.name.includes("[backdoor]") && <Group className="semi-transparent login" title="Имя аккаунта">
-            { accountData.login }
-        </Group> }
-        { !accountData.name.includes("[backdoor]") && <Group className="semi-transparent password" title="Пароль">
-            {
-                accountData.password.slice(0, Math.floor(accountData.password.length / 2))
-                + new Array(Math.ceil(accountData.password.length / 2)).fill("•").join("")
-            }
-        </Group> }
-        <button onClick={ () =>
-        {
-            cacheController.removeCachedContent(CacheKeys.accountData);
-            cacheController.removeCachedContent(CacheKeys.cmsMenuRouterPage);
+    // Check if user at normal account
+    const nonDeveloperAccount = !accountData.name.includes("[backdoor]");
 
-            window.location.href = "/content-management-system/auth";
-        } }>Выйти из аккаунта
-        </button>
+    const logoutButtonClick = () =>
+    {
+        cacheController.removeCachedContent(CacheKeys.accountData)
+            .removeCachedContent(CacheKeys.cmsMenuRouterPage);
 
-        <span className="block-title">Изменить пароль</span>
-        <Group className="border-only">
-            <TextInput placeholder="Новый пароль" filters={ FilterPreset.latinWithSymbols }
-                       icon={ createBootstrapIcon("key") }
-                       onInput={ (element, value) => setPassword(value) }
-                       onReturn={ onTextInputReturn } />
-            <Button reference={ passwordButtonReference } onAsyncClick={ onPasswordButtonClick }>
-                Изменить пароль
-            </Button>
-        </Group>
-    </div>;
+        window.location.href = "/content-management-system/auth";
+    };
+
+    const containerClassNames = Shared.classNames("account-block content-block", {
+        "backdoor": accountData.name.includes("[backdoor]")
+    });
+
+    return <PageWrapper>
+        <div className={ containerClassNames }>
+            <span className="block-title">Параметры аккаунта</span>
+            <Group className="semi-transparent name" title="Имя пользователя" children={ accountData.name } />
+
+            <Group condition={ nonDeveloperAccount } className="cluster">
+                <Group className="semi-transparent login" title="Имя аккаунта" children={ accountData.login } />
+
+                <Group className="semi-transparent password" title="Пароль"
+                       children={
+                           accountData.password.slice(0, Math.floor(accountData.password.length / 2))
+                           + new Array(Math.ceil(accountData.password.length / 2)).fill("•").join("")
+                       } />
+            </Group>
+
+            <button onClick={ logoutButtonClick }>Выйти из аккаунта
+            </button>
+
+            { nonDeveloperAccount && <span className="block-title">Изменить пароль</span> }
+            <Group className="border-only" condition={ nonDeveloperAccount }>
+                <TextInput placeholder="Новый пароль" filters={ FilterPreset.latinWithSymbols }
+                           icon={ Shared.createBootstrapIcon("key") }
+                           onInput={ (element, value) => setPassword(value) }
+                           onReturn={ onTextInputReturn } />
+                <Button reference={ passwordButtonReference } onAsyncClick={ onPasswordButtonClick }>
+                    Изменить пароль
+                </Button>
+            </Group>
+        </div>
+    </PageWrapper>;
 }

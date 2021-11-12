@@ -26,7 +26,8 @@ div.text-input
 
     border: 3px solid transparent;
 
-    &.focus {
+    &.focus
+    {
         border: 3px solid rgba($default-link, .2);
     }
 

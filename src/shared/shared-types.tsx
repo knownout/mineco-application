@@ -12,7 +12,10 @@ export namespace Requests
         getFilesList,
         getImagesList,
         getFullMaterial,
-        verifyAccountData
+        verifyAccountData,
+        verifyCaptchaRequest,
+        getFromProperties,
+        updateProperty
     }
 
     export const TypesList = {
@@ -31,6 +34,9 @@ export namespace Requests
         DataOffset: "Data:Offset",
 
         CaptchaToken: "Captcha:ResponseToken",
+
+        Property: "Database:Property",
+        PropertyValue: "Database:PropertyValue",
 
         UpdateIdentifier: "Update:Identifier",
         UpdateContent: "Update:Content",

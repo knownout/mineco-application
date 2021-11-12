@@ -20,18 +20,26 @@ namespace PageWrapper
         /** If provided, loading is completed only after specific function is resolved */
         asyncContent? (): Promise<void>;
 
+        /** Classname of the wrapper (.page-wrapper element) */
         className?: string;
+
+        /** Classname of the content wrapper (.page-wrapper .content-wrapper element) */
         contentClassName?: string;
 
+        /** Label that shown while loading, replaces default label */
         loadingLabel?: string;
 
+        /** Force call page fade-out animation */
         fadeOut?: boolean;
     }
 
     export interface State
     {
-        /** If true, content on the page will be centered by align-items: center css property */
+        /** If true, content on the page will be centered by justify-content: center css property */
         pageCenteringState: boolean;
+
+        /** If true, content on the page will be centered by align-items: center css property */
+        pageHorizontalCenteringState: boolean;
 
         /** If true, exception handler will be rendered instead of content */
         pageLoadingException: false | Error;
@@ -59,6 +67,7 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
 {
     state: PageWrapper.State = {
         pageCenteringState: true,
+        pageHorizontalCenteringState: true,
 
         pageLoadingException: false,
         pageLoadingComplete: false,
@@ -83,7 +92,7 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         if (!this.pageWrapper.current) return;
 
         // Get variables from pageWrapper element
-        const { offsetHeight, scrollHeight } = this.pageWrapper.current;
+        const { offsetHeight, offsetWidth, scrollHeight, scrollWidth } = this.pageWrapper.current;
 
         // If element higher than view, disable centering
         if (scrollHeight > offsetHeight && this.state.pageCenteringState)
@@ -92,6 +101,13 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         // ... otherwise, enable content centering
         else if (scrollHeight <= offsetHeight && !this.state.pageCenteringState)
             this.setState({ pageCenteringState: true });
+
+        // Same for width
+        if (scrollWidth > offsetWidth && this.state.pageHorizontalCenteringState)
+            this.setState({ pageHorizontalCenteringState: false });
+
+        else if (scrollWidth <= offsetWidth && !this.state.pageHorizontalCenteringState)
+            this.setState({ pageHorizontalCenteringState: true });
     }
 
     /**
@@ -168,7 +184,10 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         }
 
         const wrapperClassNames = classNames(
-            this.props.className, "page-wrapper", { "centering": this.state.pageCenteringState }
+            this.props.className, "page-wrapper", {
+                "centering": this.state.pageCenteringState,
+                "horizontal-centering": this.state.pageHorizontalCenteringState
+            }
         );
 
         // Include one of fade-(in|out) class names to show fade animation

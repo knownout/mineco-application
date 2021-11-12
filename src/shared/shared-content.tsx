@@ -2,10 +2,8 @@
 import React from "react";
 
 import { MD5 } from "crypto-js";
-import { Requests } from "./shared-types";
-
 // Context and cache data import
-import { IAccountData } from "./shared-types";
+import { IAccountData, Requests } from "./shared-types";
 import CacheController, { CacheKeys } from "./cache-controller";
 
 // Shortcuts

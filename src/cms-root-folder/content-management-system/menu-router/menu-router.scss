@@ -15,12 +15,12 @@ div.side-menu-router
     {
         @include content-block();
 
-        background-color: rgba(#000, .05);
-
         width: 100px;
 
         min-height: 100vh;
         height: 100%;
+
+        background-color: rgba(#000, .05);
 
         div.menu-item
         {
@@ -64,7 +64,7 @@ div.side-menu-router
 
     div.router-content
     {
-        @include content-block(flex-start, flex-start);
+        @include content-block(flex-start, center);
 
         width: calc(100% - 100px);
         height: fit-content;

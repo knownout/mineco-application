@@ -1,21 +1,17 @@
 // Library import
 import React, { PureComponent } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // External components import
 import Helmet from "react-helmet";
-
 // Internal components import
 import PageWrapper from "./shared/page-wrapper";
-
+import CmsRouter from "./cms-root-folder/cms-router";
 // Stylesheets import
 import "normalize.css";
 import "./main.scss";
-
 // Other imports
 import NotFoundHandler from "./shared/page-wrapper/default-handlers/not-found-handler";
-import CmsRouter from "./cms-root-folder/cms-router";
 
 namespace Main
 {

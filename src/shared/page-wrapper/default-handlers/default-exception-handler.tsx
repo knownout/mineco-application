@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ForwardedRef } from "react";
 import Group from "../../group-component/group-component";
 
 /**
@@ -7,9 +7,10 @@ import Group from "../../group-component/group-component";
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 1.0.0
  */
-export default function DefaultExceptionHandler (props: { error: Error }) {
+const DefaultExceptionHandler = React.forwardRef((props: { error: Error }, ref: ForwardedRef<HTMLDivElement>) =>
+{
     return (
-        <div className="default-exception-handler handler">
+        <div className="default-exception-handler handler" ref={ref}>
             <span className="handler-title">Произошла ошибка { props.error.name }</span>
 
             <Group title="Что делать?" className="recommendation semi-transparent">
@@ -22,4 +23,6 @@ export default function DefaultExceptionHandler (props: { error: Error }) {
             </Group>
         </div>
     );
-}
+});
+
+export default DefaultExceptionHandler;

@@ -135,7 +135,12 @@ div#app-root
     }
 }
 
-.grecaptcha-badge {
+.grecaptcha-badge
+{
     opacity: 0;
     pointer-events: none;
+}
+
+.ct div.ct__content div {
+    color: #eee;
 }

@@ -1,3 +1,5 @@
+@import "../../shared/common";
+
 /*
  * Style sheet for Group component
  */
@@ -12,17 +14,31 @@ div.group-component
     padding: 10px;
 
     // Additional component style
-    &.semi-transparent {
+    &.semi-transparent
+    {
         background: linear-gradient(-90deg, rgba(#000, .005), rgba(#000, .04));
         border: none;
         border-radius: 3px;
     }
 
-    &.border-only {
+    &.border-only
+    {
         background: transparent;
         border: none;
 
         padding: 0;
+    }
+
+    &.cluster {
+        background: transparent;
+        border: none;
+        padding: 0;
+
+        div.group-content {
+            @include content-block(flex-start, flex-start);
+
+            gap: 10px;
+        }
     }
 
     span.group-title

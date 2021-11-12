@@ -46,8 +46,8 @@ export default function TextInput (props: ITextInputProps)
         const element = inputElement.current,
             text = filterInputValue(element, props.filters || {});
 
-        if (text.length > 0 && placeholder) setPlaceholder(false);
-        else if (text.length < 1 && !placeholder) setPlaceholder(true);
+        if (text.length > 0 && placeholder && props.placeholder) setPlaceholder(false);
+        else if (text.length < 1 && !placeholder && props.placeholder) setPlaceholder(true);
 
         if (props.onInput) props.onInput(element, text);
     }

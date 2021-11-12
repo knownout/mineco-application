@@ -11,10 +11,13 @@ export default class CacheController
      * Add content to specific browser storage as json string
      * @param key content number (LocalCacheKeys item) in storage
      * @param content content to be added to storage
+     *
+     * @return CacheController instance
      */
     public cacheContent (key: CacheKeys, content: any)
     {
         this.localCacheStorage.setItem(key.toString(), JSON.stringify(content));
+        return this;
     }
 
     /**
@@ -29,9 +32,16 @@ export default class CacheController
         return JSON.parse(cache) as T;
     }
 
+    /**
+     * Remove entry from specific browser storage
+     * @param key CacheKeys key
+     *
+     * @return CacheController instance
+     */
     public removeCachedContent (key: CacheKeys)
     {
         this.localCacheStorage.removeItem(key.toString());
+        return this;
     }
 
     /**

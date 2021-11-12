@@ -1,7 +1,7 @@
 // Import library
 import React from "react";
 // Context data import
-import { IAccountData } from "../../shared/shared-types";
+import { IAccountData, Requests } from "../../shared/shared-types";
 // Import helper functions
 import {
     createBootstrapIcon,
@@ -12,7 +12,6 @@ import {
 } from "../../shared/shared-content";
 
 import { MD5 } from "crypto-js";
-import { Requests } from "../../shared/shared-types";
 // Import internal components
 import TextInput, { FilterPreset } from "../../shared/text-input/text-input";
 import Button from "../../shared/button-component/button-component";
@@ -24,23 +23,18 @@ import CacheController, { CacheKeys } from "../../shared/cache-controller";
 // Shortcuts
 import RequestResult = Requests.RequestResult;
 
-namespace AuthForm
-{
-    export interface State
-    {
-        fadeOut: boolean
-    }
-}
-
 /**
  * Authentication form component for content management system
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 0.3.4
  */
-export default class AuthenticationForm extends React.PureComponent<{}, AuthForm.State>
+export default class AuthenticationForm extends React.PureComponent<{}, { fadeOut: boolean }>
 {
-    state: AuthForm.State = { fadeOut: false };
+    state: { fadeOut: boolean } = { fadeOut: false };
+
+    private loginButtonReference = React.createRef<HTMLButtonElement>();
+    private cacheController = new CacheController(window.localStorage);
 
     /**
      * Function for requesting account verification from server
@@ -49,7 +43,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
      * @param successCallback callback when successfully verified
      */
     private requestAuthentication<T = IAccountData> (login: string, password: string, successCallback?:
-        (result: RequestResult<T>) => void): Promise<RequestResult<T>>
+        (result: RequestResult<T>) => void)
     {
         // Get password hash
         const hash = MD5(password);
@@ -61,11 +55,11 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
         });
 
         // Create new promise (for Button component)
-        return new Promise((resolve, reject) =>
+        return new Promise<void>((resolve, reject) =>
         {
             // If invalid auth data
             if (login.length < 3 || password.length < 3)
-                return reject();
+                return reject("too short login or password");
 
             executeWithRecaptcha("login").then(token =>
             {
@@ -75,7 +69,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
                 fetch(defaultPathsList.request, body.postFormData).then(request => request.json())
                     .then((result: RequestResult<T>) =>
                     {
-                        if (!result.success) return reject();
+                        if (!result.success) return reject(result.meta);
                         const response: IAccountData = {
                             ...result.meta,
                             login,
@@ -84,14 +78,28 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
 
                         // If request successful and no exceptions, execute callback function
                         if (successCallback) successCallback({ success: result.success, meta: response as any });
-                        resolve({ success: result.success, meta: response as any });
+                        resolve();
                     }).catch(reject);
             });
         });
     }
 
-    private loginButtonReference = React.createRef<HTMLButtonElement>();
-    private cacheController = new CacheController(window.localStorage);
+    /**
+     * Function for verification cached user account data
+     */
+    private verifyStoredAccountData ()
+    {
+        return verifyStoredAccountData(result =>
+        {
+            if (!result) return;
+
+            this.setState({ fadeOut: true });
+
+            // If cached data verification success, skip auth process
+            setTimeout(() =>
+                window.location.href = "/content-management-system", 100);
+        });
+    }
 
     render (): React.ReactNode
     {
@@ -132,23 +140,15 @@ export default class AuthenticationForm extends React.PureComponent<{}, AuthForm
         const requestAuthentication = () => this.requestAuthentication(
             textInputValue.login, textInputValue.password, result =>
             {
-                this.cacheController.cacheContent(CacheKeys.accountData, result.meta)
+                this.cacheController.cacheContent(CacheKeys.accountData, result.meta);
                 this.setState({ fadeOut: true }, () =>
                     window.location.href = "/content-management-system"
                 );
             }
         );
 
-        return <PageWrapper loadingLabel="Загрузка данных авторизации" fadeOut={ this.state.fadeOut } asyncContent={
-            () => verifyStoredAccountData(result =>
-            {
-                if (!result) return;
-
-                this.setState({ fadeOut: true });
-                setTimeout(() =>
-                    window.location.href = "/content-management-system", 100);
-            })
-        }>
+        return <PageWrapper loadingLabel="Загрузка данных авторизации" fadeOut={ this.state.fadeOut }
+                            asyncContent={ this.verifyStoredAccountData }>
             <div className="auth-form-wrapper">
                 <span className="form-title">Вход в панель управления</span>
                 <div className="form-fields-container">
