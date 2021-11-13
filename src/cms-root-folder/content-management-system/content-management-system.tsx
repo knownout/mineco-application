@@ -60,5 +60,3 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
         </PageWrapper>;
     }
 }
-
-

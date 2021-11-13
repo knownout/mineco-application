@@ -79,6 +79,15 @@ export function filterInputValue (input: HTMLInputElement, filters: { [key: stri
 }
 
 /**
+ * React hook for force update a function components
+ */
+export function useForceUpdate ()
+{
+    const [ value, setValue ] = React.useState(false);
+    return () => setValue(!value);
+}
+
+/**
  * Facilitate creation and management of the FormData objects
  */
 export class RequestBody

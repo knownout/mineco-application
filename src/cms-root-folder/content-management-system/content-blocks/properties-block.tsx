@@ -8,7 +8,7 @@ import PageWrapper from "../../../shared/page-wrapper";
 import {
     EditorJSCoreToolConfiguration,
     EditorJSLocalizationConfiguration
-} from "../../../shared/editor-js-instances/editor-js-configuration";
+} from "../../../shared/editor-js-configuration";
 import EditorJS from "@editorjs/editorjs";
 // Helpers import
 import { defaultPathsList, executeWithRecaptcha, RequestBody } from "../../../shared/shared-content";
@@ -108,8 +108,8 @@ export default function PropertiesBlock ()
             [TypesList.Property]: "importantData"
         }).postFormData).then(request => request.json()).then((result: Requests.RequestResult) =>
         {
-            // Check if request successfully processed by server
-            if (!result.success) reject(result.meta);
+            // Check if there is content in result (if error, resolve too)
+            if (!result.success) resolve();
             else
             {
                 setEditorInstanceDefaultValue({ time: 0, version: "0", blocks: JSON.parse(result.meta.value) });
@@ -123,11 +123,12 @@ export default function PropertiesBlock ()
 
     return <PageWrapper asyncContent={ propertiesContentRequest }>
         <div className="properties-block content-block">
-            {/* Group for importantData property */}
+            {/* Group for importantData property */ }
             <Group title="Важная информация" className="editor-js-group semi-transparent">
                 <div id="editor-js-holder-rich-text">
                     <ReactEditorJS { ...EditorJSCoreToolConfiguration } { ...EditorJSLocalizationConfiguration }
-                                   onInitialize={ handleInitialize } data={ editorInstanceDefaultValue } />
+                                   onInitialize={ handleInitialize } data={ editorInstanceDefaultValue }
+                                   onChange={ () => window.dispatchEvent(new Event("resize")) } />
                 </div>
                 <Button onAsyncClick={ onButtonClick }>Сохранить изменения</Button>
             </Group>

@@ -5,7 +5,8 @@
         "webpack/**",
         "tests/**",
         "jest.config.js",
-        "__jest__/**"
+        "__jest__/**",
+        "node_modules/**"
     ],
     "compilerOptions": {
         "incremental": true,

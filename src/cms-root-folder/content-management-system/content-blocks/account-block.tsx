@@ -10,6 +10,7 @@ import Group from "../../../shared/group-component";
 import TextInput, { FilterPreset } from "../../../shared/text-input/text-input";
 import Button from "../../../shared/button-component/button-component";
 import PageWrapper from "../../../shared/page-wrapper";
+import { useForceUpdate } from "../../../shared/shared-content";
 
 /**
  * Action block for display user account data with ability of password changing
@@ -20,12 +21,15 @@ import PageWrapper from "../../../shared/page-wrapper";
 export default function AccountBlock ()
 {
     const cacheController = new CacheController(window.localStorage);
+    const forceUpdate = useForceUpdate();
 
     // Account data from localStorage
     const accountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData) as IAccountData;
 
     // State for new password input field
-    const [ password, setPassword ] = React.useState<string | null>(null);
+    // const [ password, setPassword ] = React.useState<string>();
+    const passwordInputRef = React.createRef<HTMLInputElement>();
+
     const passwordButtonReference = React.createRef<HTMLButtonElement>();
 
     // New password field input handler
@@ -44,8 +48,14 @@ export default function AccountBlock ()
         // Return promise for button onAsyncClick property
         return await new Promise<void>((resolve, reject) =>
         {
+            if (!accountData || !accountData.password) window.location.href = "/content-management-system/auth";
+            if (!passwordInputRef.current) return reject("no password input reference");
+
+            const password = passwordInputRef.current.value.trim();
+
             // If password is too short or no account data provided, reject
-            if (!password || password.length < 5 || !accountData || !accountData.password) reject();
+            if (!password || password.length < 5 || !accountData || !accountData.password)
+                reject("new password too short or no account data");
             else
             {
                 const body = new Shared.RequestBody({
@@ -70,8 +80,14 @@ export default function AccountBlock ()
                             {
                                 accountData.password = password;
                                 cacheController.cacheContent(CacheKeys.accountData, accountData);
-                                setPassword(null);
+                                if (passwordInputRef.current)
+                                {
+                                    passwordInputRef.current.value = "";
+                                    if (passwordInputRef.current.parentElement)
+                                        passwordInputRef.current.parentElement.classList.add("active");
+                                }
 
+                                forceUpdate();
                                 resolve();
                             }
                         }).catch(reject);
@@ -124,8 +140,8 @@ export default function AccountBlock ()
             <Group className="border-only" condition={ nonDeveloperAccount }>
                 <TextInput placeholder="Новый пароль" filters={ FilterPreset.latinWithSymbols }
                            icon={ Shared.createBootstrapIcon("key") }
-                           onInput={ (element, value) => setPassword(value) }
-                           onReturn={ onTextInputReturn } />
+                           onReturn={ onTextInputReturn }
+                           inputRef={ passwordInputRef } />
                 <Button reference={ passwordButtonReference } onAsyncClick={ onPasswordButtonClick }>
                     Изменить пароль
                 </Button>

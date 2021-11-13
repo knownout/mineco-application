@@ -68,6 +68,7 @@ div.side-menu-router
 
         width: calc(100% - 100px);
         height: fit-content;
+        max-height: 100%;
 
         & > div.page-wrapper
         {

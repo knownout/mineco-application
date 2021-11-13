@@ -1,6 +1,6 @@
 import React from "react";
-import "./text-input.scss";
 import { classNames, filterInputValue } from "../shared-content";
+import "./text-input.scss";
 
 interface ITextInputProps
 {
@@ -8,7 +8,7 @@ interface ITextInputProps
     icon?: JSX.Element
 
     /** Event fires after user pressed Enter key on current input */
-    onReturn?: (value: string) => void;
+    onReturn?: (value: string) => void
 
     /** Event fires when default onInput event of the input element fires */
     onInput?: (element: HTMLInputElement, value: string) => void
@@ -19,8 +19,14 @@ interface ITextInputProps
     /** Placeholder for the input element */
     placeholder?: string
 
-    /** custom filters for the input, key is string that used to create regular expression via new RegExp object */
+    /** Custom filters for the input, key is string that used to create regular expression via new RegExp object */
     filters?: { [key: string]: string }
+
+    /** Initial value of the text input */
+    defaultValue?: string
+
+    /** Reference to native html input element */
+    inputRef?: React.RefObject<HTMLInputElement>
 }
 
 /**
@@ -32,15 +38,19 @@ interface ITextInputProps
  */
 export default function TextInput (props: ITextInputProps)
 {
-    const [ placeholder, setPlaceholder ] = React.useState(true);
+    const defaultValue = props.defaultValue && props.defaultValue.trim();
+
+    const [ placeholder, setPlaceholder ] = React.useState(!defaultValue);
     const [ focusState, setFocusState ] = React.useState(false);
 
-    const inputElement = React.createRef<HTMLInputElement>();
+    const inputElement = props.inputRef || React.createRef<HTMLInputElement>();
 
     function onInput ()
     {
         // If no native input element, skip
         if (!inputElement.current) return;
+        if(inputElement.current.parentElement)
+            inputElement.current.parentElement.classList.remove("active");
 
         // Get native input element shortcut
         const element = inputElement.current,
@@ -73,7 +83,8 @@ export default function TextInput (props: ITextInputProps)
             <input type={ props.type || "text" } onInput={ onInput } ref={ inputElement }
                    onKeyPress={ onKeyPress }
                    onFocus={ () => setFocusState(true) }
-                   onBlur={ () => setFocusState(false) } />
+                   onBlur={ () => setFocusState(false) }
+                   defaultValue={ props.defaultValue } />
         </div>
     </div>;
 }
