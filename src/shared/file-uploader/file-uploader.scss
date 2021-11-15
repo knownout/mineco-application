@@ -1,13 +1,16 @@
 @import "../common";
 
+// Style sheet for FileUploader component
 div.file-uploader-component.fade-in.content-wrapper
 {
     align-items: flex-start;
     gap: 10px;
 
-    div.group-component
+    // Styles for files selector
+    div.group-component.semi-transparent
     {
         @include use-transition();
+        @include content-block(flex-start, flex-start);
 
         border: 1px dashed rgba(#000, .1);
         max-width: 460px;
@@ -29,12 +32,48 @@ div.file-uploader-component.fade-in.content-wrapper
             gap: 15px;
 
             span.upload-hint
-            {
-                font-size: 14px;
-                opacity: .45;
-
-                font-weight: 600;
-            }
+            { font-size: 14px; opacity: .45; font-weight: 600 }
         }
+
+        div.files-uploading-progress
+        {
+            @include use-transition(300ms);
+
+            position: absolute;
+            display: block;
+
+            top: 0;
+            left: 0;
+
+            height: 100%;
+
+            background: linear-gradient(to right, rgba($default-link, .1), rgba($default-link, .2));
+
+            &.complete
+            { background-color: rgba(green, .1) }
+        }
+    }
+
+    div.selected-file
+    {
+        @include content-block(flex-start, center);
+        flex-direction: row;
+
+        gap: 10px;
+
+        max-width: 100%;
+
+        i.icon
+        {
+            min-width: 14px;
+            min-height: 14px;
+
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        span.file-name
+        { opacity: .65; font-size: 12px; font-weight: 600 }
     }
 }

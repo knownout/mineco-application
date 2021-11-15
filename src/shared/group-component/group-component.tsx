@@ -1,6 +1,6 @@
 import React from "react";
-import "./group-component.scss";
 import { classNames } from "../shared-content";
+import "./group-component.scss";
 
 interface IGroupProps
 {
@@ -19,7 +19,7 @@ interface IGroupProps
     /** Add children to top level of group component html structure */
     topLevelChildren?: JSX.Element;
 
-    onClick? (event: React.MouseEvent<HTMLDivElement>): void
+    onClick? (event: React.MouseEvent<HTMLDivElement>): void;
 }
 
 /**

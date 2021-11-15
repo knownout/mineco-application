@@ -237,5 +237,10 @@ export const defaultServerPath = window.location.origin.replace(`:${ window.loca
 
 /** List of paths to different API routes */
 export const defaultPathsList = {
-    request: defaultServerPath + "/request"
+    request: defaultServerPath + "/request",
+    openFile: defaultServerPath + "/request/open-file.php",
+
+    openExtensionIcon: (icon: string) => defaultPathsList.openFile + "?extension_icon=" + icon,
+    openStorageFile: (month: number, year: number, file: string) =>
+        defaultPathsList.openFile + `?date=${ month }-${ year }&file=${ file }`
 };
