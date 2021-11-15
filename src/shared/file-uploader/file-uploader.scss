@@ -1,0 +1,52 @@
+@import "../common";
+
+div.group-component.upload-file
+{
+    div.group-content
+    {
+        max-width: 460px;
+
+        span.hint
+        {
+            position: relative;
+            display: block;
+
+            text-align: left;
+
+            max-width: 100%;
+            font-size: 12px;
+            opacity: .4;
+            font-weight: 600;
+        }
+
+        @include content-block();
+        gap: 10px;
+
+        button.button-select
+        {
+            max-width: 320px;
+            width: fit-content;
+        }
+
+        button.button-upload
+        {
+            width: fit-content;
+        }
+    }
+
+    div.files-uploading-progress {
+        position: absolute;
+        display: block;
+
+        transition: 300ms ease all;
+
+        width: 0;
+        height: 100%;
+
+        top: 0;
+        left: 0;
+
+        background: linear-gradient(to right, rgba($default-link, .1), rgba($default-link, .2));
+        border-radius: 3px;
+    }
+}

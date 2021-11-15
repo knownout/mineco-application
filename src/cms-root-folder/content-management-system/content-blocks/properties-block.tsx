@@ -11,10 +11,13 @@ import {
 } from "../../../shared/editor-js-configuration";
 import EditorJS from "@editorjs/editorjs";
 // Helpers import
-import { defaultPathsList, executeWithRecaptcha, RequestBody } from "../../../shared/shared-content";
+import {
+    defaultPathsList,
+    executeWithRecaptcha,
+    RequestBody,
+    softVerifyStoredAccountData
+} from "../../../shared/shared-content";
 import { IAccountData, Requests } from "../../../shared/shared-types";
-import CacheController, { CacheKeys } from "../../../shared/cache-controller";
-import { MD5 } from "crypto-js";
 // External components import
 const { createReactEditorJS } = require("react-editor-js");
 // Shortcuts
@@ -64,10 +67,7 @@ export default function PropertiesBlock ()
                 // Not necessary, but executing with recaptcha protection
                 executeWithRecaptcha("submit").then(token =>
                 {
-                    const cacheController = new CacheController(window.localStorage);
-
-                    // Read account data from browser localStorage
-                    const accountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData) as IAccountData;
+                    const accountData = softVerifyStoredAccountData();
 
                     // If no account data specified, redirect to authentication page
                     if (!accountData) window.location.href = "/content-management-system";
@@ -84,7 +84,7 @@ export default function PropertiesBlock ()
                             [TypesList.CaptchaToken]: token,
 
                             [TypesList.AccountLogin]: accountData.login,
-                            [TypesList.AccountHash]: MD5(accountData.password)
+                            [TypesList.AccountHash]: accountData.hash
                         }).postFormData)
                             .then(request => request.json())
                             .then((result: Requests.RequestResult<IAccountData>) =>

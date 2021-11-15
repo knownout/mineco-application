@@ -4,12 +4,32 @@
 button.button-component
 {
     @include use-transition();
+    @include content-block();
 
     div.loading-spinner
     { position: absolute; opacity: 0; transition: inherit }
 
     span.button-label
     { opacity: 1; transition: inherit }
+
+    &.ellipsis
+    {
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: hidden;
+
+        span.button-label
+        {
+            position: relative;
+            display: block;
+
+            max-width: 100%;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
 
     &.loading
     {

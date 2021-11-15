@@ -32,7 +32,6 @@
         // "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "typeRoots": [ "node_modules/@types" ],
         "esModuleInterop": true,
         // "experimentalDecorators": true,
         // "emitDecoratorMetadata": true,

@@ -3,7 +3,7 @@ import React from "react";
 
 import { MD5 } from "crypto-js";
 // Context and cache data import
-import { IAccountData, Requests } from "./shared-types";
+import { IAccountData, IHashedAccountData, Requests } from "./shared-types";
 import CacheController, { CacheKeys } from "./cache-controller";
 
 // Shortcuts
@@ -230,6 +230,22 @@ export function verifyStoredAccountData (callback: (result: boolean) => void): P
             }).catch(() => { throw new FetchError("Server cannot respond to this request"); });
         } else makeResolve(false);
     });
+}
+
+/**
+ * Check if cache has account data entry, if not, redirect to auth page
+ */
+export function softVerifyStoredAccountData (): IHashedAccountData
+{
+    const cacheController = new CacheController(window.localStorage);
+    const accountData = cacheController.fromCache(CacheKeys.accountData) as IAccountData;
+    if (!accountData)
+    {
+        window.location.href = "/content-management-system";
+        return {} as IHashedAccountData;
+    }
+
+    return { login: accountData.login, hash: MD5(accountData.password).toString() };
 }
 
 /** Raw path to API server */

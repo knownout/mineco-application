@@ -14,6 +14,19 @@ div.content-block
         border: 1px solid rgba(#000, .4);
     }
 
+    button.button-component i.bi
+    {
+        margin-right: 5px;
+    }
+
+    div.inline-group {
+        @include content-block();
+        flex-direction: row;
+
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
     span.block-title
     {
         text-transform: uppercase;
@@ -65,7 +78,8 @@ div.content-block
             max-width: 100%;
             width: 360px;
 
-            div.group-content {
+            div.group-content
+            {
                 position: relative;
                 display: flex;
 
@@ -90,7 +104,8 @@ div.content-block
 
             text-align: justify;
 
-            div.codex-editor__redactor {
+            div.codex-editor__redactor
+            {
                 width: 100%;
                 margin: 0;
 

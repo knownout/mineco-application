@@ -44,7 +44,9 @@ export namespace Requests
         UpdateTitle: "Update:Title",
         UpdateTime: "Update:Time",
         UpdateTags: "Update:Tags",
-        UpdateShort: "Update:Short"
+        UpdateShort: "Update:Short",
+
+        FileToken: "24DE53B2C0A9E15844AE9B37E9B52EC8"
     };
 
     export interface RequestResult<T = any>
@@ -82,4 +84,10 @@ export interface IAccountData
     name: string;
     password: string;
     login: string;
+}
+
+export interface IHashedAccountData
+{
+    login: string;
+    hash: string;
 }

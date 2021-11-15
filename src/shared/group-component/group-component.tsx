@@ -8,13 +8,16 @@ interface IGroupProps
     children: any;
 
     /** Title of group */
-    title?: string;
+    title?: any;
 
     /** Custom class name for group (processed by classNames) */
     className?: string;
 
     /** Component will render only if condition true (if provided) */
     condition?: boolean;
+
+    /** Add JSX element top level of component html structure */
+    topLevelElement?: JSX.Element;
 }
 
 /**
@@ -32,7 +35,9 @@ export default function Group (props: IGroupProps)
 {
     if (props.condition === false) return null;
     return <div className={ classNames("group-component", props.className) }>
-        { props.title && <span className="group-title">{ props.title }</span> }
+        { props.topLevelElement }
+        { props.title &&
+        <span className="group-title">{ props.title }</span> }
         <div className="group-content">
             { props.children }
         </div>
