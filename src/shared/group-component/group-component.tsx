@@ -15,6 +15,11 @@ interface IGroupProps
 
     /** Component will render only if condition true (if provided) */
     condition?: boolean;
+
+    /** Add children to top level of group component html structure */
+    topLevelChildren?: JSX.Element;
+
+    onClick? (event: React.MouseEvent<HTMLDivElement>): void
 }
 
 /**
@@ -31,7 +36,8 @@ interface IGroupProps
 export default function Group (props: IGroupProps)
 {
     if (props.condition === false) return null;
-    return <div className={ classNames("group-component", props.className) }>
+    return <div className={ classNames("group-component", props.className) } onClick={ props.onClick }>
+        { props.topLevelChildren }
         { props.title && <span className="group-title">{ props.title }</span> }
         <div className="group-content">
             { props.children }

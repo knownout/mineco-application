@@ -1,0 +1,40 @@
+@import "../common";
+
+div.file-uploader-component.fade-in.content-wrapper
+{
+    align-items: flex-start;
+    gap: 10px;
+
+    div.group-component
+    {
+        @include use-transition();
+
+        border: 1px dashed rgba(#000, .1);
+        max-width: 460px;
+
+        cursor: pointer;
+
+        &:hover
+        { background-color: rgba(#111, .04) }
+
+        &:active
+        { background-color: rgba(#111, .06) }
+
+        span.group-title
+        { font-size: 14px }
+
+        div.group-content
+        {
+            @include content-block(center, flex-start);
+            gap: 15px;
+
+            span.upload-hint
+            {
+                font-size: 14px;
+                opacity: .45;
+
+                font-weight: 600;
+            }
+        }
+    }
+}

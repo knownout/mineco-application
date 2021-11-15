@@ -24,7 +24,9 @@ div.content-block
 
         padding: 5px 0;
 
-        margin-left: -5px;
+        //margin-left: -5px;
+        &:not(:first-child)
+        { margin-top: 20px }
     }
 
     div.group-component
@@ -65,7 +67,8 @@ div.content-block
             max-width: 100%;
             width: 360px;
 
-            div.group-content {
+            div.group-content
+            {
                 position: relative;
                 display: flex;
 
@@ -90,7 +93,8 @@ div.content-block
 
             text-align: justify;
 
-            div.codex-editor__redactor {
+            div.codex-editor__redactor
+            {
                 width: 100%;
                 margin: 0;
 

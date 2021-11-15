@@ -2,15 +2,16 @@
 import React from "react";
 // Helpers import
 import { verifyStoredAccountData } from "../../shared/shared-content";
+import CacheController, { CacheKeys } from "../../shared/cache-controller";
 // Internal components import
 import PageWrapper from "../../shared/page-wrapper";
+import MenuRouter, { MenuRoute } from "./menu-router/menu-router";
+import FileUploader from "../../shared/file-uploader";
+//Action blocks import
+import AccountBlock from "./content-blocks/account-block";
+import PropertiesBlock from "./content-blocks/properties-block";
 // Stylesheets import
 import "./content-management-system.scss";
-
-import MenuRouter, { MenuRoute } from "./menu-router/menu-router";
-import AccountBlock from "./content-blocks/account-block";
-import CacheController, { CacheKeys } from "../../shared/cache-controller";
-import PropertiesBlock from "./content-blocks/properties-block";
 
 namespace CMS
 {
@@ -54,7 +55,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
                     <PropertiesBlock />
                 </MenuRoute>
                 <MenuRoute icon="folder-fill" title="Файлы">
-                    Файлы
+                    <FileUploader />
                 </MenuRoute>
             </MenuRouter>
         </PageWrapper>;

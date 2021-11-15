@@ -8,8 +8,14 @@ button.button-component
     div.loading-spinner
     { position: absolute; opacity: 0; transition: inherit }
 
-    span.button-label
-    { opacity: 1; transition: inherit }
+    div.button-label
+    { opacity: 1; transition: inherit; color: inherit }
+
+    div.button-label i.bi
+    { font-size: 13px; opacity: .9; margin-right: 4px; color: inherit }
+
+    div.button-label span.label
+    { color: inherit }
 
     &.loading
     {
@@ -19,7 +25,7 @@ button.button-component
         div.loading-spinner
         { opacity: 1 }
 
-        span.button-label
+        div.button-label
         { opacity: 0 }
     }
 

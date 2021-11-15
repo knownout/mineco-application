@@ -20,6 +20,9 @@ interface IButtonProps
     reference?: React.Ref<HTMLButtonElement>
 
     disabled?: boolean
+
+    /** Icon for the button (renders before label) */
+    icon?: JSX.Element;
 }
 
 /**
@@ -66,6 +69,9 @@ export default function Button (props: IButtonProps)
                    disabled={ props.disabled }>
 
         <div className="loading-spinner" />
-        <span className="button-label">{ props.children }</span>
+        <div className="button-label">
+            { props.icon }
+            <span className="label">{ props.children }</span>
+        </div>
     </button>;
 }

@@ -34,13 +34,19 @@ export default function MenuRouter (props: { children: JSX.Element | JSX.Element
     // Get each route selector item data
     const selectorMenuItems = children.map((child, index) =>
         <div className={ classNames("menu-item", { select: selection == index }) } key={ Math.random() }
-             onClick={ () =>
+             onClick={ event =>
              {
-                 if (selection != index)
-                 {
+                 // if (selection == index) return;
+                 const target = event.target as HTMLDivElement,
+                     parent = target.parentElement as HTMLDivElement;
+
+                 Array.from(parent.children).forEach(child => child.classList.remove("select"));
+                 target.classList.add("select");
+
+                 setTimeout(() => {
                      cacheController.cacheContent(CacheKeys.cmsMenuRouterPage, index);
                      setSelection(index);
-                 }
+                 }, 100);
              } }>
 
             { createBootstrapIcon(child.props.icon) }

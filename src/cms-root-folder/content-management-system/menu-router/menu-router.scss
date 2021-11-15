@@ -52,6 +52,9 @@ div.side-menu-router
                 padding: 20px 0;
 
                 background: darken($default-light, 3%);
+
+                span.item-title, i.bi
+                { color: darken($default-light, 50%) }
             }
 
             i.bi
@@ -59,6 +62,9 @@ div.side-menu-router
 
             span.item-title
             { opacity: .85; font-size: 13px; font-weight: 600 }
+
+            span.item-title, i.bi
+            { pointer-events: none; transition: inherit }
         }
     }
 
@@ -100,10 +106,23 @@ div.side-menu-router
 
             div.menu-item
             { height: 50px }
+
+            div.menu-item:hover
+            {
+                border-color: transparent;
+                padding: 10px 0;
+                opacity: .5;
+            }
         }
 
         div.router-content
-        { height: calc(100% - 50px); width: 100vw }
+        { height: calc(100% - 50px); width: 100vw; padding: 10px; }
+    }
+
+    @media screen and (max-width: 350px)
+    {
+        div.side-menu-selector div.menu-item span.item-title
+        { display: none }
     }
 
     span.no-selection

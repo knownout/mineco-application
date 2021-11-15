@@ -64,8 +64,8 @@ button, a.button
     width: fit-content;
 
     border: 3px solid transparent;
-    background-color: lighten($default-light, 10%);
-    color: $default-dark;
+    background-color: lighten($default-light, 6%);
+    color: darken($default-light, 60%);
 
     font-size: 14px;
     padding: 10px;
@@ -74,10 +74,10 @@ button, a.button
     cursor: pointer;
 
     &:hover
-    { background-color: lighten($default-light, 5%) }
+    { background-color: lighten($default-light, 1%) }
 
     &:active
-    { background-color: $default-light }
+    { background-color: darken($default-light, 3%) }
 
     &:focus
     { border: 3px solid rgba($default-link, .2) }
