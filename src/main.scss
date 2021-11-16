@@ -93,6 +93,9 @@ button, a.button
         &:active
         { background-color: rgba($default-link, .15) }
     }
+
+    span.label, i.bi
+    { color: inherit }
 }
 
 a

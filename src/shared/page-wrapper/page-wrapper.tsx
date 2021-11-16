@@ -31,6 +31,9 @@ namespace PageWrapper
 
         /** Force call page fade-out animation */
         fadeOut?: boolean;
+
+        /** Fires when page fully loaded (will not fire if asyncContent throw exception) */
+        onLoadComplete? (): void;
     }
 
     export interface State
@@ -122,7 +125,10 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         setTimeout(this.pageCenteringController, 10);
 
         if (!this.state.pageLoadingComplete && this.contentWrapper.current)
-            this.setState({ pageLoadingComplete: true, fadeOut: false });
+            this.setState({
+                pageLoadingComplete: true,
+                fadeOut: false
+            }, () => this.props.onLoadComplete && this.props.onLoadComplete());
     }
 
     constructor (props: PageWrapper.Properties)

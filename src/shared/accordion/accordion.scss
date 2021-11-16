@@ -1,0 +1,96 @@
+@import "../common";
+
+// Stylesheet for accordion component
+div.accordion-component
+{
+    @include content-block(center, flex-start);
+
+    width: fit-content;
+    max-width: 100%;
+
+    &.active div.accordion-content
+    { border-color: rgba(#000, .05); border-radius: 0 0 3px 3px; border-width: 3px }
+
+    // If three or more components in list and current component not last and not first
+    &:not(:first-child):not(:last-child)
+    {
+        button.accordion-title, div.accordion-content
+        { border-radius: 0 }
+
+        div.accordion-content
+        { border-bottom-width: 0 }
+    }
+
+    // If more than one and current component is first
+    &:first-child
+    {
+        button.accordion-title
+        { border-radius: 3px 3px 0 0 }
+
+        div.accordion-content
+        { border-radius: 0 }
+
+        &:not(:last-child) div.accordion-content
+        { border-bottom-width: 0 }
+    }
+
+    // If there only one component in list
+    &:first-child:last-child button.accordion-title
+    { border-radius: 3px }
+
+    &:last-child
+    {
+        button.accordion-title
+        { border-radius: 0 0 3px 3px }
+    }
+
+    &.active button.accordion-title
+    {
+        border: 3px solid rgba($default-link, .2);
+
+        background-color: rgba($default-link, .08);
+        color: rgba(darken($default-link, 40%), .9);
+
+        i.bi
+        { transform: rotate(180deg) }
+    }
+
+    // If there is only one component in list and its state is active
+    &.active:first-child:last-child button.accordion-title
+    { border-radius: 3px 3px 0 0 }
+
+    button.accordion-title
+    {
+        flex-direction: row;
+        width: 100%;
+
+        padding: 15px;
+        font-size: 16px;
+
+        justify-content: flex-start;
+
+        z-index: 2;
+        margin-right: 30px;
+
+        i.bi
+        { @include use-transition(); margin-left: auto; font-size: 20px; }
+    }
+
+    div.accordion-content
+    {
+        @include use-transition();
+
+        width: 100%;
+        height: 0;
+
+        border: 0 solid transparent;
+        border-radius: 0;
+
+        border-top: none;
+
+        overflow: hidden;
+
+        div.content-holder
+        { margin: 10px }
+    }
+}

@@ -1,8 +1,11 @@
-@import "../common";
+@import "../../shared/common";
 
 // Style sheet for FileUploader component
-div.file-uploader-component.fade-in.content-wrapper
+div.file-uploader-component
 {
+    @include content-block(flex-start, flex-start);
+
+    width: fit-content;
     align-items: flex-start;
     gap: 10px;
 
@@ -67,7 +70,7 @@ div.file-uploader-component.fade-in.content-wrapper
         }
     }
 
-    div.selected-file
+    div.file-entry
     {
         @include content-block(flex-start, center);
         flex-direction: row;

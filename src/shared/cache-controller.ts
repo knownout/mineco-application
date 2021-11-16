@@ -58,5 +58,6 @@ export enum CacheKeys
 {
     loadedMaterialsList,
     accountData,
-    cmsMenuRouterPage
+    cmsMenuRouterPage,
+    cmsFilesAccordionOpen
 }

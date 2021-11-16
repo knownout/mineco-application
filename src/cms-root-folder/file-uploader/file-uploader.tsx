@@ -1,13 +1,12 @@
 // Library import
 import React from "react";
 // Helpers import
-import * as Shared from "../shared-content";
-import { classNames, executeWithRecaptcha, RequestBody, requireCachedAccountData } from "../shared-content";
-import { Requests } from "../shared-types";
+import * as Shared from "../../shared/shared-content";
+import { classNames, executeWithRecaptcha, RequestBody, requireCachedAccountData } from "../../shared/shared-content";
+import { Requests } from "../../shared/shared-types";
 // Internal components import
-import PageWrapper from "../page-wrapper";
-import Group from "../group-component";
-import Button from "../button-component";
+import Group from "../../shared/group-component";
+import Button from "../../shared/button-component";
 // Stylesheets import
 import "./file-uploader.scss";
 
@@ -23,6 +22,9 @@ namespace FileUploader
 
         /** Specify server to upload files */
         endpoint: string
+
+        /** Fired when files uploaded */
+        onUpdate? (): void;
     }
 
     export interface State
@@ -194,6 +196,7 @@ export default class FileUploader extends React.PureComponent<FileUploader.Prope
                 {
                     // Rollback to default classname after animation ends
                     this.setUploadState({ state: "default" });
+                    if (this.props.onUpdate) this.props.onUpdate();
                 }, 300);
 
                 resolve();
@@ -232,7 +235,7 @@ export default class FileUploader extends React.PureComponent<FileUploader.Prope
             drag: this.state.dragOverArea
         });
 
-        return <PageWrapper contentClassName="file-uploader-component">
+        return <div className="file-uploader-component">
             <Group title="Загрузить файлы"
                    className={ groupClassName }
                    topLevelChildren={ <div className={ className }
@@ -243,25 +246,25 @@ export default class FileUploader extends React.PureComponent<FileUploader.Prope
                    onDrop={ this.dropEventHandler.bind(this) }>
 
                 <span className="upload-hint">{ hint }</span>
-                { this.state.filesList.map(file => <SelectedFileComponent name={ file.name } key={ Math.random() } />) }
+                { this.state.filesList.map(file => <FileEntryComponent name={ file.name } key={ Math.random() } />) }
             </Group>
             <Button icon={ fileUploadIcon } onAsyncClick={ this.uploadFiles.bind(this) }
                     disabled={ !this.state.filesList.length }>Загрузить файлы</Button>
-        </PageWrapper>;
+        </div>;
     }
 }
 
 /**
- * Inner component for creating selected items in FileUploader component
+ * Internal component for creating selected items in FileUploader component
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 0.1.0
  */
-function SelectedFileComponent (props: { name: string })
+function FileEntryComponent (props: { name: string })
 {
     const extension = props.name.split(".").slice(-1)[0];
 
-    return <div className="selected-file">
+    return <div className="file-entry">
         <i className="icon"
            style={ { backgroundImage: `url("${ Shared.defaultPathsList.openExtensionIcon(extension) }")` } } />
         <span className="file-name">{ props.name }</span>

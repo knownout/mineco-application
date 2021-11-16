@@ -102,4 +102,7 @@ div.content-block
             }
         }
     }
+
+    &.files-block.page-wrapper div.content-wrapper.fade-in
+    { @include content-block(); gap: 10px }
 }

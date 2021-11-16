@@ -6,12 +6,12 @@ import CacheController, { CacheKeys } from "../../shared/cache-controller";
 // Internal components import
 import PageWrapper from "../../shared/page-wrapper";
 import MenuRouter, { MenuRoute } from "./menu-router/menu-router";
-import FileUploader from "../../shared/file-uploader";
 //Action blocks import
 import AccountBlock from "./content-blocks/account-block";
 import PropertiesBlock from "./content-blocks/properties-block";
 // Stylesheets import
 import "./content-management-system.scss";
+import FilesBlock from "./content-blocks/files-block";
 
 namespace CMS
 {
@@ -33,7 +33,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
         {
             if (result) return;
 
-            window.location.href = defaultPathsList.contentManagementSystem;
+            window.location.href = defaultPathsList.contentManagementSystemAuth;
             this.setState({ fadeOut: true });
         });
     }
@@ -55,7 +55,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
                     <PropertiesBlock />
                 </MenuRoute>
                 <MenuRoute icon="folder-fill" title="Файлы">
-                    <FileUploader endpoint={ defaultPathsList.request } />
+                    <FilesBlock />
                 </MenuRoute>
             </MenuRouter>
         </PageWrapper>;

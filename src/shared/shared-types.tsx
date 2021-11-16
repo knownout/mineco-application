@@ -15,7 +15,8 @@ export namespace Requests
         verifyAccountData,
         verifyCaptchaRequest,
         getFromProperties,
-        updateProperty
+        updateProperty,
+        removeFile
     }
 
     export const TypesList = {
@@ -37,6 +38,9 @@ export namespace Requests
 
         Property: "Database:Property",
         PropertyValue: "Database:PropertyValue",
+
+        FileName: "File:Name",
+        FileDate: "File:Date",
 
         UpdateIdentifier: "Update:Identifier",
         UpdateContent: "Update:Content",
