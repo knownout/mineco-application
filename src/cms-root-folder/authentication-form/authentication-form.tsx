@@ -97,7 +97,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, { fadeOu
 
             // If cached data verification success, skip auth process
             setTimeout(() =>
-                window.location.href = "/content-management-system", 100);
+                window.location.href = defaultPathsList.contentManagementSystem, 100);
         });
     }
 
@@ -142,7 +142,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, { fadeOu
             {
                 this.cacheController.cacheContent(CacheKeys.accountData, result.meta);
                 this.setState({ fadeOut: true }, () =>
-                    window.location.href = "/content-management-system"
+                    window.location.href = defaultPathsList.contentManagementSystem
                 );
             }
         );

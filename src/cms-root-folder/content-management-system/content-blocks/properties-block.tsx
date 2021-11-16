@@ -70,7 +70,7 @@ export default function PropertiesBlock ()
                     const accountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData) as IAccountData;
 
                     // If no account data specified, redirect to authentication page
-                    if (!accountData) window.location.href = "/content-management-system";
+                    if (!accountData) window.location.href = defaultPathsList.contentManagementSystem;
 
                     else
                     {

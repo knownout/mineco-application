@@ -1,7 +1,7 @@
 // Library import
 import React from "react";
 // Helpers import
-import { verifyStoredAccountData } from "../../shared/shared-content";
+import { defaultPathsList, verifyStoredAccountData } from "../../shared/shared-content";
 import CacheController, { CacheKeys } from "../../shared/cache-controller";
 // Internal components import
 import PageWrapper from "../../shared/page-wrapper";
@@ -33,7 +33,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
         {
             if (result) return;
 
-            window.location.href = "/content-management-system/auth";
+            window.location.href = defaultPathsList.contentManagementSystem;
             this.setState({ fadeOut: true });
         });
     }
@@ -55,7 +55,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
                     <PropertiesBlock />
                 </MenuRoute>
                 <MenuRoute icon="folder-fill" title="Файлы">
-                    <FileUploader />
+                    <FileUploader endpoint={ defaultPathsList.request } />
                 </MenuRoute>
             </MenuRouter>
         </PageWrapper>;

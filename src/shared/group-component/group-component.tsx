@@ -20,6 +20,12 @@ interface IGroupProps
     topLevelChildren?: JSX.Element;
 
     onClick? (event: React.MouseEvent<HTMLDivElement>): void;
+
+    onDragEnter? (event: React.DragEvent<HTMLDivElement>): void;
+
+    onDragLeave? (event: React.DragEvent<HTMLDivElement>): void;
+
+    onDrop? (event: React.DragEvent<HTMLDivElement>): void;
 }
 
 /**
@@ -35,8 +41,26 @@ interface IGroupProps
  */
 export default function Group (props: IGroupProps)
 {
+    const dragEventNames = [ "", "End", "Enter", "Exit", "Leave", "Over", "Start" ].map(e => `onDrag${ e }`);
+    const dragEventsList: { [key: string]: any } = {};
+
+    dragEventNames.forEach(eventName =>
+    {
+        dragEventsList[eventName] = (event: React.DragEvent<HTMLDivElement>) =>
+        {
+            event.preventDefault();
+            if ((props as any)[eventName]) (props as any)[eventName](event);
+        };
+    });
+
     if (props.condition === false) return null;
-    return <div className={ classNames("group-component", props.className) } onClick={ props.onClick }>
+    return <div className={ classNames("group-component", props.className) } onClick={ props.onClick }
+                onDrop={ event =>
+                {
+                    event.preventDefault();
+                    props.onDrop && props.onDrop(event);
+                } }
+                { ...dragEventsList }>
         { props.topLevelChildren }
         { props.title && <span className="group-title">{ props.title }</span> }
         <div className="group-content">

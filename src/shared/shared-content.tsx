@@ -3,7 +3,7 @@ import React from "react";
 
 import { MD5 } from "crypto-js";
 // Context and cache data import
-import { IAccountData, Requests } from "./shared-types";
+import { IAccountData, IHashedAccountData, Requests } from "./shared-types";
 import CacheController, { CacheKeys } from "./cache-controller";
 
 // Shortcuts
@@ -232,6 +232,25 @@ export function verifyStoredAccountData (callback: (result: boolean) => void): P
     });
 }
 
+/**
+ * Try to get hashed account data from cache and redirect
+ * to auth page if data not found
+ */
+export function requireCachedAccountData (): IHashedAccountData
+{
+    const cacheController = new CacheController(window.localStorage);
+    const accountData = cacheController.fromCache(CacheKeys.accountData) as IAccountData;
+
+    if (!accountData)
+    {
+        window.location.href = defaultPathsList.contentManagementSystem;
+        return {} as IHashedAccountData;
+    }
+
+    return { login: accountData.login, hash: MD5(accountData.password) };
+
+}
+
 /** Raw path to API server */
 export const defaultServerPath = window.location.origin.replace(`:${ window.location.port }`, "");
 
@@ -240,7 +259,15 @@ export const defaultPathsList = {
     request: defaultServerPath + "/request",
     openFile: defaultServerPath + "/request/open-file.php",
 
+    /** CMS root path */
+    contentManagementSystem: "/content-management-system",
+    /** CMS auth path */
+    contentManagementSystemAuth: "/content-management-system/auth",
+
+    /** Generate path to file extension icon */
     openExtensionIcon: (icon: string) => defaultPathsList.openFile + "?extension_icon=" + icon,
+
+    /** Generate path to file in user content storage */
     openStorageFile: (month: number, year: number, file: string) =>
         defaultPathsList.openFile + `?date=${ month }-${ year }&file=${ file }`
 };

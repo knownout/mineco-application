@@ -85,3 +85,9 @@ export interface IAccountData
     password: string;
     login: string;
 }
+
+export interface IHashedAccountData
+{
+    login: string,
+    hash: CryptoJS.lib.WordArray
+}

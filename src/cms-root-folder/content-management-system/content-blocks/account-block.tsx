@@ -4,13 +4,13 @@ import React from "react";
 import CacheController, { CacheKeys } from "../../../shared/cache-controller";
 import { IAccountData, Requests } from "../../../shared/shared-types";
 import * as Shared from "../../../shared/shared-content";
+import { defaultPathsList, useForceUpdate } from "../../../shared/shared-content";
 import { MD5 } from "crypto-js";
 // Internal components import
 import Group from "../../../shared/group-component";
 import TextInput, { FilterPreset } from "../../../shared/text-input/text-input";
 import Button from "../../../shared/button-component/button-component";
 import PageWrapper from "../../../shared/page-wrapper";
-import { useForceUpdate } from "../../../shared/shared-content";
 
 /**
  * Action block for display user account data with ability of password changing
@@ -48,7 +48,9 @@ export default function AccountBlock ()
         // Return promise for button onAsyncClick property
         return await new Promise<void>((resolve, reject) =>
         {
-            if (!accountData || !accountData.password) window.location.href = "/content-management-system/auth";
+            if (!accountData || !accountData.password)
+                window.location.href = defaultPathsList.contentManagementSystemAuth;
+
             if (!passwordInputRef.current) return reject("no password input reference");
 
             const password = passwordInputRef.current.value.trim();
@@ -99,7 +101,7 @@ export default function AccountBlock ()
     // If no account data in cache, redirect to authentication page
     if (!accountData)
     {
-        window.location.href = "/content-management-system/auth";
+        window.location.href = defaultPathsList.contentManagementSystemAuth;
         return null;
     }
 
@@ -111,7 +113,7 @@ export default function AccountBlock ()
         cacheController.removeCachedContent(CacheKeys.accountData)
             .removeCachedContent(CacheKeys.cmsMenuRouterPage);
 
-        window.location.href = "/content-management-system/auth";
+        window.location.href = defaultPathsList.contentManagementSystemAuth;
     };
 
     const containerClassNames = Shared.classNames("account-block content-block", {

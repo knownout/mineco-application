@@ -20,16 +20,21 @@ div.file-uploader-component.fade-in.content-wrapper
         &:hover
         { background-color: rgba(#111, .04) }
 
-        &:active
+        &:active, &.drag
         { background-color: rgba(#111, .06) }
 
+        &.disabled
+        { pointer-events: none }
+
         span.group-title
-        { font-size: 14px }
+        { font-size: 14px; pointer-events: none; }
 
         div.group-content
         {
             @include content-block(center, flex-start);
             gap: 15px;
+
+            pointer-events: none;
 
             span.upload-hint
             { font-size: 14px; opacity: .45; font-weight: 600 }
@@ -49,8 +54,16 @@ div.file-uploader-component.fade-in.content-wrapper
 
             background: linear-gradient(to right, rgba($default-link, .1), rgba($default-link, .2));
 
+            pointer-events: none;
+
             &.complete
             { background-color: rgba(green, .1) }
+
+            &.final-in
+            { opacity: 0 }
+
+            &.final-out
+            { transition: 0ms }
         }
     }
 
