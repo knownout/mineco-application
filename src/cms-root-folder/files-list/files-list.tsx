@@ -144,8 +144,6 @@ interface IExtendedFileEntryProps
 function ExtendedFileEntry (props: IExtendedFileEntryProps)
 {
     const [ fileRemoving, setFileRemoving ] = React.useState(false);
-
-    const extension = props.name.split(".").slice(-1)[0];
     const reference = React.createRef<HTMLDivElement>();
 
     // File removing procedure
@@ -190,9 +188,9 @@ function ExtendedFileEntry (props: IExtendedFileEntryProps)
     const className = Shared.classNames("file-entry", { removing: fileRemoving });
     return <div className={ className } onClick={ props.onClick } ref={ reference }>
         <i className="icon"
-           style={ { backgroundImage: `url("${ Shared.defaultPathsList.openExtensionIcon(extension) }")` } } />
+           style={ { backgroundImage: `url("${ Shared.defaultPathsList.openExtensionIcon(props.extension) }")` } } />
         <div className="file-data">
-            <span className="file-name">{ props.name }</span>
+            <span className="file-name">{ props.name }.{props.extension}</span>
             <span className="file-size">{ Shared.convertFileSize(props.size) }</span>
         </div>
         <button className="remove-file" onClick={ removeFile }>

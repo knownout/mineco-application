@@ -56,6 +56,8 @@ export default function FilesBlock ()
         const cacheController = new CacheController(window.localStorage);
         if (state) cacheController.cacheContent(CacheKeys.cmsFilesAccordionOpen, index);
         else cacheController.removeCachedContent(CacheKeys.cmsFilesAccordionOpen);
+
+        setTimeout(() => window.dispatchEvent(new Event("resize")), 100);
     };
 
     return <PageWrapper className="content-block files-block" asyncContent={ updateFilesList }>
