@@ -13,17 +13,20 @@ div.files-list.page-wrapper
     div.content-wrapper.fade-in
     { width: 100% }
 
-    div.accordion-component
+    div.accordion-group
     {
         width: 100%;
 
-        div.accordion-content div.content-holder
+        div.accordion-content div.accordion-content-wrapper
         {
             @include content-block(flex-start, flex-start);
 
             width: 100%;
 
-            margin: 3px 0 0;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+
+            margin: -3px 0 0;
         }
     }
 
@@ -86,8 +89,9 @@ div.files-list.page-wrapper
             right: 0;
             top: 0;
 
-            height: 100%;
+            //height: calc(100% - 3px);
             width: fit-content;
+            height: 100%;
 
             background: rgba(red, .05);
             color: rgba(darken(red, 30%), .7);

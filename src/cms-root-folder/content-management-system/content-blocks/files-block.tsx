@@ -51,7 +51,7 @@ export default function FilesBlock ()
      * @param state component open state
      * @param index component local index
      */
-    const onAccordionChange = (state: boolean, index: number) =>
+    const onAccordionChange = (index: number, state: boolean) =>
     {
         const cacheController = new CacheController(window.localStorage);
         if (state) cacheController.cacheContent(CacheKeys.cmsFilesAccordionOpen, index);

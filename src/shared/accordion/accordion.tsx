@@ -20,10 +20,15 @@ interface IAccordionProps
 }
 
 /**
- * Just accordion component
+ * Single uncontrolled accordion component
+ *
+ * For controlled accordions group use AccordionGroup component
+ * with AccordionGroup.Item children
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 1.0.0
+ *
+ * @deprecated
  */
 export default function Accordion (props: IAccordionProps)
 {

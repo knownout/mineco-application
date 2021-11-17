@@ -1,0 +1,79 @@
+@import "../common";
+
+// Styles for accordion group component
+div.accordion-group
+{
+    @include content-block();
+
+    div.accordion-item
+    {
+        @include content-block();
+        @include use-transition();
+
+        overflow: hidden;
+
+        button.accordion-title
+        {
+            @include content-block(flex-start, center);
+            transition: inherit;
+
+            flex-direction: row;
+
+            min-width: fit-content;
+            width: 100%;
+
+            padding: 10px;
+            border-radius: 0;
+
+            span.icon-holder
+            { margin-left: auto; transition: inherit }
+
+            span
+            { color: inherit }
+        }
+
+        // Rotate arrow icon
+        &.active button.accordion-title span.icon-holder
+        { transform: rotate(180deg); }
+
+        // If item is first at list and there is more than one items
+        &:first-child:not(:last-child) button.accordion-title
+        { border-radius: 3px 3px 0 0 }
+
+        // Same to first but for last element
+        &:last-child:not(:first-child):not(.active) button.accordion-title
+        { border-radius: 0 0 3px 3px }
+
+        // If only one element in list
+        &:first-child:last-child
+        {
+            border-radius: 3px;
+
+            &.active
+            { border-radius: 3px 3px 0 0 }
+        }
+
+        &.active button.accordion-title
+        {
+            background-color: rgba($default-link, .2);
+            border-color: rgba($default-link, .2);
+            color: darken($default-link, 40%);
+        }
+
+        &:last-child.active div.accordion-content
+        { border-bottom: 3px solid rgba(#000, .05); border-radius: 0 0 3px 3px }
+
+        div.accordion-content
+        {
+            @include use-transition();
+
+            width: 100%;
+            height: fit-content;
+
+            border-left: 3px solid rgba(#000, .05);
+            border-right: 3px solid rgba(#000, .05);
+
+            overflow: hidden;
+        }
+    }
+}

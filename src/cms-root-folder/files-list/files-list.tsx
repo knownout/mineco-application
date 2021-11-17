@@ -2,22 +2,13 @@
 import React from "react";
 // Helpers import
 import * as Shared from "../../shared/shared-content";
-import {
-    classNames,
-    convertFileSize,
-    createBootstrapIcon,
-    defaultPathsList,
-    executeWithRecaptcha,
-    RequestBody,
-    requireCachedAccountData
-} from "../../shared/shared-content";
+import { Requests } from "../../shared/shared-types";
 import CacheController, { CacheKeys } from "../../shared/cache-controller";
 // Internal components import
-import Accordion from "../../shared/accordion";
 import PageWrapper from "../../shared/page-wrapper";
+import AccordionGroup from "../../shared/accordion-group";
 // Stylesheet import
 import "./files-list.scss";
-import { Requests } from "../../shared/shared-types";
 
 namespace FilesList
 {
@@ -35,7 +26,7 @@ namespace FilesList
          * @param state component open state
          * @param index component local index
          */
-        onAccordionChange? (state: boolean, index: number): void
+        onAccordionChange? (index: number, state: boolean): void
 
         /** Function for updating files list on action block level */
         updateFilesList? (): void
@@ -66,7 +57,7 @@ export type FileEntry = {
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 0.1.0
  */
-export default class FilesList extends React.PureComponent<FilesList.Properties, {}>
+export default class FilesList extends React.PureComponent<FilesList.Properties>
 {
     /**
      * Method for reading getFiles request result
@@ -85,34 +76,32 @@ export default class FilesList extends React.PureComponent<FilesList.Properties,
         // Reverse, if required
         if (this.props.reverse) directories = directories.reverse();
 
-        return directories.map((directoryKey, index) =>
-        {
-            // Get directory information
-            const directory = this.props.filesList[directoryKey];
-
-            // Get file names in directory as array
-            const files = Object.keys(directory);
-
-            // Convert file names to ExtendedFileEntry component
-            const children = files.map(fileKey =>
+        return <AccordionGroup defaultOpenItem={ openAccordionIndex } onItemChange={ this.props.onAccordionChange }>
             {
-                const file = this.props.filesList[directoryKey][fileKey];
-                const onFileClick = () =>
-                    window.location.href = defaultPathsList.openStorageFile(directoryKey, fileKey);
+                directories.map((directoryKey) =>
+                {
+                    // Get directory information
+                    const directory = this.props.filesList[directoryKey];
 
-                return <ExtendedFileEntry { ...file } date={ directoryKey } onClick={ onFileClick }
-                                          key={ Math.random() } updateFilesList={ this.props.updateFilesList }
-                                          extension={ file.extension } />;
-            });
+                    // Get file names in directory as array
+                    const files = Object.keys(directory);
 
-            return <Accordion title={ directoryKey } children={ children } key={ Math.random() }
-                              open={ index == openAccordionIndex }
-                              onClose={ () =>
-                                  this.props.onAccordionChange && this.props.onAccordionChange(false, index) }
-                              onOpen={ () =>
-                                  this.props.onAccordionChange && this.props.onAccordionChange(true, index) }
-            />;
-        });
+                    // Convert file names to ExtendedFileEntry component
+                    const children = files.map(fileKey =>
+                    {
+                        const file = this.props.filesList[directoryKey][fileKey];
+                        const onFileClick = () =>
+                            window.location.href = Shared.defaultPathsList.openStorageFile(directoryKey, fileKey);
+
+                        return <ExtendedFileEntry { ...file } date={ directoryKey } onClick={ onFileClick }
+                                                  key={ Math.random() } updateFilesList={ this.props.updateFilesList }
+                                                  extension={ file.extension } />;
+                    });
+
+                    return <AccordionGroup.Item title={ directoryKey } children={ children } key={ Math.random() } />;
+                })
+            }
+        </AccordionGroup>;
     }
 
     render (): React.ReactNode
@@ -165,16 +154,16 @@ function ExtendedFileEntry (props: IExtendedFileEntryProps)
         event.stopPropagation();
 
         // Check if cache has stored account data
-        const accountData = requireCachedAccountData();
+        const accountData = Shared.requireCachedAccountData();
 
         // Set "removing" classname to file
         setFileRemoving(true);
 
         // Get recaptcha token
-        executeWithRecaptcha("submit").then(token =>
+        Shared.executeWithRecaptcha("submit").then(token =>
         {
             // Send file remove request to server
-            fetch(defaultPathsList.request, new RequestBody({
+            fetch(Shared.defaultPathsList.request, new Shared.RequestBody({
                 [Requests.TypesList.Action]: Requests.ActionsList.removeFile,
 
                 [Requests.TypesList.AccountLogin]: accountData.login,
@@ -198,16 +187,16 @@ function ExtendedFileEntry (props: IExtendedFileEntryProps)
         });
     };
 
-    const className = classNames("file-entry", { removing: fileRemoving });
+    const className = Shared.classNames("file-entry", { removing: fileRemoving });
     return <div className={ className } onClick={ props.onClick } ref={ reference }>
         <i className="icon"
            style={ { backgroundImage: `url("${ Shared.defaultPathsList.openExtensionIcon(extension) }")` } } />
         <div className="file-data">
             <span className="file-name">{ props.name }</span>
-            <span className="file-size">{ convertFileSize(props.size) }</span>
+            <span className="file-size">{ Shared.convertFileSize(props.size) }</span>
         </div>
         <button className="remove-file" onClick={ removeFile }>
-            { createBootstrapIcon("trash") }
+            { Shared.createBootstrapIcon("trash") }
         </button>
     </div>;
 }
