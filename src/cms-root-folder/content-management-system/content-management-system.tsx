@@ -12,6 +12,7 @@ import PropertiesBlock from "./content-blocks/properties-block";
 // Stylesheets import
 import "./content-management-system.scss";
 import FilesBlock from "./content-blocks/files-block";
+import MaterialsBlock from "./content-blocks/materials-block";
 
 namespace CMS
 {
@@ -49,7 +50,7 @@ export default class ContentManagementSystem extends React.Component<{}, CMS.Sta
                     <AccountBlock />
                 </MenuRoute>
                 <MenuRoute icon="newspaper" title="Материалы">
-                    Материалы
+                    <MaterialsBlock />
                 </MenuRoute>
                 <MenuRoute icon="gear-fill" title="Настройки">
                     <PropertiesBlock />

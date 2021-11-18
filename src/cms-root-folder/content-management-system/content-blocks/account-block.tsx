@@ -120,7 +120,7 @@ export default function AccountBlock ()
         "backdoor": accountData.name.includes("[backdoor]")
     });
 
-    return <PageWrapper>
+    return <PageWrapper className="content-block files-block">
         <div className={ containerClassNames }>
             <span className="block-title">Параметры аккаунта</span>
             <Group className="semi-transparent name" title="Имя пользователя" children={ accountData.name } />

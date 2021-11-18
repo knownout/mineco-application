@@ -3,7 +3,7 @@ import React from "react";
 
 import { MD5 } from "crypto-js";
 // Context and cache data import
-import { IAccountData, IHashedAccountData, Requests } from "./shared-types";
+import { IAccountData, IHashedAccountData, Material, Requests } from "./shared-types";
 import CacheController, { CacheKeys } from "./cache-controller";
 
 // Shortcuts
@@ -285,6 +285,22 @@ export function convertFileSize (bytes: number, si = false, dp = 1)
     return bytes.toFixed(dp) + " " + units[u];
 }
 
+/**
+ * Convert object from type PreviewRaw to Preview
+ *
+ * @param rawMaterial raw material
+ */
+export function processRawMaterial (rawMaterial: Material.PreviewRaw)
+{
+    const { tags, pinned, time, ...rest } = rawMaterial;
+    return {
+        ...rest,
+        tags: tags.split(",").map(item => item.trim()),
+        time: Number.parseInt(time),
+        pinned: pinned === "1"
+    };
+}
+
 /** Raw path to API server */
 export const defaultServerPath = window.location.origin.replace(`:${ window.location.port }`, "");
 
@@ -302,6 +318,6 @@ export const defaultPathsList = {
     openExtensionIcon: (icon: string) => defaultPathsList.openFile + "?extension_icon=" + icon,
 
     /** Generate path to file in user content storage */
-    openStorageFile: (date: string, file: string) =>
-        defaultPathsList.openFile + `?date=${date}&file=${ file }`
+    openStorageFile: (date: string, file: string, stub?: boolean) =>
+        defaultPathsList.openFile + `?date=${ date }&file=${ file }` + (stub ? `&stub=true` : ``)
 };

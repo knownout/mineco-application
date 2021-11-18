@@ -55,43 +55,51 @@ export namespace Requests
 
     export interface RequestResult<T = any>
     {
-        success: boolean,
+        success: boolean
         meta: T
     }
 }
 
 export namespace Material
 {
-    export interface Core
+    interface RawCore
     {
-        title: string,
-        tags: string[],
-        time: number,
+        title: string
+        tags: string
+        time: string
+        preview: string
     }
 
-    export interface Preview extends Core
+    export interface PreviewRaw extends RawCore
     {
-        identifier: string,
-        short: string,
-        pinned: number
+        identifier: string
+        short: string
+        pinned: string
     }
 
-    export interface Full
+    export interface Full<T = PreviewRaw>
     {
-        content: { [key: string]: any },
-        data: Core
+        content: { [key: string]: any }
+        data: T
+    }
+
+    export interface Preview extends Omit<PreviewRaw, "tags" | "time" | "pinned">
+    {
+        tags: string[]
+        time: number
+        pinned: boolean
     }
 }
 
 export interface IAccountData
 {
-    name: string;
-    password: string;
-    login: string;
+    name: string
+    password: string
+    login: string
 }
 
 export interface IHashedAccountData
 {
-    login: string,
+    login: string
     hash: CryptoJS.lib.WordArray
 }

@@ -1,12 +1,12 @@
 // Library import
 import React from "react";
 // Helpers import
-import * as Shared from "../../shared/shared-content";
-import { classNames, executeWithRecaptcha, RequestBody, requireCachedAccountData } from "../../shared/shared-content";
-import { Requests } from "../../shared/shared-types";
+import * as Shared from "../../../shared/shared-content";
+import { classNames, executeWithRecaptcha, RequestBody, requireCachedAccountData } from "../../../shared/shared-content";
+import { Requests } from "../../../shared/shared-types";
 // Internal components import
-import Group from "../../shared/group-component";
-import Button from "../../shared/button-component";
+import Group from "../../../shared/group-component";
+import Button from "../../../shared/button-component";
 // Stylesheets import
 import "./file-uploader.scss";
 

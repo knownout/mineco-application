@@ -1,12 +1,12 @@
 // Library import
 import React from "react";
 // Helpers import
-import * as Shared from "../../shared/shared-content";
-import { Requests } from "../../shared/shared-types";
-import CacheController, { CacheKeys } from "../../shared/cache-controller";
+import * as Shared from "../../../shared/shared-content";
+import { Requests } from "../../../shared/shared-types";
+import CacheController, { CacheKeys } from "../../../shared/cache-controller";
 // Internal components import
-import PageWrapper from "../../shared/page-wrapper";
-import AccordionGroup from "../../shared/accordion-group";
+import PageWrapper from "../../../shared/page-wrapper";
+import AccordionGroup from "../../../shared/accordion-group";
 // Stylesheet import
 import "./files-list.scss";
 

@@ -1,0 +1,62 @@
+@import "../../shared/common";
+
+button.checkbox
+{
+    @include content-block(flex-start, flex-start);
+    @include use-transition();
+
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    width: fit-content;
+    max-width: 100%;
+
+    gap: 5px;
+    padding: 10px;
+
+    border-radius: 3px;
+
+    &:not(.checked)
+    {
+        background: rgba(#000, .05);
+    }
+
+    &.checked
+    {
+        div.checkbox-box::after
+        {
+            opacity: 1;
+        }
+    }
+
+    div.checkbox-box
+    {
+        @include content-block();
+        @include use-transition();
+
+        $size: 16px;
+
+        width: $size;
+        height: $size;
+
+        background-color: rgba(#000, .2);
+        border-radius: 3px;
+
+        &::after
+        {
+            content: "";
+            position: relative;
+            display: block;
+
+            height: $size - 6px;
+            width: $size - 6px;
+
+            opacity: 0;
+
+            background-color: inherit;
+            border-radius: inherit;
+
+            transition: inherit;
+        }
+    }
+}

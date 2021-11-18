@@ -2,10 +2,10 @@
 import React from "react";
 // Internal components import
 import PageWrapper from "../../../shared/page-wrapper";
-import FilesList from "../../files-list";
-import FileUploader from "../../file-uploader";
+import FilesList from "../../internal-components/files-list";
+import FileUploader from "../../internal-components/file-uploader";
 // Helpers import
-import { DirectoryEntry } from "../../files-list/files-list";
+import { DirectoryEntry } from "../../internal-components/files-list/files-list";
 import { defaultPathsList, RequestBody, requireCachedAccountData } from "../../../shared/shared-content";
 import { Requests } from "../../../shared/shared-types";
 import CacheController, { CacheKeys } from "../../../shared/cache-controller";
