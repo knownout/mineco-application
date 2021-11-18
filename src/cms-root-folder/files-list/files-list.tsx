@@ -91,7 +91,7 @@ export default class FilesList extends React.PureComponent<FilesList.Properties>
                     {
                         const file = this.props.filesList[directoryKey][fileKey];
                         const onFileClick = () =>
-                            window.location.href = Shared.defaultPathsList.openStorageFile(directoryKey, fileKey);
+                            window.open(Shared.defaultPathsList.openStorageFile(directoryKey, fileKey));
 
                         return <ExtendedFileEntry { ...file } date={ directoryKey } onClick={ onFileClick }
                                                   key={ Math.random() } updateFilesList={ this.props.updateFilesList }
@@ -190,7 +190,7 @@ function ExtendedFileEntry (props: IExtendedFileEntryProps)
         <i className="icon"
            style={ { backgroundImage: `url("${ Shared.defaultPathsList.openExtensionIcon(props.extension) }")` } } />
         <div className="file-data">
-            <span className="file-name">{ props.name }.{props.extension}</span>
+            <span className="file-name">{ props.name.split("@").slice(1).join("@") }.{ props.extension }</span>
             <span className="file-size">{ Shared.convertFileSize(props.size) }</span>
         </div>
         <button className="remove-file" onClick={ removeFile }>

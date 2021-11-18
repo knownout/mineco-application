@@ -70,6 +70,17 @@ div.files-list.page-wrapper
 
                 opacity: .6;
             }
+
+            span.file-name {
+                position: relative;
+                display: flex;
+
+                word-break: break-word;
+                word-wrap: break-word;
+                white-space: normal;
+
+                flex-wrap: wrap;
+            }
         }
 
         &:hover

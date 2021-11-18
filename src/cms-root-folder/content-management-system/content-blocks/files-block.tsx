@@ -42,6 +42,8 @@ export default function FilesBlock ()
 
         // Update files list and resolve promise (load page)
         setFilesList(filesList.meta);
+
+        window.dispatchEvent(new Event("resize"));
         resolve();
     });
 
