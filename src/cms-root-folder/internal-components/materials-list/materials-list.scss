@@ -11,7 +11,7 @@ div.materials-list
 
     gap: 10px;
 
-    max-width: 660px;
+    max-width: 560px;
 
     padding-left: $previewImageSize / 2.4;
 
@@ -38,6 +38,11 @@ div.materials-list
                 {
                     margin-left: (-1 * $previewImageSize / 1.8) - 10px;
                     margin-right: 5px;
+
+                    button.remove-button
+                    {
+                        background: rgba(darken(#E4C5C5, 10%), .85);
+                    }
                 }
 
                 padding-right: 5px;
@@ -92,8 +97,6 @@ div.materials-list
 
                 border-radius: 3px;
 
-                box-shadow: 3px 3px 0 0 rgba(#000, .1);
-
                 // Lazy-loaded image
                 img
                 {
@@ -104,6 +107,27 @@ div.materials-list
                     height: auto;
 
                     border-radius: 3px;
+
+                    box-shadow: 3px 3px 0 0 rgba(#000, .1);
+                }
+
+                button.remove-button
+                {
+                    font-size: 12px;
+                    padding: 3px;
+
+                    flex-wrap: nowrap;
+                    white-space: nowrap;
+
+                    margin-top: 5px;
+
+                    background: rgba(darken(#E4C5C5, 5%), .85);
+                    color: rgba(darken(red, 30%), .85);
+
+                    &:active, &:focus
+                    {
+                        border-color: rgba(darken(red, 25%), .3);
+                    }
                 }
             }
 
@@ -177,6 +201,14 @@ div.materials-list
                     min-width: $previewImageSize * 10;
                     width: $previewImageSize * 10;
                     box-shadow: unset;
+
+                    button.remove-button {
+                        width: $previewImageSize * 10;
+                        min-width: $previewImageSize * 10;
+
+                        span.label
+                        { display: none; }
+                    }
                 }
             }
 
@@ -189,5 +221,14 @@ div.materials-list
                 }
             }
         }
+    }
+
+    span.no-materials
+    {
+        @include content-block();
+
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(to right, rgba(#000, .1), rgba(#000, .02));
     }
 }

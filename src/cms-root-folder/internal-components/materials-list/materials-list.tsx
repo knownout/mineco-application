@@ -3,15 +3,7 @@ import "./materials-list.scss";
 import { Material } from "../../../shared/shared-types";
 import { createBootstrapIcon, defaultPathsList } from "../../../shared/shared-content";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
-namespace MaterialsList
-{
-    export interface Properties
-    {
-        /** List of materials loaded from server */
-        materialsList: Material.Preview[]
-    }
-}
+import Button from "../../../shared/button-component";
 
 /**
  * Internal component for display materials loaded from server with
@@ -21,55 +13,56 @@ namespace MaterialsList
  * todo: add "remove material" button
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
+ * @version 0.1.1
  */
-export default class MaterialsList extends React.PureComponent<MaterialsList.Properties>
+export default function MaterialsList (props: { materialsList: Material.Preview[] })
 {
-    render (): React.ReactNode
-    {
-        return <div className="materials-list">
+    return <div className="materials-list">
+        {
+            // Iterate through materials list
+            props.materialsList.map(material =>
             {
-                // Iterate through materials list
-                this.props.materialsList.map(material =>
-                {
-                    // If material or material preview not exist, skip
-                    if (!material || !material.preview) return null;
+                // If material or material preview not exist, skip
+                if (!material || !material.preview) return null;
 
-                    // Get date and name from material preview image
-                    const [ imageDate, imageName ] = material.preview.split("/");
+                // Get date and name from material preview image
+                const [ imageDate, imageName ] = material.preview.split("/");
 
-                    // Generate path to preview image on server
-                    const preview = defaultPathsList.openStorageFile(imageDate, imageName);
+                // Generate path to preview image on server
+                const preview = defaultPathsList.openStorageFile(imageDate, imageName);
 
-                    return <div className="material-item" key={ Math.random() }>
-                        {/* Blurred background image */}
-                        <div className="preview-background-image"
-                             style={ { backgroundImage: `url("${ preview }")` } } />
+                return <div className="material-item" key={ Math.random() }>
+                    {/* Blurred background image */ }
+                    <div className="preview-background-image"
+                         style={ { backgroundImage: `url("${ preview }")` } } />
 
-                        <div className="title-content">
-                            <div className="preview-image">
-                                <LazyLoadImage src={ preview } placeholderSrc={
-                                    defaultPathsList.openStorageFile(imageDate, imageName, true)
-                                } />
-                            </div>
-                            <div className="title-data">
+                    <div className="title-content">
+                        <div className="preview-image">
+                            <LazyLoadImage src={ preview } placeholderSrc={
+                                defaultPathsList.openStorageFile(imageDate, imageName, true)
+                            } onLoad={ () => window.dispatchEvent(new Event("resize")) } />
+
+                            <Button icon={ createBootstrapIcon("trash-fill") }
+                                    className="remove-button">Удалить</Button>
+                        </div>
+                        <div className="title-data">
                                 <span className="material-title-label">
                                     { material.pinned && createBootstrapIcon("pin-angle-fill") }
                                     { material.title }
                                 </span>
-                                <span className="material-identifier">{ material.identifier }</span>
-                                <div className="material-tags-list" children={ material.tags.map(tag =>
-                                    <span className="material-tag" children={ tag } key={ Math.random() } />
-                                ) } />
-                            </div>
+                            <span className="material-identifier">{ material.identifier }</span>
+                            <div className="material-tags-list" children={ material.tags.map(tag =>
+                                <span className="material-tag" children={ tag } key={ Math.random() } />
+                            ) } />
                         </div>
+                    </div>
 
-                        <div className="material-short-content">
-                            { material.short }
-                        </div>
-                    </div>;
-                })
-            }
-        </div>;
-    }
+                    <div className="material-short-content">
+                        { material.short }
+                    </div>
+                </div>;
+            })
+        }
+        { props.materialsList.length < 1 && <span className="no-materials">Материалы не найдены</span> }
+    </div>;
 }

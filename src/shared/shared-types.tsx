@@ -33,6 +33,7 @@ export namespace Requests
         DataTimeEnd: "Data:TimeEnd",
         DataIdentifier: "Data:Identifier",
         DataOffset: "Data:Offset",
+        DataShort: "Data:Short",
 
         CaptchaToken: "Captcha:ResponseToken",
 

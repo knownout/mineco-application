@@ -8,10 +8,13 @@ interface ITextInputProps
     icon?: JSX.Element
 
     /** Event fires after user pressed Enter key on current input */
-    onReturn?: (value: string) => void
+    onReturn? (value: string): void
 
     /** Event fires when default onInput event of the input element fires */
-    onInput?: (element: HTMLInputElement, value: string) => void
+    onInput? (value: string, element: HTMLInputElement): void
+
+    /** Fires only when placeholder state changed */
+    onPlaceholderStateChange? (state: boolean): void
 
     /** Type of the input element */
     type?: "text" | "tel" | "number" | "email" | "password" | string
@@ -40,8 +43,14 @@ export default function TextInput (props: ITextInputProps)
 {
     const defaultValue = props.defaultValue && props.defaultValue.trim();
 
-    const [ placeholder, setPlaceholder ] = React.useState(!defaultValue);
+    const [ placeholder, _setPlaceholder ] = React.useState(!defaultValue);
     const [ focusState, setFocusState ] = React.useState(false);
+
+    const setPlaceholder = (state: boolean) =>
+    {
+        _setPlaceholder(state);
+        if (props.onPlaceholderStateChange) props.onPlaceholderStateChange(state);
+    };
 
     const inputElement = props.inputRef || React.createRef<HTMLInputElement>();
 
@@ -49,7 +58,7 @@ export default function TextInput (props: ITextInputProps)
     {
         // If no native input element, skip
         if (!inputElement.current) return;
-        if(inputElement.current.parentElement)
+        if (inputElement.current.parentElement)
             inputElement.current.parentElement.classList.remove("active");
 
         // Get native input element shortcut
@@ -59,7 +68,7 @@ export default function TextInput (props: ITextInputProps)
         if (text.length > 0 && placeholder && props.placeholder) setPlaceholder(false);
         else if (text.length < 1 && !placeholder && props.placeholder) setPlaceholder(true);
 
-        if (props.onInput) props.onInput(element, text);
+        if (props.onInput) props.onInput(text, element);
     }
 
     function onKeyPress (event: React.KeyboardEvent<HTMLInputElement>)

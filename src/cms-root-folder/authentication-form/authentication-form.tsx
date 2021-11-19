@@ -124,7 +124,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, { fadeOu
                 icon: createBootstrapIcon("person-badge"),
                 placeholder: "Имя пользователя",
 
-                onInput (element: HTMLInputElement, value: string) { textInputValue.login = value; }
+                onInput (value: string) { textInputValue.login = value; }
             },
 
             password: {
@@ -132,7 +132,7 @@ export default class AuthenticationForm extends React.PureComponent<{}, { fadeOu
                 placeholder: "Пароль",
                 type: "password",
 
-                onInput (element: HTMLInputElement, value: string) { textInputValue.password = value; }
+                onInput (value: string) { textInputValue.password = value; }
             }
         };
 
