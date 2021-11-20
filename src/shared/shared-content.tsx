@@ -75,7 +75,7 @@ export function filterInputValue (input: HTMLInputElement, filters: { [key: stri
     // Reset caret position
     input.setSelectionRange(caretPosition - offset, caretPosition - offset);
 
-    return text.trim();
+    return text.trimEnd();
 }
 
 /**
@@ -299,6 +299,22 @@ export function processRawMaterial (rawMaterial: Material.PreviewRaw)
         time: Number.parseInt(time),
         pinned: pinned === "1"
     };
+}
+
+export function renderLocalizedDate (date: Date, renderTime: boolean = false)
+{
+    const monthsList = [
+        "января", "февраля",
+        "марта", "апреля", "мая",
+        "июня", "июля", "августа",
+        "сентября", "октября", "ноября",
+        "декабря"
+    ];
+
+    let returnString = `${ date.getDay() } ${ monthsList[date.getMonth()] } ${ date.getFullYear() }`;
+    if (renderTime) returnString += ` в ${ date.getHours() }:${ date.getMinutes() }`;
+
+    return returnString;
 }
 
 /** Raw path to API server */

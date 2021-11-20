@@ -1,5 +1,5 @@
 import React, { ForwardedRef } from "react";
-import Group from "../../group-component/group-component";
+import Group from "../../group/group";
 
 /**
  * Default exception handler of the PageWrapper component

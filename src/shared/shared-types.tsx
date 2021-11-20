@@ -90,6 +90,11 @@ export namespace Material
         time: number
         pinned: boolean
     }
+
+    export interface LazyPreview extends Preview
+    {
+        stub: string
+    }
 }
 
 export interface IAccountData

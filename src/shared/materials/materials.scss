@@ -1,0 +1,7 @@
+@import "../common";
+
+div.materials.page-wrapper div.content-wrapper
+{
+    @include content-block();
+    max-width: 760px;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import Group from "../../group-component/group-component";
+import Group from "../../group/group";
 
 /**
  * Not found exception handler of the PageWrapper component

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Helmet from "react-helmet";
 // Internal components import
 import PageWrapper from "./shared/page-wrapper";
-import CmsRouter from "./cms-root-folder/cms-router";
+import CmsRouter from "./content-management-system/cms-router";
 // Stylesheets import
 import "normalize.css";
 import "./main.scss";
