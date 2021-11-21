@@ -3,6 +3,7 @@ import { classNames, createBootstrapIcon } from "../../../shared/shared-content"
 
 import "./menu-router.scss";
 import CacheController, { CacheKeys } from "../../../shared/cache-controller";
+import DefaultLoadingHandler from "../../../shared/page-wrapper/default-handlers/default-loading-handler";
 
 /**
  * Route of the MenuRouter component
@@ -43,7 +44,8 @@ export default function MenuRouter (props: { children: JSX.Element | JSX.Element
                  Array.from(parent.children).forEach(child => child.classList.remove("select"));
                  target.classList.add("select");
 
-                 setTimeout(() => {
+                 setTimeout(() =>
+                 {
                      cacheController.cacheContent(CacheKeys.cmsMenuRouterPage, index);
                      setSelection(index);
                  }, 100);
@@ -54,11 +56,14 @@ export default function MenuRouter (props: { children: JSX.Element | JSX.Element
         </div>
     );
 
-    return <div className="side-menu-router" ref={ containerReference }>
-        <div className="side-menu-selector"> { selectorMenuItems } </div>
-        <div className="router-content">
-            { !contentItems[selection] && <span className="no-selection">Откройте одну из страниц, чтобы начать</span> }
-            { contentItems[selection] && contentItems[selection] }
+    return <React.Suspense fallback={ <DefaultLoadingHandler /> }>
+        <div className="side-menu-router" ref={ containerReference }>
+            <div className="side-menu-selector"> { selectorMenuItems } </div>
+            <div className="router-content">
+                { !contentItems[selection] &&
+                <span className="no-selection">Откройте одну из страниц, чтобы начать</span> }
+                { contentItems[selection] && contentItems[selection] }
+            </div>
         </div>
-    </div>;
+    </React.Suspense>;
 }

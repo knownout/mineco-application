@@ -7,11 +7,12 @@ import { Requests } from "../../shared/shared-types";
 // Internal components import
 import PageWrapper from "../../shared/page-wrapper";
 import MenuRouter, { MenuRoute } from "./menu-router/menu-router";
-import Materials from "../../shared/materials/materials";
+
+const Materials = React.lazy(() => import("../../shared/materials/materials"));
 //Action blocks import
-import AccountBlock from "./content-blocks/account-block";
-import PropertiesBlock from "./content-blocks/properties-block";
-import FilesBlock from "./content-blocks/files-block";
+const AccountBlock = React.lazy(() => import("./content-blocks/account-block"));
+const PropertiesBlock = React.lazy(() => import("./content-blocks/properties-block"));
+const FilesBlock = React.lazy(() => import("./content-blocks/files-block"));
 // Stylesheets import
 import "./content-management.scss";
 

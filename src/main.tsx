@@ -6,30 +6,15 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Helmet from "react-helmet";
 // Internal components import
 import PageWrapper from "./shared/page-wrapper";
-import CmsRouter from "./content-management-system/cms-router";
+import DefaultLoadingHandler from "./shared/page-wrapper/default-handlers/default-loading-handler";
+const CmsRouter = React.lazy(() => import("./content-management-system/cms-router"));
+const NotFoundHandler = React.lazy(() => import("./shared/page-wrapper/default-handlers/not-found-handler"));
 // Stylesheets import
 import "normalize.css";
 import "./main.scss";
-// Other imports
-import NotFoundHandler from "./shared/page-wrapper/default-handlers/not-found-handler";
 
-namespace Main
+class Main extends PureComponent
 {
-    export interface Properties
-    {
-
-    }
-
-    export interface State
-    {
-
-    }
-}
-
-class Main extends PureComponent<Main.Properties, Main.State>
-{
-    state: Main.State = {};
-
     render (): React.ReactNode
     {
         return <React.Fragment>
@@ -55,11 +40,13 @@ class Main extends PureComponent<Main.Properties, Main.State>
 
             <PageWrapper className="root-wrapper">
                 <Router>
-                    <Routes>
-                        <Route path="/" element={ <span>Website entry point</span> } />
-                        <Route path="/content-management-system/*" element={ <CmsRouter /> } />
-                        <Route path="*" element={ <NotFoundHandler /> } />
-                    </Routes>
+                    <React.Suspense fallback={ <DefaultLoadingHandler /> }>
+                        <Routes>
+                            <Route path="/" element={ <span>Website entry point</span> } />
+                            <Route path="/content-management-system/*" element={ <CmsRouter /> } />
+                            <Route path="*" element={ <NotFoundHandler /> } />
+                        </Routes>
+                    </React.Suspense>
                 </Router>
             </PageWrapper>
         </React.Fragment>;
