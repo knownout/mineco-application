@@ -86,7 +86,7 @@ export default function TextInput (props: ITextInputProps)
             props.onReturn(inputElement.current.value.trim());
     }
 
-    const className = classNames("text-input-holder", { "active": placeholder });
+    const className = classNames("input-holder", { "active": placeholder });
     const wrapperClassName = classNames("input", { "focus": focusState });
 
     return <div className={ wrapperClassName } onClick={ () => inputElement.current && inputElement.current.focus() }>

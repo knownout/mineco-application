@@ -46,7 +46,6 @@ function MaterialRenderer (props: { material: Material.LazyPreview } & Pick<IMat
 
     const onMaterialClick = () => props.onMaterialEditStart && props.onMaterialEditStart(material);
 
-    console.log(material);
     return <div className="material" key={ Math.random() } onClick={ onMaterialClick }>
         {/* Material preview image */ }
         <Preview className="preview-image" />
@@ -66,6 +65,7 @@ function MaterialRenderer (props: { material: Material.LazyPreview } & Pick<IMat
                 </div>
                 <span className="date">
                     { Shared.renderLocalizedDate(new Date(material.time), true) }
+                    { material.time > Date.now() && ", еще не опубликован" }
                 </span>
                 <div className="short-content">
                     { material.short }

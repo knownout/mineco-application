@@ -1,5 +1,6 @@
 import { Material, Requests } from "../../../shared/shared-types";
 import * as Shared from "../../../shared/shared-content";
+import { RequestBody } from "../../../shared/shared-content";
 
 export type TMaterialUpdateFunction = (materialData: Partial<Material.Full["data"] & { content: string }>) =>
     Promise<Requests.RequestResult<Material.AffectResult>>;
@@ -12,7 +13,7 @@ export type TMaterialUpdateFunction = (materialData: Partial<Material.Full["data
  *
  * @param identifier material identifier
  */
-export async function useMaterial (identifier: string): Promise<[ Material.Full, TMaterialUpdateFunction ]>
+export async function useMaterial (identifier: string): Promise<[ Material.Full, TMaterialUpdateFunction, string[] ]>
 {
     // Body for the material full data request
     const materialRequestBody = new Shared.RequestBody({
@@ -24,7 +25,12 @@ export async function useMaterial (identifier: string): Promise<[ Material.Full,
     const result = await fetch(Shared.defaultPathsList.request, materialRequestBody.postFormData)
         .then(res => res.json()) as Requests.RequestResult<Material.Full>;
 
+    const tagsListResult = await fetch(Shared.defaultPathsList.request, new RequestBody({
+        [Requests.TypesList.Action]: Requests.ActionsList.getTagsList
+    }).postFormData).then(res => res.json()) as Requests.RequestResult<string[]>;
+
     // If response negative, throw fetch error
+    if (!tagsListResult.success) throw new Shared.FetchError(result.meta.toString());
     if (!result.success) throw new Shared.FetchError(result.meta.toString());
 
     // Material update function
@@ -53,7 +59,7 @@ export async function useMaterial (identifier: string): Promise<[ Material.Full,
         return await fetch(Shared.defaultPathsList.request, requestBody.postFormData).then(res => res.json());
     };
 
-    return [ result.meta as Material.Full, setMaterial ];
+    return [ result.meta as Material.Full, setMaterial, tagsListResult.meta ];
 }
 
 export { default } from "./editor";

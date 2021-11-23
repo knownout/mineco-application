@@ -301,6 +301,33 @@ export function processRawMaterial (rawMaterial: Material.PreviewRaw)
     };
 }
 
+/**
+ * Function for generating lazy-load image component
+ * properties (placeholder and source)
+ *
+ * @param material generation source
+ */
+export function generateImageComponentPaths (material?: Material.Preview)
+{
+    if (!material) return { placeholder: "", source: "" };
+
+    const rawPreviewData = material.preview.split("/");
+
+    const previewData = [ rawPreviewData[0], "" ] as [ string, string ];
+    previewData[1] = rawPreviewData.slice(1).join("/");
+
+    return {
+        placeholder: defaultPathsList.openStorageFile(...previewData, true),
+        source: defaultPathsList.openStorageFile(...previewData)
+    };
+}
+
+/**
+ * Render localized date from Date object
+ *
+ * @param date Date object
+ * @param renderTime if true, render date and time
+ */
 export function renderLocalizedDate (date: Date, renderTime: boolean = false)
 {
     const monthsList = [

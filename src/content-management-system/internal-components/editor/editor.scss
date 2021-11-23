@@ -1,0 +1,65 @@
+@import "../../../shared/common";
+
+div.root-editor-wrapper
+{
+    @include content-block();
+
+    max-height: 100%;
+
+    div.page-wrapper
+    {
+        overflow-y: auto;
+
+        div.content-wrapper
+        { padding: 10px }
+    }
+
+    div.group-component
+    {
+        width: 100%;
+
+        div.group-content
+        {
+            @include content-block(flex-start, flex-start);
+            width: 100%;
+        }
+
+        span.group-title
+        { font-size: 12px; }
+
+        &.tags-edit div.group-content
+        { flex-direction: row; flex-wrap: wrap }
+    }
+
+    div#custom-editor-holder
+    {
+        @include content-block();
+        width: 100%;
+
+        padding: 0 20px;
+        text-align: justify;
+
+        background: #fff;
+        border-radius: 3px;
+
+        div.codex-editor__redactor
+        {
+            margin: 0;
+        }
+    }
+
+    div.metadata-edit div.group-content
+    {
+        @include content-block();
+
+        div.metadata-properties
+        {
+            @include content-block(flex-start, flex-start);
+
+            gap: 10px;
+
+            div.input
+            { width: 100% }
+        }
+    }
+}
