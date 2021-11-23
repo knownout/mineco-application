@@ -56,7 +56,7 @@ p, code, pre
     }
 }
 
-button, a.button
+button, a.button, textarea
 {
     @include content-block();
     @include use-transition();
@@ -102,8 +102,8 @@ a
 {
     @include use-transition();
 
-    color: $default-link;
-    background: rgba($default-link, .18);
+    color: darken($default-link, 15%);
+    background: rgba($default-link, .1);
 
     cursor: pointer;
 
@@ -114,7 +114,7 @@ a
     font-style: normal;
 
     &:hover
-    { background-color: rgba($default-link, .3); color: darken($default-link, 10%) }
+    { background-color: rgba($default-link, .2); color: darken($default-link, 20%) }
 }
 
 /*

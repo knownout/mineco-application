@@ -1,18 +1,18 @@
 // Library import
 import React from "react";
 // Helpers import
-import { Material, Requests } from "../shared-types";
-import * as Shared from "../shared-content";
-import { defaultPathsList, RequestBody } from "../shared-content";
+import { Material, Requests } from "../../../shared/shared-types";
+import * as Shared from "../../../shared/shared-content";
+import { defaultPathsList, RequestBody } from "../../../shared/shared-content";
 // Internal components import
-import PageWrapper from "../page-wrapper";
+import PageWrapper from "../../../shared/page-wrapper";
 // Internal components for current scope import
 import MaterialsList from "./materials-list/materials-list";
 import MaterialsSearch from "./materials-search/materials-search";
-// Shortcuts
-import RequestResult = Requests.RequestResult;
 // Stylesheet
 import "./materials.scss";
+// Shortcuts
+import RequestResult = Requests.RequestResult;
 
 namespace Materials
 {
@@ -40,7 +40,6 @@ namespace Materials
  * and creating new materials
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 1.0.0
  */
 export default class Materials extends React.PureComponent<Materials.Properties, Materials.State>
 {
@@ -57,7 +56,8 @@ export default class Materials extends React.PureComponent<Materials.Properties,
 
         // Append default request parameter
         requestBody.push({
-            [Requests.TypesList.Action]: Requests.ActionsList.getMaterials
+            [Requests.TypesList.Action]: Requests.ActionsList.getMaterials,
+            [Requests.TypesList.DataFindPinned]: true
         });
 
         // If custom filters provided, append it (override) to the request body object
@@ -125,7 +125,8 @@ export default class Materials extends React.PureComponent<Materials.Properties,
      */
     private materialEditHandler (material?: Material.LazyPreview)
     {
-        const editorWindowProperties = "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no";
+        const editorWindowProperties = "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,"
+            + "width=800,height=900,popup=1,top=10";
         const editorWindow = material
             ? window.open(defaultPathsList.contentManagementSystem + "/edit/" + material.identifier,
                 "Редактор: " + material.title, editorWindowProperties)

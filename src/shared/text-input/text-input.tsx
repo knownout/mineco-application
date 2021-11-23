@@ -1,67 +1,75 @@
 import React from "react";
 import { classNames, filterInputValue } from "../shared-content";
-import "./input.scss";
+import "./text-input.scss";
 
-interface IInputProps
+interface ITextInputProps
 {
-    /** Icon for input element (at left) */
+    /** Icon for text-input element (at left) */
     icon?: JSX.Element
 
-    /** Event fires after user pressed Enter key on current input */
+    /** Event fires after user pressed Enter key on current text-input */
     onReturn? (value: string): void
 
-    /** Event fires when default onInput event of the input element fires */
+    /** Event fires when default onInput event of the text-input element fires */
     onInput? (value: string, element: HTMLInputElement): void
 
     /** Fires only when placeholder state changed */
     onPlaceholderStateChange? (state: boolean): void
 
-    /** Type of the input element */
+    /** Type of the text-input element */
     type?: "text" | "tel" | "number" | "email" | "password" | string
 
-    /** Placeholder for the input element */
+    /** Placeholder for the text-input element */
     placeholder?: string
 
-    /** Custom filters for the input, key is string that used to create regular expression via new RegExp object */
+    /**
+     * Custom filters for the text-input, key is string that used
+     * to create regular expression via new RegExp object
+     */
     filters?: { [key: string]: string }
 
-    /** Initial value of the text input */
+    /** Initial value of the text text-input */
     defaultValue?: string
 
-    /** Reference to native html input element */
+    /** Reference to native html text-input element */
     inputRef?: React.RefObject<HTMLInputElement>
 }
 
 /**
- * Simple text input component with support of different types and real-time value filters
- * @param props IInputProps
+ * Simple text text-input component with support of
+ * different types and real-time value filters
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
  * @version 1.0.0
  */
-export default function Input (props: IInputProps)
+export default function TextInput (props: ITextInputProps)
 {
     const defaultValue = props.defaultValue && props.defaultValue.trim();
 
+    // Placeholder display state
     const [ placeholder, _setPlaceholder ] = React.useState(!defaultValue);
+
+    // Component focus state
     const [ focusState, setFocusState ] = React.useState(false);
 
+    // Update placeholder state
     const setPlaceholder = (state: boolean) =>
     {
         _setPlaceholder(state);
         if (props.onPlaceholderStateChange) props.onPlaceholderStateChange(state);
     };
 
+    // Reference to native input element
     const inputElement = props.inputRef || React.createRef<HTMLInputElement>();
 
     function onInput ()
     {
-        // If no native input element, skip
+        // If no native text-input element, skip
         if (!inputElement.current) return;
         if (inputElement.current.parentElement && inputElement.current.value.trim().length > 0)
             inputElement.current.parentElement.classList.remove("active");
 
-        // Get native input element shortcut
+        // Get native text-input element shortcut
         const element = inputElement.current,
             text = filterInputValue(element, props.filters || {});
 
@@ -78,15 +86,13 @@ export default function Input (props: IInputProps)
             props.onReturn(inputElement.current.value.trim());
     }
 
-    const className = classNames("input-holder", { "active": placeholder });
+    const className = classNames("text-input-holder", { "active": placeholder });
     const wrapperClassName = classNames("input", { "focus": focusState });
 
     return <div className={ wrapperClassName } onClick={ () => inputElement.current && inputElement.current.focus() }>
-        {/* If icon provided, render it */ }
         { props.icon && <div className="icon-holder">{ props.icon }</div> }
 
         <div className={ className }>
-            {/* If placeholder provided, render it */ }
             { props.placeholder && <span className="placeholder">{ props.placeholder }</span> }
 
             <input type={ props.type || "text" } onInput={ onInput } ref={ inputElement }
@@ -98,9 +104,8 @@ export default function Input (props: IInputProps)
     </div>;
 }
 
-/** Text input filter presets */
+/** Filter presets for the TextInput component */
 export const FilterPreset = {
-    /** Preset includes only: numbers, latin large and small letters and _ symbol */
     onlyLatin: { "\\s{2,}": " ", "[^A-Za-z0-9_]": "", "\\_{2,}": "_" },
     latinWithSymbols: { "\\s{2,}": " ", "[^A-Za-z0-9_@\\-]": "", "\\-{2,}": "-", "@{2,}": "@" },
 

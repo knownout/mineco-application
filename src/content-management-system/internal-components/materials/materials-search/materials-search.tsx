@@ -1,12 +1,12 @@
 // Library import
 import React from "react";
 // Helpers import
-import { FilterPreset } from "../../input/input";
-import { createBootstrapIcon } from "../../shared-content";
-import { Material } from "../../shared-types";
+import { FilterPreset } from "../../../../shared/text-input/text-input";
+import { createBootstrapIcon } from "../../../../shared/shared-content";
+import { Material } from "../../../../shared/shared-types";
 // Internal components import
-import Input from "../../input";
-import Button from "../../button";
+import TextInput from "../../../../shared/text-input";
+import Button from "../../../../shared/button";
 // Stylesheet
 import "./materials-search.scss";
 
@@ -38,10 +38,10 @@ export default function MaterialsSearch (props: IMaterialsSearchProps)
     };
 
     return <div className="materials-search">
-        <Input filters={ FilterPreset.allDefault } icon={ createBootstrapIcon("binoculars-fill") }
-               placeholder="Заголовок или краткое содержание"
-               onInput={ setSearchQuery }
-               onReturn={ onInputReturn } />
+        <TextInput filters={ FilterPreset.allDefault } icon={ createBootstrapIcon("binoculars-fill") }
+                   placeholder="Заголовок или краткое содержание"
+                   onInput={ setSearchQuery }
+                   onReturn={ onInputReturn } />
 
         <Button onAsyncClick={ () => props.requireMaterialsList(searchQuery) } reference={ buttonReference }>
             Поиск

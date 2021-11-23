@@ -18,7 +18,7 @@ namespace PageWrapper
         onLoadingException? (name: string, message: string): JSX.Element;
 
         /** If provided, loading is completed only after specific function is resolved */
-        asyncContent? (): Promise<void>;
+        asyncContent? (): Promise<any>;
 
         /** Classname of the wrapper (.page-wrapper element) */
         className?: string;

@@ -35,15 +35,18 @@ interface IGroupProps
  *
  * Classname .cluster removes padding, background and border, makes block flex with 10px gap
  *
- * @param props title and className, both strings
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.1.0
+ * @version 1.0.0
  */
 export default function Group (props: IGroupProps)
 {
+    // All available drag event names
     const dragEventNames = [ "", "End", "Enter", "Exit", "Leave", "Over", "Start" ].map(e => `onDrag${ e }`);
+
+    // List of drag event function
     const dragEventsList: { [key: string]: any } = {};
 
+    // Append specific function to each drag event
     dragEventNames.forEach(eventName =>
     {
         dragEventsList[eventName] = (event: React.DragEvent<HTMLDivElement>) =>
@@ -53,7 +56,9 @@ export default function Group (props: IGroupProps)
         };
     });
 
+    // Check display condition
     if (props.condition === false) return null;
+
     return <div className={ classNames("group-component", props.className) } onClick={ props.onClick }
                 onDrop={ event =>
                 {

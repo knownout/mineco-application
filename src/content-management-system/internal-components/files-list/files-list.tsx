@@ -55,7 +55,6 @@ export type FileEntry = {
  * user content storage files list
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.1.0
  */
 export default class FilesList extends React.PureComponent<FilesList.Properties>
 {
@@ -139,7 +138,6 @@ interface IExtendedFileEntryProps
  * Internal component, extended version of the FileEntry component
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
  */
 function ExtendedFileEntry (props: IExtendedFileEntryProps)
 {

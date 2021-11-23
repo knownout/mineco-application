@@ -13,7 +13,7 @@ import {
 
 import { MD5 } from "crypto-js";
 // Import internal components
-import Input, { FilterPreset } from "../../shared/input/input";
+import TextInput, { FilterPreset } from "../../shared/text-input/text-input";
 import Button from "../../shared/button/button";
 import PageWrapper from "../../shared/page-wrapper";
 // Import stylesheets
@@ -27,7 +27,6 @@ import RequestResult = Requests.RequestResult;
  * Authentication form component for content management system
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.3.4
  */
 export default class AuthenticationForm extends React.PureComponent<{}, { fadeOut: boolean }>
 {
@@ -98,11 +97,11 @@ export default class AuthenticationForm extends React.PureComponent<{}, { fadeOu
 
     render (): React.ReactNode
     {
-        // Variable for storing text input values (state will update whole form, so i created variables for this)
+        // Variable for storing text text-input values (state will update whole form, so i created variables for this)
         const textInputValue = { login: String(), password: String() };
         const loginButtonReference = this.loginButtonReference;
 
-        // Properties for text input fields
+        // Properties for text text-input fields
         const textInputProperties = {
             common: {
                 filters: FilterPreset.latinWithSymbols,
@@ -147,8 +146,8 @@ export default class AuthenticationForm extends React.PureComponent<{}, { fadeOu
             <div className="auth-form-wrapper">
                 <span className="form-title">Вход в панель управления</span>
                 <div className="form-fields-container">
-                    <Input { ...textInputProperties.login } { ...textInputProperties.common } />
-                    <Input { ...textInputProperties.password } { ...textInputProperties.common } />
+                    <TextInput { ...textInputProperties.login } { ...textInputProperties.common } />
+                    <TextInput { ...textInputProperties.password } { ...textInputProperties.common } />
                 </div>
 
                 <div className="form-buttons-container">

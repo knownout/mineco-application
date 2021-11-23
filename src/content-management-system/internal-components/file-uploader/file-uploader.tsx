@@ -58,7 +58,6 @@ namespace FileUploader
  * todo: remove part of internal dependencies
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.1.0
  */
 export default class FileUploader extends React.PureComponent<FileUploader.Properties, FileUploader.State>
 {
@@ -92,7 +91,7 @@ export default class FileUploader extends React.PureComponent<FileUploader.Prope
      */
     private fileSelectInterface ()
     {
-        // Create new files input element
+        // Create new files text-input element
         const inputElement = document.createElement("input") as HTMLInputElement;
         inputElement.multiple = this.props.multiple !== false;
         inputElement.type = "file";

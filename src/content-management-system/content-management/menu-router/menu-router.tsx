@@ -9,7 +9,6 @@ import DefaultLoadingHandler from "../../../shared/page-wrapper/default-handlers
  * Route of the MenuRouter component
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
  */
 export const MenuRoute = (props: { icon: string, title: string, children: any }) => <div
     className="no-display">{ props }</div>;
@@ -18,7 +17,6 @@ export const MenuRoute = (props: { icon: string, title: string, children: any })
  * Local router with switch buttons
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
  */
 export default function MenuRouter (props: { children: JSX.Element | JSX.Element[], initialIndex?: number })
 {

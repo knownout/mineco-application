@@ -1,21 +1,56 @@
+/**
+ * Requests types
+ */
 export namespace Requests
 {
+    /**
+     * List of all available for Action request entry values
+     */
     export enum ActionsList
     {
+        /** Get all tags from database */
         getTagsList,
+
+        /** Get latest pinned material */
         getPinnedMaterial,
+
+        /** Get list of specifically sorted materials */
         getMaterials,
+
+        /** Update material at server */
         updateMaterial,
+
+        /** Remove material from server */
         removeMaterial,
+
+        /** Change password for the current user account */
         changePassword,
+
+        /** Upload one file to the server */
         uploadFile,
+
+        /** Get uploaded files (including images) list */
         getFilesList,
+
+        /** Get uploaded images (jpeg) list */
         getImagesList,
+
+        /** Get both metadata and content of the material */
         getFullMaterial,
+
+        /** Compare stored user account data with database entries */
         verifyAccountData,
+
+        /** Verify Google Recaptcha token */
         verifyCaptchaRequest,
+
+        /** Get value from properties database */
         getFromProperties,
+
+        /** Update property value at properties database */
         updateProperty,
+
+        /** Remove file from user storage (uploaded files only) */
         removeFile
     }
 
@@ -54,6 +89,9 @@ export namespace Requests
         UploadFileToken: "24DE53B2C0A9E15844AE9B37E9B52EC8"
     };
 
+    /**
+     * Result of the request to the server (response)
+     */
     export interface RequestResult<T = any>
     {
         success: boolean
@@ -61,29 +99,36 @@ export namespace Requests
     }
 }
 
+/**
+ * Namespace for the material-like objects
+ */
 export namespace Material
 {
-    interface RawCore
+    /** Internal interface for core properties of the material preview data */
+    interface RawCore<T = string>
     {
-        title: string
-        tags: string
-        time: string
-        preview: string
+        title: T
+        tags: T
+        time: T
+        preview: T
     }
 
-    export interface PreviewRaw extends RawCore
+    /** Raw material preview data from server (need to be processed) */
+    export interface PreviewRaw<T = string> extends RawCore<T>
     {
-        identifier: string
-        short: string
-        pinned: string
+        identifier: T
+        short: T
+        pinned: T
     }
 
+    /** Full material data (metadata and content) */
     export interface Full<T = PreviewRaw>
     {
         content: { [key: string]: any }
         data: T
     }
 
+    /** Processed material preview data */
     export interface Preview extends Omit<PreviewRaw, "tags" | "time" | "pinned">
     {
         tags: string[]
@@ -91,21 +136,42 @@ export namespace Material
         pinned: boolean
     }
 
+    /** Material preview data with stub property for image lazy-load */
     export interface LazyPreview extends Preview
     {
         stub: string
     }
+
+    /** Request result, that will be returned from server after material update */
+    export interface AffectResult extends PreviewRaw<boolean | null>
+    {
+        content: boolean | null
+    }
 }
 
+/**
+ * User account data interface
+ */
 export interface IAccountData
 {
+    /** User name (not login) */
     name: string
+
+    /** User raw password (not hashed) */
     password: string
+
+    /** User login */
     login: string
 }
 
+/**
+ * Interface for user account data prepared for authentication
+ */
 export interface IHashedAccountData
 {
+    /** User login */
     login: string
+
+    /** Hashed user password */
     hash: CryptoJS.lib.WordArray
 }

@@ -48,8 +48,8 @@ export function classNames (...classNames: (undefined | string | { [key: string]
 }
 
 /**
- * Function for filtrate input element value in realtime with saving caret position
- * @param input native input element
+ * Function for filtrate text-input element value in realtime with saving caret position
+ * @param input native text-input element
  * @param filters list of filters (key - string for RegExp object constructor)
  */
 export function filterInputValue (input: HTMLInputElement, filters: { [key: string]: string })

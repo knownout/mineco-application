@@ -8,7 +8,7 @@ import { defaultPathsList, useForceUpdate } from "../../../shared/shared-content
 import { MD5 } from "crypto-js";
 // Internal components import
 import Group from "../../../shared/group";
-import Input, { FilterPreset } from "../../../shared/input/input";
+import TextInput, { FilterPreset } from "../../../shared/text-input/text-input";
 import Button from "../../../shared/button/button";
 import PageWrapper from "../../../shared/page-wrapper";
 
@@ -16,7 +16,6 @@ import PageWrapper from "../../../shared/page-wrapper";
  * Action block for display user account data with ability of password changing
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
  */
 export default function AccountBlock ()
 {
@@ -26,13 +25,13 @@ export default function AccountBlock ()
     // Account data from localStorage
     const accountData = cacheController.fromCache<IAccountData>(CacheKeys.accountData) as IAccountData;
 
-    // State for new password input field
+    // State for new password text-input field
     // const [ password, setPassword ] = React.useState<string>();
     const passwordInputRef = React.createRef<HTMLInputElement>();
 
     const passwordButtonReference = React.createRef<HTMLButtonElement>();
 
-    // New password field input handler
+    // New password field text-input handler
     const onTextInputReturn = () =>
     {
         if (passwordButtonReference.current)
@@ -51,7 +50,7 @@ export default function AccountBlock ()
             if (!accountData || !accountData.password)
                 window.location.href = defaultPathsList.contentManagementSystemAuth;
 
-            if (!passwordInputRef.current) return reject("no password input reference");
+            if (!passwordInputRef.current) return reject("no password text-input reference");
 
             const password = passwordInputRef.current.value.trim();
 
@@ -140,10 +139,10 @@ export default function AccountBlock ()
 
             { nonDeveloperAccount && <span className="block-title">Изменить пароль</span> }
             <Group className="border-only" condition={ nonDeveloperAccount }>
-                <Input placeholder="Новый пароль" filters={ FilterPreset.latinWithSymbols }
-                       icon={ Shared.createBootstrapIcon("key") }
-                       onReturn={ onTextInputReturn }
-                       inputRef={ passwordInputRef } />
+                <TextInput placeholder="Новый пароль" filters={ FilterPreset.latinWithSymbols }
+                           icon={ Shared.createBootstrapIcon("key") }
+                           onReturn={ onTextInputReturn }
+                           inputRef={ passwordInputRef } />
                 <Button reference={ passwordButtonReference } onAsyncClick={ onPasswordButtonClick }>
                     Изменить пароль
                 </Button>

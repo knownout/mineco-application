@@ -1,11 +1,11 @@
 // Library import
 import React from "react";
 // Helpers
-import * as Shared from "../../shared-content";
-import { Material } from "../../shared-types";
+import * as Shared from "../../../../shared/shared-content";
+import { Material } from "../../../../shared/shared-types";
 // Internal components
-import PageWrapper from "../../page-wrapper";
-import Image from "../../lazy-load-image";
+import PageWrapper from "../../../../shared/page-wrapper";
+import Image from "../../../../shared/lazy-load-image";
 // Stylesheet
 import "./materials-list.scss";
 
@@ -21,7 +21,6 @@ interface IMaterialsListProps
  * Component for rendering materials list of type Material.LazyPreview
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 1.0.0
  */
 export default function MaterialsList (props: IMaterialsListProps)
 {
@@ -47,6 +46,7 @@ function MaterialRenderer (props: { material: Material.LazyPreview } & Pick<IMat
 
     const onMaterialClick = () => props.onMaterialEditStart && props.onMaterialEditStart(material);
 
+    console.log(material);
     return <div className="material" key={ Math.random() } onClick={ onMaterialClick }>
         {/* Material preview image */ }
         <Preview className="preview-image" />
@@ -59,7 +59,7 @@ function MaterialRenderer (props: { material: Material.LazyPreview } & Pick<IMat
             <div className="meta-data">
                 <div className="title-data">
                     <span className="title">
-                        { material.pinned && Shared.createBootstrapIcon("angle-pin-fill") }
+                        { material.pinned && Shared.createBootstrapIcon("pin-angle-fill") }
                         { material.title }
                     </span>
                     <span className="identifier">#{ material.identifier }</span>

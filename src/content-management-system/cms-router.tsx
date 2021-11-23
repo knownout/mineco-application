@@ -20,7 +20,6 @@ export interface TEditorRouteParameters
  * Content management system router
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 1.0.0
  */
 export default class CmsRouter extends React.PureComponent
 {

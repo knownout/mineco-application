@@ -27,7 +27,6 @@ const ReactEditorJS = React.memo(createReactEditorJS());
  * Currently available only importantData property (for version 0.0.1)
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
  */
 export default function PropertiesBlock ()
 {
@@ -128,7 +127,8 @@ export default function PropertiesBlock ()
                 <div id="editor-js-holder-rich-text">
                     <ReactEditorJS { ...EditorJSCoreToolConfiguration } { ...EditorJSLocalizationConfiguration }
                                    onInitialize={ handleInitialize } data={ editorInstanceDefaultValue }
-                                   onChange={ () => window.dispatchEvent(new Event("resize")) } />
+                                   onChange={ () => window.dispatchEvent(new Event("resize")) }
+                                   onReady={ () => window.dispatchEvent(new Event("resize")) } />
                 </div>
                 <Button onAsyncClick={ onButtonClick }>Сохранить изменения</Button>
             </Group>

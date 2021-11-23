@@ -1,6 +1,6 @@
 @import "../common";
 
-// Stylesheet for the Input component
+// Stylesheet for the TextInput component
 div.input
 {
     @include content-block(center, center);
@@ -73,7 +73,7 @@ div.input
         @include content-block(flex-start, center);
         @include use-transition();
 
-        // Styles for input elements holder (native input element and placeholder)
+        // Styles for text-input elements holder (native text-input element and placeholder)
 
         flex-direction: row;
         flex-wrap: nowrap;
@@ -81,6 +81,7 @@ div.input
         color: inherit;
 
         padding-top: 10px;
+        width: 100%;
 
         // Move placeholder on top when active
         &.active
@@ -135,6 +136,8 @@ div.input
             border-radius: initial;
 
             background: transparent;
+
+            width: 100%;
 
             &::selection
             { background-color: rgba(#111, .12) }

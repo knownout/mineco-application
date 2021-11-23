@@ -92,7 +92,6 @@ export default class Accordion extends React.PureComponent<Accordion.Properties,
      * Item of the accordion group component
      *
      * @author re-knownout "knownOut" knownout@hotmail.com
-     * @version 0.0.1
      */
     public static readonly Item = (props: Accordion.IItemProps) => <div
         className="item-stub">{ props }</div>;
@@ -102,7 +101,6 @@ export default class Accordion extends React.PureComponent<Accordion.Properties,
  * Internal component for creating accordion items
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 1.0.0
  */
 function AccordionItem (props: Accordion.IInternalItemProps)
 {

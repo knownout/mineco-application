@@ -15,7 +15,6 @@ import CacheController, { CacheKeys } from "../../../shared/cache-controller";
  * files stored in user content storage
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
- * @version 0.0.1
  */
 export default function FilesBlock ()
 {
