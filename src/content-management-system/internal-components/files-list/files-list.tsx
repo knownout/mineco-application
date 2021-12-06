@@ -30,6 +30,9 @@ namespace FilesList
 
         /** Function for updating files list on action block level */
         updateFilesList? (): void
+
+        /** Override default click event */
+        onClick? (directoryKey: string, fileKey: string): void
     }
 }
 
@@ -90,7 +93,10 @@ export default class FilesList extends React.PureComponent<FilesList.Properties>
                     {
                         const file = this.props.filesList[directoryKey][fileKey];
                         const onFileClick = () =>
-                            window.open(Shared.defaultPathsList.openStorageFile(directoryKey, fileKey));
+                        {
+                            if (this.props.onClick) this.props.onClick(directoryKey, fileKey);
+                            else window.open(Shared.defaultPathsList.openStorageFile(directoryKey, fileKey));
+                        };
 
                         return <ExtendedFileEntry { ...file } date={ directoryKey } onClick={ onFileClick }
                                                   key={ Math.random() } updateFilesList={ this.props.updateFilesList }

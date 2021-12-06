@@ -232,6 +232,18 @@ export function verifyStoredAccountData (callback: (result: boolean) => void): P
     });
 }
 
+export function generateMaterialIdentifier (length: number = 10)
+{
+    const charArray = [
+        ...Array(25).fill(String()).map((_, i) => String.fromCharCode(i + 97)),
+        ...Array(10).fill(0).map((_, i) => `${ i }`)
+    ];
+
+    return Array(length).fill(String())
+        .map(() => charArray[Math.floor(Math.random() * charArray.length)])
+        .join("");
+}
+
 /**
  * Try to get hashed account data from cache and redirect
  * to auth page if data not found

@@ -11,7 +11,7 @@ div.root-editor-wrapper
         overflow-y: auto;
 
         div.content-wrapper
-        { padding: 10px }
+        { padding: 10px; width: 100%; max-width: 850px }
     }
 
     div.group-component
@@ -36,21 +36,80 @@ div.root-editor-wrapper
         @include content-block();
         width: 100%;
 
-        padding: 0 20px;
+        padding: 20px;
         text-align: justify;
 
         background: #fff;
         border-radius: 3px;
 
-        div.codex-editor__redactor
+        cursor: text;
+
+        div.codex-editor
         {
-            margin: 0;
+            width: 100%;
+
+            div.codex-editor__redactor
+            {
+                width: 100%;
+                margin: 0;
+
+                text-align: justify;
+            }
         }
     }
 
     div.metadata-edit div.group-content
     {
         @include content-block();
+
+        div.preview-image-holder
+        {
+            @include content-block();
+            //@include use-transition();
+
+            background: rgba(#000, .05);
+            border-radius: 3px;
+
+            &:hover
+            {
+                cursor: pointer;
+                background: rgba(#000, .08);
+            }
+
+            figure.lazy-load-image
+            {
+                @include content-block();
+                width: fit-content;
+
+                img
+                {
+                    height: auto;
+                    max-height: 200px;
+
+                    width: 100%;
+
+                    border-radius: 3px;
+                }
+            }
+
+            div.no-image
+            {
+                @include content-block();
+                height: 200px;
+                width: 320px;
+
+                background: linear-gradient(45deg, rgba(0, 0, 0, 0) 49.9%, rgba(#000, .2) 49.9%, rgba(#000, .2) 60%, rgba(0, 0, 0, 0) 60%) fixed,
+                linear-gradient(45deg, rgba(#000, .2) 10%, rgba(0, 0, 0, 0) 10%) fixed;
+                background-size: 0.35em 0.35em;
+
+                border-radius: 3px;
+
+                font-size: 14px;
+
+                color: rgba(#111, .5);
+                font-weight: 600;
+            }
+        }
 
         div.metadata-properties
         {
@@ -61,5 +120,69 @@ div.root-editor-wrapper
             div.input
             { width: 100% }
         }
+    }
+
+    div.material-editor {
+        margin-top: 20px;
+
+        textarea
+        {
+            width: 100%;
+            resize: vertical;
+
+            max-height: 250px;
+            min-height: 160px;
+
+            text-align: justify;
+        }
+    }
+
+    div.float-menu
+    {
+        position: fixed;
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 10px;
+
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        height: fit-content;
+
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(#fff, .9);
+        box-shadow: inset 0 0 10px 0 rgba(#fff, 1);
+
+        z-index: 1000;
+
+        background: rgba(#fff, .5);
+    }
+
+    div.files-block.page-wrapper.content-block
+    {
+        position: fixed;
+        z-index: 2000;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+        overflow-y: auto;
+
+        background: rgba(#fff, .93);
+        backdrop-filter: blur(10px);
+
+        div.files-list
+        { background: transparent; }
     }
 }

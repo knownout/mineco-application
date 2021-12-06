@@ -34,6 +34,9 @@ namespace PageWrapper
 
         /** Fires when page fully loaded (will not fire if asyncContent throw exception) */
         onLoadComplete? (): void;
+
+        /** If true, automatic vertical centring will be disabled */
+        disableVerticalCentering?: boolean;
     }
 
     export interface State
@@ -69,7 +72,7 @@ namespace PageWrapper
 export default class PageWrapper extends React.PureComponent<PageWrapper.Properties, PageWrapper.State>
 {
     state: PageWrapper.State = {
-        pageCenteringState: true,
+        pageCenteringState: !this.props.disableVerticalCentering,
         pageHorizontalCenteringState: true,
 
         pageLoadingException: false,
@@ -98,11 +101,11 @@ export default class PageWrapper extends React.PureComponent<PageWrapper.Propert
         const { offsetHeight, offsetWidth, scrollHeight, scrollWidth } = this.pageWrapper.current;
 
         // If element higher than view, disable centering
-        if (scrollHeight > offsetHeight && this.state.pageCenteringState)
+        if (scrollHeight > offsetHeight && this.state.pageCenteringState && !this.props.disableVerticalCentering)
             this.setState({ pageCenteringState: false });
 
         // ... otherwise, enable content centering
-        else if (scrollHeight <= offsetHeight && !this.state.pageCenteringState)
+        else if (scrollHeight <= offsetHeight && !this.state.pageCenteringState && !this.props.disableVerticalCentering)
             this.setState({ pageCenteringState: true });
 
         // Same for width

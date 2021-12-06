@@ -15,24 +15,6 @@ export type TMaterialUpdateFunction = (materialData: Partial<Material.Full["data
  */
 export async function useMaterial (identifier: string): Promise<[ Material.Full, TMaterialUpdateFunction, string[] ]>
 {
-    // Body for the material full data request
-    const materialRequestBody = new Shared.RequestBody({
-        [Requests.TypesList.Action]: Requests.ActionsList.getFullMaterial,
-        [Requests.TypesList.DataIdentifier]: identifier
-    });
-
-    // Require full material data from the server
-    const result = await fetch(Shared.defaultPathsList.request, materialRequestBody.postFormData)
-        .then(res => res.json()) as Requests.RequestResult<Material.Full>;
-
-    const tagsListResult = await fetch(Shared.defaultPathsList.request, new RequestBody({
-        [Requests.TypesList.Action]: Requests.ActionsList.getTagsList
-    }).postFormData).then(res => res.json()) as Requests.RequestResult<string[]>;
-
-    // If response negative, throw fetch error
-    if (!tagsListResult.success) throw new Shared.FetchError(result.meta.toString());
-    if (!result.success) throw new Shared.FetchError(result.meta.toString());
-
     // Material update function
     const setMaterial = async (materialData: Partial<Material.Full["data"] & { content: string }>) =>
     {
@@ -58,6 +40,41 @@ export async function useMaterial (identifier: string): Promise<[ Material.Full,
         // Return request response
         return await fetch(Shared.defaultPathsList.request, requestBody.postFormData).then(res => res.json());
     };
+
+    const tagsListResult = await fetch(Shared.defaultPathsList.request, new RequestBody({
+        [Requests.TypesList.Action]: Requests.ActionsList.getTagsList
+    }).postFormData).then(res => res.json()) as Requests.RequestResult<string[]>;
+
+    // If response negative, throw fetch error
+    if (!tagsListResult.success) throw new Shared.FetchError(tagsListResult.meta.toString());
+
+    if (identifier === "new")
+    {
+        return [ {
+            content: {},
+            data: {
+                identifier: "new",
+                short: "",
+                pinned: "0",
+                title: "",
+                tags: "",
+                time: Date.now().toString(),
+                preview: "null"
+            }
+        }, setMaterial, tagsListResult.meta ];
+    }
+
+    // Body for the material full data request
+    const materialRequestBody = new Shared.RequestBody({
+        [Requests.TypesList.Action]: Requests.ActionsList.getFullMaterial,
+        [Requests.TypesList.DataIdentifier]: identifier
+    });
+
+    // Require full material data from the server
+    const result = await fetch(Shared.defaultPathsList.request, materialRequestBody.postFormData)
+        .then(res => res.json()) as Requests.RequestResult<Material.Full>;
+
+    if (!result.success) throw new Shared.FetchError(result.meta.toString());
 
     return [ result.meta as Material.Full, setMaterial, tagsListResult.meta ];
 }

@@ -10,13 +10,20 @@ import { defaultPathsList, RequestBody, requireCachedAccountData } from "../../.
 import { Requests } from "../../../shared/shared-types";
 import CacheController, { CacheKeys } from "../../../shared/cache-controller";
 
+interface IFilesBlockProperties
+{
+    imagesOnly?: boolean,
+
+    onFileEntryClick? (directoryKey: string, fileKey: string): void
+}
+
 /**
  * Action block for display and modify
  * files stored in user content storage
  *
  * @author re-knownout "knownOut" knownout@hotmail.com
  */
-export default function FilesBlock ()
+export default function FilesBlock (props: IFilesBlockProperties)
 {
     const [ filesList, setFilesList ] = React.useState<{ [key: string]: DirectoryEntry }>();
 
@@ -30,7 +37,8 @@ export default function FilesBlock ()
 
         // Require files list from server
         const filesList = await fetch(defaultPathsList.request, new RequestBody({
-            [Requests.TypesList.Action]: Requests.ActionsList.getFilesList,
+            [Requests.TypesList.Action]: props.imagesOnly === true ? Requests.ActionsList.getImagesList
+                : Requests.ActionsList.getFilesList,
             [Requests.TypesList.AccountLogin]: accountData.login,
             [Requests.TypesList.AccountHash]: accountData.hash
         }).postFormData)
@@ -64,6 +72,7 @@ export default function FilesBlock ()
     return <PageWrapper className="content-block files-block" asyncContent={ updateFilesList }>
         <FileUploader endpoint={ defaultPathsList.request } onUpdate={ updateFilesList } />
         { filesList && <FilesList filesList={ filesList } reverse={ true } onAccordionChange={ onAccordionChange }
-                                  updateFilesList={ updateFilesList } /> }
+                                  updateFilesList={ updateFilesList }
+                                  onClick={ props.onFileEntryClick } /> }
     </PageWrapper>;
 }
