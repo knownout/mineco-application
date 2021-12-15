@@ -1,13 +1,11 @@
 /**
  * Requests types
  */
-export namespace Requests
-{
+export namespace Requests {
     /**
      * List of all available for Action request entry values
      */
-    export enum ActionsList
-    {
+    export enum ActionsList {
         /** Get all tags from database */
         getTagsList,
 
@@ -85,6 +83,7 @@ export namespace Requests
         UpdateTime: "Update:Time",
         UpdateTags: "Update:Tags",
         UpdateShort: "Update:Short",
+        UpdatePreview: "Update:Preview",
 
         UploadFileToken: "24DE53B2C0A9E15844AE9B37E9B52EC8"
     };
@@ -92,8 +91,7 @@ export namespace Requests
     /**
      * Result of the request to the server (response)
      */
-    export interface RequestResult<T = any>
-    {
+    export interface RequestResult<T = any> {
         success: boolean
         meta: T
     }
@@ -102,11 +100,9 @@ export namespace Requests
 /**
  * Namespace for the material-like objects
  */
-export namespace Material
-{
+export namespace Material {
     /** Internal interface for core properties of the material preview data */
-    interface RawCore<T = string>
-    {
+    interface RawCore<T = string> {
         title: T
         tags: T
         time: T
@@ -114,37 +110,32 @@ export namespace Material
     }
 
     /** Raw material preview data from server (need to be processed) */
-    export interface PreviewRaw<T = string> extends RawCore<T>
-    {
+    export interface PreviewRaw<T = string> extends RawCore<T> {
         identifier: T
         short: T
         pinned: T
     }
 
     /** Full material data (metadata and content) */
-    export interface Full<T = PreviewRaw>
-    {
+    export interface Full<T = PreviewRaw> {
         content: { [key: string]: any }
         data: T
     }
 
     /** Processed material preview data */
-    export interface Preview extends Omit<PreviewRaw, "tags" | "time" | "pinned">
-    {
+    export interface Preview extends Omit<PreviewRaw, "tags" | "time" | "pinned"> {
         tags: string[]
         time: number
         pinned: boolean
     }
 
     /** Material preview data with stub property for image lazy-load */
-    export interface LazyPreview extends Preview
-    {
+    export interface LazyPreview extends Preview {
         stub: string
     }
 
     /** Request result, that will be returned from server after material update */
-    export interface AffectResult extends PreviewRaw<boolean | null>
-    {
+    export interface AffectResult extends PreviewRaw<boolean | null> {
         content: boolean | null
     }
 }
@@ -152,8 +143,7 @@ export namespace Material
 /**
  * User account data interface
  */
-export interface IAccountData
-{
+export interface IAccountData {
     /** User name (not login) */
     name: string
 
@@ -167,8 +157,7 @@ export interface IAccountData
 /**
  * Interface for user account data prepared for authentication
  */
-export interface IHashedAccountData
-{
+export interface IHashedAccountData {
     /** User login */
     login: string
 

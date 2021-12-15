@@ -1,6 +1,6 @@
 import { Material, Requests } from "../../../shared/shared-types";
 import * as Shared from "../../../shared/shared-content";
-import { RequestBody } from "../../../shared/shared-content";
+import {generateMaterialIdentifier, RequestBody} from "../../../shared/shared-content";
 
 export type TMaterialUpdateFunction = (materialData: Partial<Material.Full["data"] & { content: string }>) =>
     Promise<Requests.RequestResult<Material.AffectResult>>;
@@ -53,7 +53,7 @@ export async function useMaterial (identifier: string): Promise<[ Material.Full,
         return [ {
             content: {},
             data: {
-                identifier: "new",
+                identifier: generateMaterialIdentifier(),
                 short: "",
                 pinned: "0",
                 title: "",
