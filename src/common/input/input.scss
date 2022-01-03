@@ -1,0 +1,84 @@
+div.input-component {
+    width: 100%;
+    transition: 100ms ease all;
+
+    opacity: .85;
+
+    div.wrapper {
+        position: relative;
+        display: block;
+
+        width: 100%;
+        height: 58px;
+        transition: inherit;
+
+        color: darken(#093028, 2%);
+
+        div.placeholder {
+            position: absolute;
+            overflow: hidden;
+            width: 100%;
+
+            height: 100%;
+
+            transition: inherit;
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
+            pointer-events: none;
+            color: rgba(darken(#093028, 2%), .8);
+
+            background: #FFF;
+        }
+
+        input.native-input {
+            width: 100%;
+            height: 100%;
+            transition: inherit;
+
+            color: inherit;
+
+            &::selection {
+                background-color: rgba(lighten(#237A57, 40%), .6);
+            }
+        }
+    }
+
+    div.icon-holder {
+        font-size: 20px;
+        width: 58px;
+
+        min-width: 58px;
+        height: 58px;
+
+        min-height: 58px;
+        transition: inherit;
+
+        color: lighten(#093028, 10%);
+        background: #FFF;
+
+        i {
+            margin-top: 2px;
+        }
+    }
+
+    &.focus, &.value {
+        opacity: .9;
+
+        div.wrapper, div.icon-holder {
+            box-shadow: 0 0 0 3px rgba(lighten(#237A57, 40%), .6);
+        }
+
+        div.wrapper div.placeholder {
+            font-size: 12px;
+            padding-top: 10px;
+            padding-bottom: 30px;
+            background: transparent;
+        }
+
+        div.wrapper input.native-input {
+            padding-top: 26px;
+            padding-bottom: 14px;
+        }
+    }
+}

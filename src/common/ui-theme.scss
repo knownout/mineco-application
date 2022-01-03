@@ -1,0 +1,237 @@
+/// I dont want to use tailwind (cuz' tailwind >2.0.1 not supported with WebStorm),
+/// so i write my own css styles library
+
+/// This thing must be used with PurgeCSS webpack plugin
+
+.ui.container {
+    position: absolute;
+    display: grid;
+
+    top: 0;
+    left: 0;
+
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    place-items: center;
+
+    .ui.content-wrapper {
+        position: relative;
+        display: block;
+
+        overflow: hidden;
+        overflow-y: auto;
+
+        width: fit-content;
+        height: fit-content;
+        max-height: 100%;
+    }
+
+    .ui {
+        &.flex {
+            display: flex;
+            flex-direction: column;
+
+            &.center { align-items: center; justify-content: center; }
+
+            &.center-jc { justify-content: center; }
+
+            &.center-ai { align-items: center; }
+
+            &.gap { gap: 10px; }
+
+            &.gap-15 { gap: 15px; }
+
+            &.gap-5 { gap: 5px; }
+
+            &.row { flex-direction: row; }
+
+            &.column { flex-direction: column; }
+
+            &.wrap { flex-wrap: wrap; }
+
+            &.no-wrap { flex-wrap: nowrap; }
+        }
+
+        &.grid {
+            display: grid;
+
+            &.center { place-items: center; }
+        }
+
+        &.margin { margin: 10px 0; }
+
+        &.margin-15 { margin: 15px 0; }
+
+        &.margin-5 { margin: 5px 0; }
+
+        &.padding { padding: 10px; }
+
+        &.padding-15 { padding: 15px; }
+
+        &.padding-20 { padding: 20px; }
+
+        &.padding-5 { padding: 5px; }
+
+        &.border-radius-10 { border-radius: 10px; }
+
+        &.border-round { border-radius: 50%; }
+
+        &.optimize {
+            &:last-child { margin-bottom: 0; }
+
+            &:first-child { margin-top: 0; }
+        }
+
+        &.bg-white { background: #FFF; }
+
+        &.color-white { color: #FFF; }
+
+        &.limit-380 {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        &.fz-14 { font-size: 14px; }
+
+        &.fz-12 { font-size: 12px; }
+
+        &.fz-24 { font-size: 24px; }
+
+        &.fz-20 { font-size: 20px; }
+
+        &.bg-gradient { background: linear-gradient(45deg, #093028, #237A57); }
+
+        &.transition { transition: 100ms ease all; }
+
+        &.interactive {
+            cursor: pointer;
+            transition: 100ms ease all;
+
+            color: darken(#093028, 2%);
+
+            &:hover { opacity: .85; }
+
+            &:focus, &:active, &.focus, &.value {
+                opacity: .9;
+                box-shadow: 0 0 0 3px rgba(lighten(#237A57, 40%), .6);
+            }
+
+            &.disabled {
+                opacity: .45;
+                box-shadow: none;
+            }
+        }
+
+        &.clean {
+            font-style: normal;
+            text-decoration: none;
+            border: none;
+            outline: none;
+        }
+
+        &.loading-spinner {
+            position: relative;
+            display: block;
+
+            $size: 16px;
+
+            width: $size;
+            min-width: $size;
+
+            height: $size;
+            min-height: $size;
+            margin: 0;
+
+            padding: 0;
+            animation: 800ms rotate infinite ease;
+
+            border: 3px solid transparent;
+            border-top-color: #FFF;
+
+            border-radius: 50%;
+            background: transparent;
+            place-items: center;
+
+            &.dark {
+                border-top-color: #093028;
+
+                &::after {
+                    border-bottom-color: #093028;
+                    border-left-color: #093028;
+                }
+            }
+
+            &::after {
+                all: inherit;
+                position: absolute;
+                display: block;
+
+                top: 2px;
+                left: 2px;
+
+                width: calc(100% - 3px);
+                min-width: calc(100% - 3px);
+
+                height: calc(100% - 3px);
+                min-height: calc(100% - 3px);
+
+                margin: 0;
+
+                padding: 0;
+
+                content: "";
+                animation-duration: 1s;
+
+                border-top-color: transparent;
+                border-bottom-color: #FFF;
+            }
+
+            @keyframes rotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        }
+
+        &.title {
+            font-size: 38px;
+            font-weight: 700;
+
+            opacity: 1;
+        }
+
+        &.opacity-100 { opacity: 1; }
+
+        &.opacity-95 { opacity: .95; }
+
+        &.opacity-85 { opacity: .85; }
+
+        &.opacity-75 { opacity: .75; }
+
+        &.opacity-65 { opacity: .65; }
+
+        &.opacity-50 { opacity: .5; }
+
+        &.sub-title { opacity: .75; }
+
+        .link {
+            padding: 3px;
+            transition: 100ms ease all;
+
+            color: lighten(#237A57, 40%);
+            border-radius: 3px;
+            background: rgba(lighten(#237A57, 45%), .2);
+
+            &:hover {
+                background: rgba(lighten(#237A57, 45%), .3);
+            }
+        }
+
+        &.disabled {
+            pointer-events: none;
+            opacity: .45;
+            box-shadow: none;
+        }
+    }
+}

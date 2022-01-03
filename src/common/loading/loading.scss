@@ -1,0 +1,21 @@
+div.loading-component {
+    position: fixed;
+    z-index: 100;
+
+    transition: 300ms ease all;
+    pointer-events: none;
+
+    opacity: 0;
+
+    i.ui.loading-spinner.big {
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+        min-height: 32px;
+    }
+
+    &.display {
+        pointer-events: all;
+        opacity: 1;
+    }
+}

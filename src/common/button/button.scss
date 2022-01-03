@@ -1,0 +1,49 @@
+button.button-component {
+    transition: 300ms ease all;
+
+    i.button-icon {
+        font-size: 14px;
+        overflow: hidden;
+
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        transition: inherit;
+        transition-delay: 50ms;
+        opacity: 1;
+    }
+
+    i.ui.loading-spinner.dark {
+        margin-right: 15px;
+        transition: inherit;
+        transition-delay: 50ms;
+    }
+
+    // Hide loading spinner when not performing async content
+    &:not(.waiting) {
+        i.ui.loading-spinner.dark {
+            overflow: hidden;
+            width: 0;
+
+            min-width: 0;
+            height: 0;
+            min-height: 0;
+            margin-right: 0;
+            transition: inherit;
+            opacity: 0;
+            border-width: 0;
+        }
+    }
+
+    &.waiting {
+
+        i.button-icon {
+            font-size: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+            opacity: 0;
+        }
+
+    }
+}

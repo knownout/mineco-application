@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Control panel" pattern="file[mineco-application]:src/control-panel//*" />
+</component>
