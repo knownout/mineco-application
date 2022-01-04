@@ -25,6 +25,10 @@ export default function AuthForm () {
 
     const [ waitForResponse, setWaitForResponse ] = React.useState(false);
 
+    const loginInputRef = React.useRef<HTMLInputElement>(null);
+    const passwordInputRef = React.useRef<HTMLInputElement>(null);
+    const authButtonRef = React.useRef<HTMLButtonElement>(null);
+
     // Wait for recaptcha and try to verify account with cached data (if exist)
     React.useEffect(() => {
         const interval = setInterval(async () => {
@@ -54,7 +58,8 @@ export default function AuthForm () {
         React.useState<string>()
     ];
 
-    const authButtonEnabled = !formLoading && !Boolean(fromLoadingError) && login && password && login.length > 3
+    const authButtonEnabled = !formLoading && !Boolean(fromLoadingError) && !waitForResponse && login && password
+        && login.length > 3
         && password.length > 3;
 
     // const ref = React.useRef<HTMLDivElement>(null);
@@ -85,6 +90,21 @@ export default function AuthForm () {
 
     }
 
+    function returnHandler (inputName: "password" | "login") {
+        type T = React.RefObject<HTMLInputElement>;
+        const process = (ref: T, selfRef: T, value?: string) => {
+            if (selfRef.current && selfRef.current.value.length <= 3) return;
+
+            if (value && value.length > 3 && authButtonRef.current) {
+                authButtonRef.current.focus();
+                authButtonRef.current.click();
+            } else ref.current && ref.current.focus();
+        };
+
+        if (inputName === "password") process(loginInputRef, passwordInputRef, login);
+        else process(passwordInputRef, loginInputRef, password);
+    }
+
     return <div className="auth-form ui container">
         <Loading display={ formLoading } error={ fromLoadingError } />
 
@@ -102,11 +122,13 @@ export default function AuthForm () {
                 { /* Input elements */ }
                 <Input placeholder="Ваше имя пользователя" spellCheck="false" maxLength={ 30 } mask={ [
                     commonMasks.numbersLatinOnly
-                ] } icon="bi bi-person-bounding-box" onInput={ value => setLogin(value) } />
+                ] } icon="bi bi-person-bounding-box" onInput={ value => setLogin(value) } element={ loginInputRef }
+                       onReturn={ () => returnHandler("login") } />
 
                 <Input placeholder="Ваш пароль" spellCheck="false" type="password" maxLength={ 30 } mask={ [
                     commonMasks.latinCyrillicWithSymbols
-                ] } icon="bi bi-key-fill" onInput={ value => setPassword(value) } />
+                ] } icon="bi bi-key-fill" onInput={ value => setPassword(value) } element={ passwordInputRef }
+                       onReturn={ () => returnHandler("password") } />
             </div>
             <div className="ui flex row wrap fz-12 opacity-65 center-ai gap-5">
                 <span className="hint-text">Форма защищена от спама при помощи Google reCAPTCHA</span>
@@ -115,7 +137,8 @@ export default function AuthForm () {
             </div>
 
             {/* Authentication button */ }
-            <Button icon="bi bi-hand-index-fill" onAsyncClick={ authenticationHandler } disabled={ !authButtonEnabled }>
+            <Button icon="bi bi-hand-index-fill" onAsyncClick={ authenticationHandler } disabled={ !authButtonEnabled }
+                    element={ authButtonRef }>
                 Войти в аккаунт
             </Button>
         </div>

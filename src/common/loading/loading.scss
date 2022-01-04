@@ -8,10 +8,11 @@ div.loading-component {
     opacity: 0;
 
     i.ui.loading-spinner.big {
-        width: 32px;
-        min-width: 32px;
-        height: 32px;
-        min-height: 32px;
+        overflow: hidden;
+        width: 48px;
+        min-width: 48px;
+        height: 48px;
+        min-height: 48px;
     }
 
     &.display {

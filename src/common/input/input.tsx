@@ -18,7 +18,7 @@ export default function Input (props: ExtendedInputProps) {
 
     // Separate native props from custom props
     const {
-        icon, mask, placeholder, children, disabled, className,
+        icon, mask, placeholder, children, disabled, className, element,
         onInput, onFocusChange, onKeyPress, onReturn,
         ...nativeProps
     } = props;
@@ -85,7 +85,7 @@ export default function Input (props: ExtendedInputProps) {
             <input type="text" className="native-input ui padding-20 border-radius-10 clean" { ...nativeProps }
                    onFocus={ focusChangeHandler } onBlur={ focusChangeHandler }
                    onInput={ inputHandler } onKeyPress={ keyPressHandler }
-                   defaultValue={ children }
+                   defaultValue={ children } ref={ element }
             />
         </div>
     </div>;

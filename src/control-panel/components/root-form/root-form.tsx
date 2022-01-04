@@ -16,10 +16,16 @@ export default function RootForm () {
     const [ fromLoadingError, setFormLoadingError ] = React.useState<string>();
 
     useEffect(() => {
-        verifyAuthentication().then(result => {
-            if (!result) window.location.href = appRoutesList.auth;
-            else setFormLoading(false);
-        }).catch(setFormLoadingError);
+        const interval = setInterval(() => {
+            if ("grecaptcha" in window) {
+                clearInterval(interval);
+
+                verifyAuthentication().then(result => {
+                    if (!result) window.location.href = appRoutesList.auth;
+                    else setFormLoading(false);
+                }).catch(setFormLoadingError);
+            }
+        }, 300);
     }, [ "verification" ]);
 
     return <div className="root-form ui container bg-gradient">

@@ -17,6 +17,8 @@ export interface ButtonProps {
     className?: string;
     disabled?: boolean;
 
+    element?: React.RefObject<HTMLButtonElement>;
+
     // Add-on over native onClick event
     onClick? (event: React.MouseEvent<HTMLButtonElement>): void;
 

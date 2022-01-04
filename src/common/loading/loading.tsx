@@ -25,7 +25,8 @@ export default function Loading (props: { children?: string, display: boolean, e
                     Попробуйте немного подождать и перезагрузить страницу. Если данная ошибка появляется снова, обратитесь
                     к администратору
                 </span>
-                <span className="error-text ui opacity-50 margin optimize">{ "message" in props.error
+                <span className="error-text ui opacity-50 margin optimize">{ (typeof props.error === "object"
+                    && "message" in props.error)
                     ? props.error.message
                     : String(props.error) }</span>
             </div> }

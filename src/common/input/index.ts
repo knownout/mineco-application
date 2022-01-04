@@ -27,6 +27,8 @@ export interface InputProps<T = HTMLInputElement> {
     // Class name of the root component element
     className?: string;
 
+    element?: React.RefObject<HTMLInputElement>
+
     // Add-on over native onInput event
     onInput? (value: string, element: T, event: React.FormEvent<T>): void;
 

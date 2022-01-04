@@ -1,12 +1,16 @@
 div.notifications-holder.ui.container.flex.padding.gap {
+    z-index: 110;
     align-items: flex-start;
     justify-content: flex-end;
+    pointer-events: none;
 
     div.notification {
+        z-index: 111;
         max-width: 280px;
         cursor: pointer;
         transition: 100ms ease all;
-        opacity: .65;
+        pointer-events: all;
+        opacity: .85;
         color: darken(#093028, 2%);
 
         &.hidden {
@@ -16,6 +20,6 @@ div.notifications-holder.ui.container.flex.padding.gap {
             opacity: 0;
         }
 
-        &:hover { opacity: .75; }
+        &:hover { opacity: .95; }
     }
 }
