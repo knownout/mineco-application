@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import AuthForm from "./components/auth-form";
+import RootForm from "./components/root-form";
 
 /**
  * Control panel root component
@@ -21,7 +22,7 @@ export default class ControlPanel extends React.PureComponent {
             </Helmet>
 
             <Routes>
-                <Route path="/" element={ <div>CMS Root</div> } />
+                <Route path="/" element={ <RootForm /> } />
                 <Route path="/auth" element={ <AuthForm /> } />
             </Routes>
         </React.Fragment>;

@@ -1,0 +1,21 @@
+div.notifications-holder.ui.container.flex.padding.gap {
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    div.notification {
+        max-width: 280px;
+        cursor: pointer;
+        transition: 100ms ease all;
+        opacity: .65;
+        color: darken(#093028, 2%);
+
+        &.hidden {
+            width: 0;
+            height: 0;
+            padding: 0;
+            opacity: 0;
+        }
+
+        &:hover { opacity: .75; }
+    }
+}
