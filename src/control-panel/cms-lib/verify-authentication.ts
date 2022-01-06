@@ -49,7 +49,7 @@ export default async function verifyAuthentication (login?: string, password?: s
     // Require account verification through server
     const response = await fetch(makeRoute(serverRoutesList.auth), formData.fetchObject)
         .then(response => response.json()) as Response<Account.Response>;
-
+    
     // If response successful, cache account data
     if (response.success) cacheController.setItem<Account.Response>(
         cacheKeysList.accountData, response.responseContent as Account.Response

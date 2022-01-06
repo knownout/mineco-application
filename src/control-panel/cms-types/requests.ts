@@ -13,7 +13,23 @@ export interface Response<T = any> {
 const RequestOptions = {
     recaptchaToken: "recaptchaToken",
     accountLogin: "accountLogin",
-    accountHash: "accountHash"
+    accountHash: "accountHash",
+    uploadFile: "uploadFile"
+};
+
+export const MaterialSearchRequests = {
+    title: "find:materialTitle",
+    description: "find:materialDescription",
+    tags: "find:materialTags",
+    datetimeFrom: "find:materialDatetimeFrom",
+    datetimeTo: "find:materialDatetimeTo",
+    identifier: "find:materialIdentifier",
+    limit: "find:limit",
+    content: "find:materialContent"
+};
+
+export const FileSearchRequests = {
+    filename: "find:fileName"
 };
 
 export { RequestOptions };

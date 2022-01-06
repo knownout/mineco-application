@@ -88,6 +88,7 @@ export default function AuthForm () {
             // Show error message if auth failed
         } else notify.add("Не удалось войти в аккаунт");
 
+        setWaitForResponse(false);
     }
 
     function returnHandler (inputName: "password" | "login") {

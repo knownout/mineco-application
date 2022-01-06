@@ -7,7 +7,10 @@ export const serverRoot = window.location.protocol + "//" + window.location.host
  * Server routes list
  */
 export const serverRoutesList = {
-    auth: "/app/auth"
+    auth: "/app/auth",
+    searchMaterials: "/app/materials/search",
+    searchFiles: "/app/files/search",
+    uploadFile: "/app/files/upload"
 };
 
 /**

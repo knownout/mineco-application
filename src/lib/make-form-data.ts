@@ -29,6 +29,9 @@ export default class MakeFormData {
      */
     public add (items: { [key: string]: any }) {
         Object.entries(items).forEach(([ key, value ]) => {
+            if (!value || typeof value === "string" && value.trim().length == 0)
+                return;
+
             if (value instanceof File) this.formData.append(key, value);
             else this.formData.set(key, String(value));
         });

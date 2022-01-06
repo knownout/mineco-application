@@ -17,7 +17,7 @@ export default function Loading (props: { children?: string, display: boolean, e
         <div className="ui content-wrapper padding">
             { !props.error && <i className={ classNames("ui loading-spinner", { big: !props.children }) } /> }
             { !props.error && props.children && <span className="text">{ props.children }</span> }
-            { props.error && <div className="error-form ui flex column color-white limit-380">
+            { props.error && <div className="error-form ui flex column limit-380">
                 <span className="ui title margin optimize">
                     Произошла ошибка
                 </span>

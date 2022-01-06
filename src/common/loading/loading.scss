@@ -7,7 +7,9 @@ div.loading-component {
 
     opacity: 0;
 
-    background: #CCC;
+    color: #333;
+    background: rgba(#fff, .55);
+    backdrop-filter: blur(6px);
 
     i.ui.loading-spinner.big {
         overflow: hidden;

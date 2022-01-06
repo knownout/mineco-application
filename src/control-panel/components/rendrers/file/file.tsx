@@ -6,6 +6,7 @@ interface FileProps {
 }
 
 export default function File (props: FileProps) {
+    if (!props.filename) return null;
     const filenameArray = props.filename.split("."),
         filename = filenameArray.slice(0, -1).join("."),
         extension = filenameArray.slice(-1)[0];
