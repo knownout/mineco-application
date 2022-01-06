@@ -39,7 +39,7 @@ div.input-component {
             color: inherit;
 
             &::selection {
-                background-color: rgba(lighten(#237A57, 40%), .6);
+                background-color: rgba(#0066FF, .2);
             }
         }
     }
@@ -54,7 +54,7 @@ div.input-component {
         min-height: 58px;
         transition: inherit;
 
-        color: lighten(#093028, 10%);
+        color: #333;
         background: #FFF;
 
         i {
@@ -80,7 +80,7 @@ div.input-component {
 
     &.focus {
         div.wrapper, div.icon-holder {
-            box-shadow: 0 0 0 3px rgba(lighten(#237A57, 40%), .6);
+            box-shadow: 0 0 0 3px rgba(#0066FF, .2);
         }
     }
 }

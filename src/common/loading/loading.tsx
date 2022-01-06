@@ -8,7 +8,7 @@ import "./loading.scss";
  * @constructor
  */
 export default function Loading (props: { children?: string, display: boolean, error?: any }) {
-    const rootClassName = classNames("loading-component ui container bg-gradient", {
+    const rootClassName = classNames("loading-component ui container", {
         display: props.display,
         error: Boolean(props.error)
     });

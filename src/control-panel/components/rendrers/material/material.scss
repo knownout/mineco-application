@@ -1,0 +1,74 @@
+div.material, div.file {
+    cursor: pointer;
+
+    transition: 100ms ease all;
+    opacity: .8;
+
+    border: 1px solid transparent;
+    border-bottom-color: rgba(#111, .2);
+
+    background: #EEE;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:first-child {
+        border-top-color: transparent;
+        border-radius: 10px 10px 0 0;
+    }
+
+    &:last-child {
+        border-bottom-color: transparent;
+        border-radius: 0 0 10px 10px;
+    }
+
+    &:first-child:last-child {
+        border-color: transparent;
+        border-radius: 10px;
+    }
+}
+
+div.material {
+    div.material-header {
+        position: relative;
+        align-items: center;
+        height: fit-content;
+
+        img.material-image {
+            width: auto;
+            max-width: 40%;
+            height: 48px;
+            box-shadow: 0 0 20px 0 rgba(#000, .15);
+        }
+
+        span.material-title {
+            position: relative;
+            display: block;
+
+            font-weight: 700;
+            height: fit-content;
+
+            color: #333;
+        }
+    }
+
+    div.material-description {
+        font-size: 14px;
+        margin-top: 10px;
+
+        opacity: .75;
+    }
+
+    span.material-date {
+        position: relative;
+        display: block;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        width: 100%;
+        margin-top: 10px;
+        opacity: .45;
+    }
+}

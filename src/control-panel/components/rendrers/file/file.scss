@@ -1,0 +1,20 @@
+div.file {
+    div.filetype {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 10px;
+
+        span.ext-icon {
+            font-size: 12px;
+            padding: 2px 4px;
+            opacity: .75;
+
+            border-radius: 4px;
+            background: rgba(#000, .2);
+        }
+
+        span.ext-description {
+            opacity: .75;
+        }
+    }
+}

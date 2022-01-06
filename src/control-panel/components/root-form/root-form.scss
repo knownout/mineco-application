@@ -1,3 +1,124 @@
 div.root-form {
-    background: linear-gradient(45deg, #093028, #237A57);
+    overflow: hidden;
+    background: #CCC;
+
+    div.content-wrapper.ui.flex.row {
+        overflow: hidden;
+        width: 100%;
+
+        height: 100%;
+
+        div.editor-navigation-panel.ui.flex.column {
+            left: 0;
+
+            overflow: hidden;
+            overflow-y: auto;
+            width: 380px;
+            min-width: 380px;
+
+            max-width: 380px;
+            height: 100%;
+            transition: 200ms ease all;
+
+
+            background: rgba(#DDD, .3);
+            backdrop-filter: blur(6px);
+
+            div[role="tablist"] {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 10px;
+
+                button[role="tab"] {
+                    overflow: hidden;
+                    width: 100%;
+
+                    height: 58px;
+                    padding: 20px;
+
+                    cursor: pointer;
+
+                    transition: 100ms ease all;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    opacity: .5;
+                    border: none;
+                    //border-radius: 10px;
+                    background: rgba(#fff, 1);
+
+                    &:last-child {
+                        border-radius: 0 10px 10px 0;
+                    }
+
+                    &:first-child {
+                        border-radius: 10px 0 0 10px;
+                    }
+
+                    &:hover {
+                        background: rgba(#eee, 1);
+                    }
+
+                    &[aria-selected="true"] {
+                        pointer-events: none;
+                        opacity: 1;
+                        color: rgba(darken(#0050C9, 10%), .8);
+                        background: rgba(#0066FF, .16);
+                    }
+                }
+            }
+
+            div.resulting-items-list {
+                margin-top: 10px;
+            }
+        }
+
+        div.editor-edit-view {
+            width: 100%;
+            transition: 200ms ease all;
+        }
+
+        button.show-mobile-menu {
+            position: fixed;
+            display: none;
+
+            right: 30px;
+            bottom: 30px;
+
+            font-size: 28px;
+
+            width: 48px;
+
+            height: 48px;
+            padding-top: 2px;
+            transition: 100ms ease all;
+
+            border-radius: 50%;
+
+            place-items: center;
+
+            &:not(.mobile-hidden) {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            div.editor-navigation-panel.ui.flex.column {
+                position: absolute;
+                z-index: 120;
+                width: 100%;
+                min-width: 100%;
+
+                max-width: 100%;
+
+                &.mobile-hidden {
+                    left: calc(-100%);
+                }
+            }
+
+            button.show-mobile-menu {
+                display: grid;
+                z-index: 130;
+            }
+        }
+    }
 }
