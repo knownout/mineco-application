@@ -1,0 +1,42 @@
+div.material-object, div.file-object, div.variable-object {
+    line-height: 20px;
+    cursor: pointer;
+    transition: 100ms ease all;
+
+    opacity: .75;
+    background: #EEE;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:first-child { border-radius: 10px 10px 0 0; }
+
+    &:last-child { border-radius: 0 0 10px 10px }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid rgba(#000, .1);
+    }
+
+    &:first-child:last-child {
+        border-radius: 10px;
+    }
+}
+
+div.material-object {
+    img.preview-image {
+        position: relative;
+        display: block;
+
+        max-width: 30%;
+        height: auto;
+        max-height: 100px;
+
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(#000, .08);
+    }
+
+    div.material-additional-data span {
+        font-weight: 700;
+    }
+}

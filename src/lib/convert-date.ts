@@ -1,9 +1,18 @@
+/**
+ * Function for converting javascript Date object
+ * to the readable date
+ *
+ * @param date javascript Date object
+ * @param time if false, time will not be rendered
+ */
 export default function convertDate (date: Date, time = true) {
+    // get Date object properties in specific format
     const [ day, month, year, hours, minutes ] = [
         date.getDate(), date.getMonth(), date.getFullYear(),
         date.getHours().toString().padStart(2, "0"), date.getMinutes().toString().padStart(2, "0")
     ];
 
+    // Localized month names
     const monthsNameList = [
         "января",
         "февраля",

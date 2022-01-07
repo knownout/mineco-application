@@ -6,6 +6,7 @@ div.notifications-holder.ui.container.flex.padding.gap {
 
     div.notification {
         z-index: 111;
+        overflow: hidden;
         max-width: 280px;
         cursor: pointer;
         transition: 100ms ease all;

@@ -8,9 +8,13 @@ export const serverRoot = window.location.protocol + "//" + window.location.host
  */
 export const serverRoutesList = {
     auth: "/app/auth",
+
     searchMaterials: "/app/materials/search",
     searchFiles: "/app/files/search",
-    uploadFile: "/app/files/upload"
+    searchVariables: "/app/variables/search",
+
+    uploadFile: "/app/files/upload",
+    getFileContent: "/app/files/preview"
 };
 
 /**

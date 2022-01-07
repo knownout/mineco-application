@@ -1,0 +1,32 @@
+div.initial-view {
+    width: 100%;
+    height: fit-content;
+    min-height: 100%;
+
+    div.view-content-wrapper {
+        width: fit-content;
+    }
+
+    table {
+        border-spacing: 10px;
+
+        td:first-child {
+            font-size: 14px;
+
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+            color: rgba(#000, .8);
+
+            code {
+                padding: 3px;
+                border-radius: 3px;
+                background: rgba(#000, .12);
+            }
+        }
+
+        td:last-child {
+            text-align: left;
+        }
+    }
+}

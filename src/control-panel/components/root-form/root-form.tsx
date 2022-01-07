@@ -1,164 +1,209 @@
 import React from "react";
 
+import { Tab } from "@headlessui/react";
+
+import classNames from "../../../lib/class-names";
+
+import { LoadingWrapper } from "../../../common/loading/loading";
 import Loading from "../../../common/loading";
 
-import verifyAuthentication from "../../cms-lib/verify-authentication";
-import { appRoutesList } from "../../../lib/routes-list";
+import { ItemObject } from "./item-object-renderers/renderers";
+import ItemsList from "./items-list";
 
 import "./root-form.scss";
-import { Tab } from "@headlessui/react";
-import classNames from "../../../lib/class-names";
-import ItemsList from "../items-list";
-import { InitialForm } from "./initial-form";
-import RequestItems, { RequestItemType } from "./request-items";
-import Material from "../rendrers/material";
-import File from "../rendrers/file";
-import uploadFile from "./handlers/upload-file";
+import verifyAuthentication from "../../cms-lib/verify-authentication";
+import CacheController, { cacheKeysList } from "../../../lib/cache-controller";
+import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
+import InitialView from "./view-renderers/initital-view";
+import useRecaptcha from "../../../lib/use-recaptcha";
+import MakeFormData from "../../../lib/make-form-data";
+import { Account } from "../../cms-types/account";
 import Notify from "../../../common/notify";
+import { RequestOptions, Response } from "../../cms-types/requests";
+import Type = ItemObject.Type;
+
 
 interface RootFormState {
-    formLoading: boolean;
-    formLoadingError?: string;
+    formLoaded: boolean;
+    formLoadingError?: unknown;
 
-    mobileMenuState: boolean;
-    waitForResponse: boolean;
+    waitContent: boolean;
+    mobileMenuOpen: boolean;
 
-    itemsType: RequestItemType;
+    itemType: ItemObject.Type;
 
-    itemsList?: JSX.Element | JSX.Element[];
-}
-
-interface MaterialObject {
-    identifier: string;
-    title: string;
-    tags: string;
-    description: string;
-    preview: string;
-    datetime: string;
-}
-
-interface FileObject {
-    identifier: string;
-    filename: string;
+    // Component will update this when there might be a new
+    // content at the server (when file uploaded or something)
+    contentVersion: number;
 }
 
 /**
- * Control panel root component (accessible after authentication)
- * @constructor
+ * Root control panel component (controls)
+ * @inner
  */
 export default class RootForm extends React.PureComponent<{}, RootFormState> {
     public readonly state: RootFormState = {
-        formLoading: true,
-        mobileMenuState: false,
-        waitForResponse: false,
+        formLoaded: false,
 
-        itemsType: RequestItemType.materials
+        waitContent: true,
+        mobileMenuOpen: false,
+
+        itemType: 0,
+        contentVersion: 0
     };
 
-    private readonly notifyRef = React.createRef<HTMLDivElement>();
-    private readonly notify = new Notify(this.notifyRef);
+    private readonly notify = new Notify(React.createRef<HTMLDivElement>());
 
     constructor (props: {}) {
         super(props);
 
-        this.updateItemsList = this.updateItemsList.bind(this);
-        this.initialButtonClickHandler = this.initialButtonClickHandler.bind(this);
+        this.genericButtonClickEventHandler = this.genericButtonClickEventHandler.bind(this);
+        this.componentFileUploadHandler = this.componentFileUploadHandler.bind(this);
     }
 
     componentDidMount () {
         const interval = setInterval(() => {
-            if (!("grecaptcha" in window)) return;
-            clearInterval(interval);
+            if ("grecaptcha" in window) {
+                clearInterval(interval);
 
-            verifyAuthentication().then(result => {
-                if (!result) window.location.href = appRoutesList.auth;
-                else this.setState({ formLoading: false }, () => { this.updateItemsList(); });
-            }).catch(error => this.setState({ formLoadingError: error }));
+                const cacheController = new CacheController(localStorage);
+
+                verifyAuthentication().catch(() => {
+                    cacheController.removeItem(cacheKeysList.accountData);
+                    window.location.href = appRoutesList.auth;
+                }).then(response => {
+                    if (response) return this.setState({ formLoaded: true });
+
+                    cacheController.removeItem(cacheKeysList.accountData);
+                    window.location.href = appRoutesList.auth;
+                });
+            }
         }, 300);
+
     }
 
     render () {
-        const mobileMenuButtonClassName = classNames("ui interactive clean show-mobile-menu", {
-            "mobile-hidden": !this.state.mobileMenuState
-        }), navigationPanelClassName = classNames("editor-navigation-panel ui flex column padding-20", {
-            "mobile-hidden": !this.state.mobileMenuState,
-            waiting: this.state.waitForResponse
+        // Callback for the ItemsList component
+        const setWaitContent = (waitContent: boolean) => this.setState({ waitContent });
+
+        const navMenuClassName = classNames("navigation-menu ui flex column scroll", {
+            wait: this.state.waitContent,
+            "menu-open": this.state.mobileMenuOpen
         });
 
-        return <div className="root-form ui container bg-gradient">
-            <Loading display={ this.state.formLoading } error={ this.state.formLoadingError } />
-            <Notify.Component element={ this.notify.ref } />
-            <div className="content-wrapper ui flex row">
-                <div className={ navigationPanelClassName }>
-                    <div className={ classNames("loading-wrapper ui grid center", {
-                        display: this.state.waitForResponse
-                    }) }>
-                        <i className="ui loading-spinner" />
-                    </div>
+        const viewClassName = classNames("ui content-wrapper flex row scroll", {
+            disabled: this.state.waitContent || !this.state.formLoaded
+        });
 
-                    <Tab.Group onChange={ index => this.setState({ itemsType: index }, this.updateItemsList) }>
-                        <Tab.List>
-                            <Tab>Материалы</Tab>
-                            <Tab>Файлы</Tab>
-                        </Tab.List>
-                        <Tab.Panels>
-                            <Tab.Panel>
-                                <ItemsList.MaterialsList onReturn={ this.updateItemsList }>
-                                    { this.state.itemsList || <span
-                                        className="ui opacity-75">Материалы не найдены</span> }
-                                </ItemsList.MaterialsList>
-                            </Tab.Panel>
-                            <Tab.Panel>
-                                <ItemsList.MaterialsList onReturn={ this.updateItemsList }>
-                                    { this.state.itemsList || <span className="ui opacity-75">Файлы не найдены</span> }
-                                </ItemsList.MaterialsList>
-                            </Tab.Panel>
-                        </Tab.Panels>
-                    </Tab.Group>
-                </div>
-                <div className={ classNames("editor-edit-view ui grid center", {
-                    disabled: this.state.waitForResponse || this.state.formLoading || this.state.formLoadingError
-                }) }>
-                    <InitialForm itemsType={ this.state.itemsType } onClick={ this.initialButtonClickHandler } />
-                </div>
-                <button className={ mobileMenuButtonClassName }
-                        onClick={ () => this.setState({ mobileMenuState: !this.state.mobileMenuState }) }>
-                    <i className="bi bi-three-dots" />
-                </button>
+        // Controls block
+        const controls = <div className="ui content-wrapper flex row">
+            <Notify.Component element={ this.notify.ref } />
+            <div className={ navMenuClassName }>
+                <LoadingWrapper display={ this.state.waitContent } />
+                <Tab.Group onChange={ index => this.setState({ itemType: index }) }>
+                    <Tab.List className="tab-component tabs-list">
+                        <Tab>Материалы</Tab>
+                        <Tab>Файлы</Tab>
+                        <Tab>Другое</Tab>
+                    </Tab.List>
+                    <Tab.Panels className="tab-component tab-panels">
+                        {
+                            [ 0, 1, 2 ].map((type, index) => {
+                                return <Tab.Panel key={ index }>
+                                    <ItemsList type={ type } setWaitContent={ setWaitContent }
+                                               waitContent={ this.state.waitContent }
+                                               contentVersion={ this.state.contentVersion } />
+                                </Tab.Panel>;
+                            })
+                        }
+                    </Tab.Panels>
+                </Tab.Group>
             </div>
+            <div className="item-view ui grid center">
+                <div className={ viewClassName }>
+                    <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
+                                 onGenericButtonClick={ this.genericButtonClickEventHandler } />
+                </div>
+            </div>
+        </div>;
+
+        // Class name for the mobile menu open button
+        const mobileMenuBtnClassName = classNames("mobile-menu-button ui clean interactive border-round", {
+            "menu-open": this.state.mobileMenuOpen
+        });
+
+        return <div className="root-form ui container flex row">
+            <Loading display={ !this.state.formLoaded } error={ this.state.formLoadingError } />
+            { this.state.formLoaded && controls }
+
+            <button className={ mobileMenuBtnClassName }
+                    onClick={ () => this.setState({ mobileMenuOpen: !this.state.mobileMenuOpen }) }>
+                <i className="bi bi-three-dots" />
+            </button>
         </div>;
     }
 
-    private async initialButtonClickHandler () {
-        if (this.state.itemsType == RequestItemType.files) {
-            await uploadFile(waitState => this.setState({ waitForResponse: waitState })).catch(error => {
-                if (error) this.notify.add(error);
-            });
-            await this.updateItemsList();
+    /**
+     * Event handler for the initial view generic button
+     * @param event React MouseEvent
+     */
+    public genericButtonClickEventHandler (event: React.MouseEvent<HTMLButtonElement>) {
+        switch (this.state.itemType) {
+            case Type.materials:
+                break;
+
+            case Type.files:
+                this.componentFileUploadHandler();
+                break;
+
+            default:
+                break;
         }
     }
 
-    private async updateItemsList (searchQuery: string = "") {
-        this.setState({ waitForResponse: true });
+    /**
+     * Method for uploading files to the server
+     */
+    public componentFileUploadHandler () {
+        const cacheController = new CacheController(localStorage);
 
-        const request = new RequestItems(this.state.itemsType);
-        type UnitedObjectType = (MaterialObject | FileObject)[];
+        // Create input file html element
+        const dialog = document.createElement("input");
+        dialog.type = "file";
 
-        const rawItemsList = await request.requestItems<UnitedObjectType>(searchQuery)
-            .catch(error => this.setState({ formLoading: true, formLoadingError: error }));
+        dialog.onchange = async () => {
+            // Abort file uploading if no files provided
+            if (!dialog.files || dialog.files.length != 1) return dialog.remove();
 
-        if (rawItemsList && rawItemsList.success) {
-            const itemsList = (rawItemsList.responseContent as UnitedObjectType)
-                .map((rawItem, index) => {
-                    if (this.state.itemsType === RequestItemType.materials) {
-                        const typedItem = rawItem as MaterialObject;
-                        return <Material { ...typedItem } key={ index }>{ typedItem.description }</Material>;
-                    } else return <File filename={ (rawItem as FileObject).filename } key={ index } />;
+            this.setState({ waitContent: true });
+            new Promise<void>(async (resolve, reject) => {
+                const token = await useRecaptcha().catch(reject);
+
+                // Check if account data exist and get it
+                const accountData = cacheController.getItem<Account.Response>(cacheKeysList.accountData);
+                if (!accountData || !token || !dialog.files)
+                    return reject("Ошибка создания запроса, файл не загружен");
+
+                const formData = new MakeFormData({
+                    [RequestOptions.recaptchaToken]: token,
+                    [RequestOptions.accountLogin]: accountData.login,
+                    [RequestOptions.accountHash]: accountData.hash,
+                    [RequestOptions.uploadFile]: dialog.files[0]
                 });
 
-            this.setState({ itemsList });
-        } else this.setState({ itemsList: undefined });
+                // Send file upload request
+                const response = await fetch(makeRoute(serverRoutesList.uploadFile), formData.fetchObject)
+                    .then(response => response.json())
+                    .catch(reject) as Response<unknown>;
 
-        this.setState({ waitForResponse: false });
+                // Check response
+                if (response.success)
+                    return this.setState({ contentVersion: this.state.contentVersion + 1 }, resolve);
+                else return reject();
+            }).finally(() => this.setState({ waitContent: false }, () => dialog.remove()))
+                .catch(() => this.notify.add("Ошибка загрузки файла на сервер"));
+        };
+
+        dialog.click();
     }
 }

@@ -8,28 +8,46 @@ export interface Response<T = any> {
 }
 
 /**
- * Server requests list
+ * Common server POST requests list
  */
 const RequestOptions = {
     recaptchaToken: "recaptchaToken",
     accountLogin: "accountLogin",
     accountHash: "accountHash",
-    uploadFile: "uploadFile"
+    uploadFile: "uploadFile",
+    getFileContent: "getFileContent",
+    limitSearchResponse: "find:limit"
 };
 
-export const MaterialSearchRequests = {
+/**
+ * POST requests list for the material search
+ * with /app/materials/search server endpoint
+ */
+export const MaterialSearchOptions = {
     title: "find:materialTitle",
     description: "find:materialDescription",
     tags: "find:materialTags",
     datetimeFrom: "find:materialDatetimeFrom",
     datetimeTo: "find:materialDatetimeTo",
     identifier: "find:materialIdentifier",
-    limit: "find:limit",
     content: "find:materialContent"
 };
 
-export const FileSearchRequests = {
-    filename: "find:fileName"
+/**
+ * POST requests list for the files search
+ * with /app/materials/search server endpoint
+ */
+export const FileSearchOptions = {
+    filename: "find:fileName",
+
+    datetimeFrom: "find:fileDatetimeFrom",
+    datetimeTo: "find:fileDatetimeTo",
+    identifier: "find:fileIdentifier",
+    extension: "find:fileExtension"
+};
+
+export const VariableSearchOptions = {
+    variableName: "find:variableName"
 };
 
 export { RequestOptions };

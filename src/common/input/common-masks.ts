@@ -11,10 +11,10 @@ const commonMasks = {
     numbersLatinOnly: [ /[^A-Za-z0-9]/g, "" ] as InputMask,
 
     /** Allow input latin symbols, numbers and some special symbols */
-    latinWithSymbols: [ /[^A-Za-z0-9\-_+=.,?!()*$#%^&\\|/<>\[\]"@]/g, "" ] as InputMask,
+    latinWithSymbols: [ /[^A-Za-z0-9\-_+=.,?!()*$#%^&\\|/<>\[\]"@ ]/g, "" ] as InputMask,
 
     /** Allow input latin and cyrillic symbols, numbers and some special symbols */
-    latinCyrillicWithSymbols: [ /[^A-Za-zА-ЯЁа-яё0-9\-_+=.,?!()*$#%^&\\|/<>\[\]"@]/g, "" ] as InputMask,
+    latinCyrillicWithSymbols: [ /[^A-Za-zА-ЯЁа-яё0-9\-_+=.,?!()*$#%^&\\|/<>\[\]"@ ]/g, "" ] as InputMask,
 
     /** Allow input only latin and cyrillic symbols and numbers */
     latinCyrillicOnly: [ /[^A-Za-z0-9А-ЯЁа-яё]/g, "" ] as InputMask,

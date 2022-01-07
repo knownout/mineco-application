@@ -8,8 +8,7 @@ div.loading-component {
     opacity: 0;
 
     color: #333;
-    background: rgba(#fff, .55);
-    backdrop-filter: blur(6px);
+    background: #D1D1D1;
 
     i.ui.loading-spinner.big {
         overflow: hidden;
@@ -22,5 +21,37 @@ div.loading-component {
     &.display {
         pointer-events: all;
         opacity: 1;
+    }
+}
+
+div.loading-wrapper.ui.grid.center {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    z-index: 100;
+    width: 100%;
+
+    height: 100%;
+
+    transition: 100ms ease all;
+
+    pointer-events: none;
+    opacity: 0;
+    background: rgba(#D1D1D1, .3);
+
+    &.display {
+        pointer-events: all;
+        opacity: 1;
+    }
+
+    i.ui.loading-spinner {
+        overflow: hidden;
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+        min-height: 36px;
+        opacity: .8;
     }
 }

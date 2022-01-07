@@ -14,7 +14,7 @@ export default function Loading (props: { children?: string, display: boolean, e
     });
 
     return <div className={ rootClassName }>
-        <div className="ui content-wrapper padding">
+        <div className="ui content-wrapper padding grid center">
             { !props.error && <i className={ classNames("ui loading-spinner", { big: !props.children }) } /> }
             { !props.error && props.children && <span className="text">{ props.children }</span> }
             { props.error && <div className="error-form ui flex column limit-380">
@@ -31,5 +31,18 @@ export default function Loading (props: { children?: string, display: boolean, e
                     : String(props.error) }</span>
             </div> }
         </div>
+    </div>;
+}
+
+/**
+ * Component for creating loaders that fits in the parent element
+ *
+ * @constructor
+ */
+export function LoadingWrapper (props: { display: boolean }) {
+    const rootClassName = classNames("loading-wrapper ui grid center", { display: props.display });
+
+    return <div className={ rootClassName }>
+        <i className="ui loading-spinner" />
     </div>;
 }
