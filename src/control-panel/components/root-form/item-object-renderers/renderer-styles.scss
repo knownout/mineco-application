@@ -21,6 +21,10 @@ div.material-object, div.file-object, div.variable-object {
     &:first-child:last-child {
         border-radius: 10px;
     }
+
+    &.selected {
+        background: rgba(lighten(#65ADFF, 10%), .5);
+    }
 }
 
 div.material-object {

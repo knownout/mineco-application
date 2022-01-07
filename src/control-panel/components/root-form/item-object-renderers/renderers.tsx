@@ -1,5 +1,6 @@
 import React from "react";
 import convertDate from "../../../../lib/convert-date";
+import classNames from "../../../../lib/class-names";
 
 /**
  * Namespace for the items that renders in the items list
@@ -45,13 +46,19 @@ export namespace ItemObject {
     }
 }
 
+interface CommonRendererProps {
+    selected: boolean;
+
+    onClick? (event: React.MouseEvent<HTMLDivElement>): void;
+}
+
 /**
  * Renderer for the material item object
  * @internal
  *
  * @constructor
  */
-export function MaterialRenderer (renderer: ItemObject.Material) {
+export function MaterialRenderer (renderer: ItemObject.Material & CommonRendererProps) {
     // Limit of words for the material description
     const descriptionWordsLimit = 10;
 
@@ -70,7 +77,11 @@ export function MaterialRenderer (renderer: ItemObject.Material) {
     if (descriptionString.slice(-4) == "....") descriptionString = descriptionString
         .slice(0, descriptionString.length - 1);
 
-    return <div className="material-object ui flex column gap padding-20">
+    const rootClassName = classNames("material-object ui flex column gap padding-20", {
+        selected: renderer.selected
+    });
+
+    return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="material-header ui flex row center-ai gap">
             <img src={ renderer.preview } alt={ renderer.title } className="preview-image" />
             <span className="material-title">{ renderer.title }</span>
@@ -90,7 +101,7 @@ export function MaterialRenderer (renderer: ItemObject.Material) {
  *
  * @constructor
  */
-export function FileRenderer (renderer: ItemObject.File) {
+export function FileRenderer (renderer: ItemObject.File & CommonRendererProps) {
     // Split filename with dot
     const fileNameArray = renderer.filename.split(".");
 
@@ -100,7 +111,11 @@ export function FileRenderer (renderer: ItemObject.File) {
         extension: fileNameArray.slice(-1)[0]
     };
 
-    return <div className="file-object ui flex column gap-5 padding-20">
+    const rootClassName = classNames("file-object ui flex column gap-5 padding-20", {
+        selected: renderer.selected
+    });
+
+    return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="file-header ui word-break-all">
             <span className="extension-badge ui badge opacity-65 fz-14 lh-28">
                 { fileName.extension }
@@ -114,8 +129,12 @@ export function FileRenderer (renderer: ItemObject.File) {
     </div>;
 }
 
-export function VariableRenderer (renderer: ItemObject.Variable) {
-    return <div className="variable-object ui flex column gap-5 padding-20">
+export function VariableRenderer (renderer: ItemObject.Variable & CommonRendererProps) {
+    const rootClassName = classNames("variable-object ui flex column gap-5 padding-20", {
+        selected: renderer.selected
+    });
+
+    return <div className={ rootClassName } onClick={ renderer.onClick }>
         <span className="variable-name ui opacity-95 word-break-all">
             { renderer.name }
         </span>

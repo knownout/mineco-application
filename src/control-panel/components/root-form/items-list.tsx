@@ -21,10 +21,15 @@ import {
 export interface ItemsListProps {
     type: ItemObject.Type;
     waitContent: boolean;
+    selectedItem: number;
 
     contentVersion: number;
 
     setWaitContent (waitContent: boolean): void;
+
+    updateItemsList (itemsList: ItemObject.Unknown[]): void;
+
+    onItemClick (index: number): void;
 }
 
 /**
@@ -104,6 +109,8 @@ export default function ItemsList (props: ItemsListProps) {
                 .then(response => response.json()).catch(() => setItemsList(undefined))
                 .then((response: Response<ItemObject.Unknown[]>) => {
                     if (!response.success) return setItemsList(undefined);
+
+                    props.updateItemsList(response.responseContent as ItemObject.Unknown[]);
                     setItemsList(response.responseContent as ItemObject.Unknown[]);
                 }).finally(() => props.setWaitContent(false));
         });
@@ -125,9 +132,17 @@ export default function ItemsList (props: ItemsListProps) {
                 { !itemsList && <span className="ui opacity-75">Ничего не найдено</span> }
                 { !props.waitContent && itemsList && itemsList.map((item, index) => {
                     return [
-                        <MaterialRenderer { ...item as ItemObject.Material } key={ index } />,
-                        <FileRenderer { ...item as ItemObject.File } key={ index } />,
-                        <VariableRenderer { ...item as ItemObject.Variable } key={ index } />
+                        <MaterialRenderer { ...item as ItemObject.Material } key={ index }
+                                          selected={ index == props.selectedItem }
+                                          onClick={ () => props.onItemClick(index) } />,
+
+                        <FileRenderer { ...item as ItemObject.File } key={ index }
+                                      selected={ index == props.selectedItem }
+                                      onClick={ () => props.onItemClick(index) } />,
+
+                        <VariableRenderer { ...item as ItemObject.Variable } key={ index }
+                                          selected={ index == props.selectedItem }
+                                          onClick={ () => props.onItemClick(index) } />
                     ][props.type];
                 }) }
             </div>

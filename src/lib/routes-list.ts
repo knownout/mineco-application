@@ -14,7 +14,9 @@ export const serverRoutesList = {
     searchVariables: "/app/variables/search",
 
     uploadFile: "/app/files/upload",
-    getFileContent: "/app/files/preview"
+    getFilePreview: "/app/files/preview",
+
+    deleteFile: "/app/files/delete"
 };
 
 /**

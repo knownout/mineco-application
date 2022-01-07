@@ -15,8 +15,9 @@ const RequestOptions = {
     accountLogin: "accountLogin",
     accountHash: "accountHash",
     uploadFile: "uploadFile",
-    getFileContent: "getFileContent",
-    limitSearchResponse: "find:limit"
+    getFilePreview: "getFilePreview",
+    limitSearchResponse: "find:limit",
+    deleteFile: "deleteFile"
 };
 
 /**

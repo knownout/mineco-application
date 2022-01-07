@@ -3,25 +3,25 @@ import React from "react";
 import { Tab } from "@headlessui/react";
 
 import classNames from "../../../lib/class-names";
+import CacheController, { cacheKeysList } from "../../../lib/cache-controller";
+import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
+import useRecaptcha from "../../../lib/use-recaptcha";
+import MakeFormData from "../../../lib/make-form-data";
 
 import { LoadingWrapper } from "../../../common/loading/loading";
 import Loading from "../../../common/loading";
+import Notify from "../../../common/notify";
 
 import { ItemObject } from "./item-object-renderers/renderers";
 import ItemsList from "./items-list";
 
-import "./root-form.scss";
-import verifyAuthentication from "../../cms-lib/verify-authentication";
-import CacheController, { cacheKeysList } from "../../../lib/cache-controller";
-import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
-import InitialView from "./view-renderers/initital-view";
-import useRecaptcha from "../../../lib/use-recaptcha";
-import MakeFormData from "../../../lib/make-form-data";
 import { Account } from "../../cms-types/account";
-import Notify from "../../../common/notify";
 import { RequestOptions, Response } from "../../cms-types/requests";
-import Type = ItemObject.Type;
+import verifyAuthentication from "../../cms-lib/verify-authentication";
 
+import InitialView from "./view-renderers/initital-view";
+import "./root-form.scss";
+import Type = ItemObject.Type;
 
 interface RootFormState {
     formLoaded: boolean;
@@ -35,6 +35,9 @@ interface RootFormState {
     // Component will update this when there might be a new
     // content at the server (when file uploaded or something)
     contentVersion: number;
+
+    selectedItem: number;
+    itemsList: ItemObject.Unknown[];
 }
 
 /**
@@ -49,7 +52,10 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
         mobileMenuOpen: false,
 
         itemType: 0,
-        contentVersion: 0
+        contentVersion: 0,
+
+        selectedItem: -1,
+        itemsList: []
     };
 
     private readonly notify = new Notify(React.createRef<HTMLDivElement>());
@@ -95,12 +101,22 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
             disabled: this.state.waitContent || !this.state.formLoaded
         });
 
+        const itemsListProperties = {
+            contentVersion: this.state.contentVersion,
+            selectedItem: this.state.selectedItem,
+            waitContent: this.state.waitContent,
+            setWaitContent
+        };
+
+        const initialView = <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
+                                         onGenericButtonClick={ this.genericButtonClickEventHandler } />;
+
         // Controls block
         const controls = <div className="ui content-wrapper flex row">
             <Notify.Component element={ this.notify.ref } />
             <div className={ navMenuClassName }>
                 <LoadingWrapper display={ this.state.waitContent } />
-                <Tab.Group onChange={ index => this.setState({ itemType: index }) }>
+                <Tab.Group onChange={ index => this.setState({ itemType: index, selectedItem: -1 }) }>
                     <Tab.List className="tab-component tabs-list">
                         <Tab>Материалы</Tab>
                         <Tab>Файлы</Tab>
@@ -110,9 +126,12 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                         {
                             [ 0, 1, 2 ].map((type, index) => {
                                 return <Tab.Panel key={ index }>
-                                    <ItemsList type={ type } setWaitContent={ setWaitContent }
-                                               waitContent={ this.state.waitContent }
-                                               contentVersion={ this.state.contentVersion } />
+                                    <ItemsList type={ type } { ...itemsListProperties }
+                                               onItemClick={ index => this.setState({
+                                                   selectedItem: this.state.selectedItem === index ? -1 : index
+                                               }) }
+                                               updateItemsList={ itemsList => this.setState({ itemsList }) }
+                                    />
                                 </Tab.Panel>;
                             })
                         }
@@ -121,8 +140,11 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
             </div>
             <div className="item-view ui grid center">
                 <div className={ viewClassName }>
-                    <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
-                                 onGenericButtonClick={ this.genericButtonClickEventHandler } />
+                    { this.state.selectedItem < 0 ? initialView : [
+                        <div>Materials view not implemented</div>,
+                        <div>Files view not implemented</div>,
+                        <div>Variables view not implemented</div>
+                    ][this.state.itemType] }
                 </div>
             </div>
         </div>;

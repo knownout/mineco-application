@@ -21,10 +21,12 @@ export default class ControlPanel extends React.PureComponent {
                 <link rel="icon" href="/public/cms-favicon.ico" />
             </Helmet>
 
-            <Routes>
-                <Route path="/" element={ <RootForm /> } />
-                <Route path="/auth" element={ <AuthForm /> } />
-            </Routes>
+            <React.StrictMode>
+                <Routes>
+                    <Route path="/" element={ <RootForm /> } />
+                    <Route path="/auth" element={ <AuthForm /> } />
+                </Routes>
+            </React.StrictMode>
         </React.Fragment>;
     }
 }
