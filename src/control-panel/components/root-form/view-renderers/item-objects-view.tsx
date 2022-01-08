@@ -6,7 +6,7 @@ import MakeFormData from "../../../../lib/make-form-data";
 import { appRoutesList, makeRoute, serverRoutesList } from "../../../../lib/routes-list";
 import CacheController, { cacheKeysList } from "../../../../lib/cache-controller";
 
-import { RequestOptions, Response } from "../../../cms-types/requests";
+import { RequestOptions, Response, VariableOptions } from "../../../cms-types/requests";
 import { Account } from "../../../cms-types/account";
 
 import { ItemObject } from "../item-object-renderers/renderers";
@@ -14,13 +14,15 @@ import verifyAuthentication from "../../../cms-lib/verify-authentication";
 import Button from "../../../../common/button";
 
 import prettyBytes from "pretty-bytes";
+import Notify from "../../../../common/notify";
+import classNames from "../../../../lib/class-names";
 
 const cacheController = new CacheController(localStorage);
 
 /**
  * Common view renderers properties list
  */
-interface CommonViewRendererProps {
+export interface CommonViewRendererProps {
     // Fires only when load state changed to true
     onLoadStart? (): void;
 
@@ -29,7 +31,39 @@ interface CommonViewRendererProps {
 
     // Fires every time when load state changes
     onLoadStateChange? (loadState: boolean): void;
+}
 
+export interface CommonRootComponentProps {
+    notify?: Notify;
+}
+
+/**
+ * Function for requiring full authentication data and recaptcha token
+ */
+async function useFullAuthentication () {
+    // Verify is user authorized and get fresh account data
+    const authResult = await verifyAuthentication();
+    const accountData = cacheController.getItem<Account.Response>(cacheKeysList.accountData);
+
+    // Verify authentication
+    if (!authResult || !accountData) {
+        cacheController.removeItem(cacheKeysList.accountData);
+        window.location.href = appRoutesList.auth;
+
+        throw new Error("Не удалось проверить данные аккаунта");
+    }
+
+    const token = await useRecaptcha();
+    const formDataEntries = {
+        [RequestOptions.recaptchaToken]: token,
+        [RequestOptions.accountLogin]: accountData.login,
+        [RequestOptions.accountHash]: accountData.hash
+    };
+
+    return { token, accountData, formDataEntries };
+}
+
+interface FileViewRendererProps extends CommonViewRendererProps, ItemObject.File {
     // Fires when file successfully deleted
     onFileDelete? (): void;
 }
@@ -40,7 +74,7 @@ interface CommonViewRendererProps {
  *
  * @constructor
  */
-export function FileViewRenderer (props: ItemObject.File & CommonViewRendererProps) {
+export function FileViewRenderer (props: FileViewRendererProps) {
     const [ preview, setPreview ] = React.useState<[ Blob, string ] | null>();
 
     /**
@@ -112,22 +146,9 @@ export function FileViewRenderer (props: ItemObject.File & CommonViewRendererPro
      * @param filename required file name
      */
     async function getFilePreviewBlob (filename: string) {
-        const authResult = await verifyAuthentication();
-        const accountData = cacheController.getItem<Account.Response>(cacheKeysList.accountData);
-
-        // Verify authentication
-        if (!authResult || !accountData) {
-            cacheController.removeItem(cacheKeysList.accountData);
-            window.location.href = appRoutesList.auth;
-
-            throw new Error("Не удалось проверить данные аккаунта");
-        }
-
-        const token = await useRecaptcha();
+        const { formDataEntries } = await useFullAuthentication();
         const formData = new MakeFormData({
-            [RequestOptions.recaptchaToken]: token,
-            [RequestOptions.accountLogin]: accountData.login,
-            [RequestOptions.accountHash]: accountData.hash,
+            ...formDataEntries,
             [RequestOptions.getFilePreview]: filename
         });
 
@@ -227,6 +248,79 @@ export function FileViewRenderer (props: ItemObject.File & CommonViewRendererPro
     return <div className="view files-view ui grid center">
         <div className="view-content-wrapper ui grid text-center center ">
             { renderFilePreview(props.filename, preview) }
+        </div>
+    </div>;
+}
+
+interface VariableViewRendererProps extends CommonViewRendererProps, ItemObject.Variable, CommonRootComponentProps {
+    onContentUpdate? (): void;
+}
+
+/**
+ * Renderer for the file item objects
+ *
+ * @constructor
+ */
+export function VariableViewRenderer (props: VariableViewRendererProps) {
+    const [ value, setValue ] = React.useState<string>(String(props.value));
+    /**
+     * Shortcut for the loading state updating
+     * @param loading loading state
+     */
+    const setLoading = (loading: boolean) => {
+        if (loading && props.onLoadStart) props.onLoadStart();
+        if (!loading && props.onLoadEnd) props.onLoadEnd();
+
+        if (props.onLoadStateChange) props.onLoadStateChange(loading);
+    };
+
+    /**
+     * Function for sending update request to the server
+     */
+    async function variableUpdateHandler () {
+        setLoading(true);
+
+        const { formDataEntries } = await useFullAuthentication();
+        const formData = new MakeFormData({
+            ...formDataEntries,
+            [VariableOptions.updateVariableName]: props.name,
+            [VariableOptions.updateVariableValue]: value
+        });
+
+        // Send request to the server
+        const response = await fetch(makeRoute(serverRoutesList.updateVariable), formData.fetchObject)
+            .then(response => response.json()) as Response<unknown>;
+
+        // If notify class provided, use it to display update result
+        if (props.notify) {
+            if (!response || !response.success) props.notify.add("Не удалось обновить переменную в базе данных");
+            else props.notify.add("Переменная обновлена в базе данных");
+        }
+
+        if (props.onContentUpdate) props.onContentUpdate();
+    }
+
+    // Disable button if content not changed
+    const updateButtonClassName = classNames({
+        disabled: props.value === value.trim()
+    });
+
+    return <div className="view variable-view ui grid center">
+        <div className="view-content-wrapper ui flex column padding-20">
+            <textarea className="ui w-100 interactive clean opacity-65" defaultValue={ String(props.value) }
+                      placeholder={ `Введите значение для переменной "${ props.name }"` }
+                      onInput={ event => {
+                          const target = event.target as HTMLTextAreaElement;
+                          setValue(target.value);
+                      } } />
+            <div className="variable-controls ui center-ai">
+                <span className="save-hint ui fz-14 opacity-65">
+                    Изменения в переменной не сохраняются автоматически, не забывайте обновлять значение переменной
+                    нажатием кнопки "Обновить"
+                </span>
+                <Button icon="bi bi-arrow-clockwise" onClick={ variableUpdateHandler }
+                        className={ updateButtonClassName }>Обновить</Button>
+            </div>
         </div>
     </div>;
 }

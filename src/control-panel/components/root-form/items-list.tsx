@@ -15,7 +15,7 @@ import {
     MaterialSearchOptions,
     RequestOptions,
     Response,
-    VariableSearchOptions
+    VariableOptions
 } from "../../cms-types/requests";
 
 export interface ItemsListProps {
@@ -87,12 +87,12 @@ export default function ItemsList (props: ItemsListProps) {
                 [[
                     MaterialSearchOptions.content,
                     FileSearchOptions.filename,
-                    VariableSearchOptions.variableName
+                    VariableOptions.variableName
                 ][props.type]]: inlineSearch.searchQuery
             });
 
             // Select request names provider based on the item type
-            const optionsObject = [ MaterialSearchOptions, FileSearchOptions, VariableSearchOptions ][props.type];
+            const optionsObject = [ MaterialSearchOptions, FileSearchOptions, VariableOptions ][props.type];
 
             Object.entries(inlineSearch.entries).forEach(([ name, value ]) => {
                 let outputValue = value.join(",");

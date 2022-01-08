@@ -47,8 +47,10 @@ export const FileSearchOptions = {
     extension: "find:fileExtension"
 };
 
-export const VariableSearchOptions = {
-    variableName: "find:variableName"
+export const VariableOptions = {
+    variableName: "find:variableName",
+    updateVariableName: "variable:variableName",
+    updateVariableValue: "variable:updateVariable"
 };
 
 export { RequestOptions };

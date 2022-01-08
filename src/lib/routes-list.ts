@@ -16,7 +16,9 @@ export const serverRoutesList = {
     uploadFile: "/app/files/upload",
     getFilePreview: "/app/files/preview",
 
-    deleteFile: "/app/files/delete"
+    deleteFile: "/app/files/delete",
+
+    updateVariable: "/app/variables/update"
 };
 
 /**

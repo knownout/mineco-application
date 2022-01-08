@@ -20,9 +20,10 @@ import { RequestOptions, Response } from "../../cms-types/requests";
 import verifyAuthentication from "../../cms-lib/verify-authentication";
 
 import InitialView from "./view-renderers/initital-view";
-import { FileViewRenderer } from "./view-renderers/item-objects-view";
+import { FileViewRenderer, VariableViewRenderer } from "./view-renderers/item-objects-view";
 
 import "./root-form.scss";
+import MaterialViewRenderer from "./view-renderers/materials-view-renderer";
 import Type = ItemObject.Type;
 
 interface RootFormState {
@@ -170,14 +171,19 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
 
         const itemData = this.state.itemsList[this.state.selectedItem];
         const viewRenderers = [
-            <div>Materials view not implemented</div>,
+            <MaterialViewRenderer />,
             <FileViewRenderer { ...itemData as ItemObject.File }
                               onLoadStateChange={ loadState => this.setState({ waitContent: loadState }) }
                               onFileDelete={ () => this.setState({
                                   contentVersion: this.state.contentVersion + 1,
                                   selectedItem: -1
                               }) } />,
-            <div>Variables view not implemented</div>
+            <VariableViewRenderer { ...itemData as ItemObject.Variable } notify={ this.notify }
+                                  onLoadStateChange={ loadState => this.setState({ waitContent: loadState }) }
+                                  onContentUpdate={ () => this.setState({
+                                      contentVersion: this.state.contentVersion + 1,
+                                      selectedItem: -1
+                                  }) } />
         ];
 
         return viewRenderers[this.state.itemType];
@@ -236,8 +242,9 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                     .then(response => response.json())
                     .catch(reject) as Response<unknown>;
 
+                console.log(response);
                 // Check response
-                if (response.success)
+                if (response && response.success)
                     return this.setState({ contentVersion: this.state.contentVersion + 1 }, resolve);
                 else return reject();
             }).finally(() => this.setState({ waitContent: false }, () => dialog.remove()))
