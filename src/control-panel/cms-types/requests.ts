@@ -17,7 +17,8 @@ const RequestOptions = {
     uploadFile: "uploadFile",
     getFilePreview: "getFilePreview",
     limitSearchResponse: "find:limit",
-    deleteFile: "deleteFile"
+    deleteFile: "deleteFile",
+    getMaterial: "getMaterial"
 };
 
 /**

@@ -13,7 +13,7 @@ export default function Input (props: ExtendedInputProps) {
     // Focus state, changes when onBlur or onFocus events get fired
     const [ [ focusState, setFocusState ], [ valueState, setValueState ] ] = [
         React.useState(false),
-        React.useState(false)
+        React.useState(Boolean(props.defaultValue || props.children))
     ];
 
     // Separate native props from custom props

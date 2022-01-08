@@ -170,16 +170,18 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                 onGenericButtonClick={ this.genericButtonClickEventHandler } />;
 
         const itemData = this.state.itemsList[this.state.selectedItem];
+        const commonProps = {
+            onLoadStateChange: (loadState: boolean) => this.setState({ waitContent: loadState })
+        };
+
         const viewRenderers = [
-            <MaterialViewRenderer />,
-            <FileViewRenderer { ...itemData as ItemObject.File }
-                              onLoadStateChange={ loadState => this.setState({ waitContent: loadState }) }
+            <MaterialViewRenderer { ...itemData as ItemObject.Material } { ...commonProps } />,
+            <FileViewRenderer { ...itemData as ItemObject.File } { ...commonProps }
                               onFileDelete={ () => this.setState({
                                   contentVersion: this.state.contentVersion + 1,
                                   selectedItem: -1
                               }) } />,
-            <VariableViewRenderer { ...itemData as ItemObject.Variable } notify={ this.notify }
-                                  onLoadStateChange={ loadState => this.setState({ waitContent: loadState }) }
+            <VariableViewRenderer { ...itemData as ItemObject.Variable } notify={ this.notify } { ...commonProps }
                                   onContentUpdate={ () => this.setState({
                                       contentVersion: this.state.contentVersion + 1,
                                       selectedItem: -1
