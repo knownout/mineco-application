@@ -20,6 +20,8 @@ import { RequestOptions, Response } from "../../cms-types/requests";
 import verifyAuthentication from "../../cms-lib/verify-authentication";
 
 import InitialView from "./view-renderers/initital-view";
+import { FileViewRenderer } from "./view-renderers/item-objects-view";
+
 import "./root-form.scss";
 import Type = ItemObject.Type;
 
@@ -108,9 +110,6 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
             setWaitContent
         };
 
-        const initialView = <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
-                                         onGenericButtonClick={ this.genericButtonClickEventHandler } />;
-
         // Controls block
         const controls = <div className="ui content-wrapper flex row">
             <Notify.Component element={ this.notify.ref } />
@@ -140,11 +139,7 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
             </div>
             <div className="item-view ui grid center">
                 <div className={ viewClassName }>
-                    { this.state.selectedItem < 0 ? initialView : [
-                        <div>Materials view not implemented</div>,
-                        <div>Files view not implemented</div>,
-                        <div>Variables view not implemented</div>
-                    ][this.state.itemType] }
+                    { this.genericViewRenderer() }
                 </div>
             </div>
         </div>;
@@ -163,6 +158,26 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                 <i className="bi bi-three-dots" />
             </button>
         </div>;
+    }
+
+    public genericViewRenderer () {
+        if (!(this.state.itemType in this.state.itemsList) || this.state.selectedItem < 0)
+            return <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
+                                onGenericButtonClick={ this.genericButtonClickEventHandler } />;
+
+        const itemData = this.state.itemsList[this.state.selectedItem];
+        const viewRenderers = [
+            <div>Materials view not implemented</div>,
+            <FileViewRenderer { ...itemData as ItemObject.File }
+                              onLoadStateChange={ loadState => this.setState({ waitContent: loadState }) }
+                              onFileDelete={ () => this.setState({
+                                  contentVersion: this.state.contentVersion + 1,
+                                  selectedItem: -1
+                              }) } />,
+            <div>Variables view not implemented</div>
+        ];
+
+        return viewRenderers[this.state.itemType];
     }
 
     /**

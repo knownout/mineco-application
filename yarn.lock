@@ -94,25 +94,6 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@react-editor-js/client@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@react-editor-js/client/-/client-2.0.3.tgz#b8907987d106fa0f4bbec500dc224f85e4c4a514"
-  integrity sha512-JAH90BCBzkFlW52qIam/nfHbf00CYevh7L8qRmj23LuH220iI12hnAXC+CKDFa5uQzMAvkMnDRQTU8IQKiydOg==
-  dependencies:
-    "@react-editor-js/core" "2.0.3"
-
-"@react-editor-js/core@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@react-editor-js/core/-/core-2.0.3.tgz#adb8f7f39e4079046e4c4e95cbccb17630c7707c"
-  integrity sha512-W2DkOaLHKthQl0ewjOBG+DFqfy552fcbHyhZcEUNJRx5UmxquxjDOj+tREZOhDe6ZLRbAZkH9x4K1TIHcl5VRA==
-
-"@react-editor-js/server@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@react-editor-js/server/-/server-2.0.3.tgz#e73558c49e81a51d337042b0640f7518b56d2fe0"
-  integrity sha512-rmjZFfYEGfS1ZQlYm7+S7RmZCiXu1sSCMUoIyZ0hhGO0uci2f8jn+ugE+pgwhczRHggKtUtAV9S3RU7eLbv3nA==
-  dependencies:
-    "@react-editor-js/core" "2.0.3"
-
 "@tsconfig/node10@^1.0.7":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.8.tgz#c1e4e80d6f964fbecb3359c43bd48b40f7cadad9"
@@ -4700,6 +4681,11 @@ postcss@^8.2.15, postcss@^8.2.9, postcss@^8.3.11:
     picocolors "^1.0.0"
     source-map-js "^0.6.2"
 
+pretty-bytes@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-5.6.0.tgz#356256f643804773c82f64723fe78c92c62beaeb"
+  integrity sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==
+
 pretty-error@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/pretty-error/-/pretty-error-2.1.2.tgz#be89f82d81b1c86ec8fdfbc385045882727f93b6"
@@ -4860,14 +4846,6 @@ react-dom@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
-
-react-editor-js@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-editor-js/-/react-editor-js-2.0.3.tgz#e41cbdb086cb8696dd9c4fc46e73bedb914b0a8a"
-  integrity sha512-pq6A1EOf8sP9iShecnBIuFwcjvOsTlJ0zQ+OwsqzvWyYXScQOsEHKfvY/pUXTmreYf0f6FYmUD6pWrCBT52oLg==
-  dependencies:
-    "@react-editor-js/client" "2.0.3"
-    "@react-editor-js/server" "2.0.3"
 
 react-fast-compare@^3.1.1:
   version "3.2.0"

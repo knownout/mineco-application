@@ -130,7 +130,7 @@ export default function ItemsList (props: ItemsListProps) {
         <div className="entries-list">
             <div className="entries-wrapper ui flex column">
                 { !itemsList && <span className="ui opacity-75">Ничего не найдено</span> }
-                { !props.waitContent && itemsList && itemsList.map((item, index) => {
+                { itemsList && itemsList.map((item, index) => {
                     return [
                         <MaterialRenderer { ...item as ItemObject.Material } key={ index }
                                           selected={ index == props.selectedItem }
