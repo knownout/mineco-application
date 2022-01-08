@@ -130,6 +130,9 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                                    selectedItem: this.state.selectedItem === index ? -1 : index
                                                }) }
                                                updateItemsList={ itemsList => this.setState({ itemsList }) }
+                                               resetSelectedItem={ () => this.setState({
+                                                   selectedItem: -1
+                                               }) }
                                     />
                                 </Tab.Panel>;
                             })
@@ -161,7 +164,7 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
     }
 
     public genericViewRenderer () {
-        if (!(this.state.itemType in this.state.itemsList) || this.state.selectedItem < 0)
+        if (this.state.selectedItem < 0)
             return <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
                                 onGenericButtonClick={ this.genericButtonClickEventHandler } />;
 

@@ -29,6 +29,8 @@ export interface ItemsListProps {
 
     updateItemsList (itemsList: ItemObject.Unknown[]): void;
 
+    resetSelectedItem (): void;
+
     onItemClick (index: number): void;
 }
 
@@ -39,8 +41,13 @@ export interface ItemsListProps {
  * @constructor
  */
 export default function ItemsList (props: ItemsListProps) {
-    const [ searchQuery, setSearchQuery ] = React.useState<string>();
+    const [ searchQuery, _setSearchQuery ] = React.useState<string>();
     const [ itemsList, setItemsList ] = React.useState<ItemObject.Unknown[]>();
+
+    const setSearchQuery = (value: string) => {
+        props.resetSelectedItem();
+        _setSearchQuery(value);
+    };
 
     // Require fresh items list when searchQuery updated
     React.useEffect(() => {

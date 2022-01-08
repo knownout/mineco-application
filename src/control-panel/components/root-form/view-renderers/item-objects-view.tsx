@@ -172,7 +172,7 @@ export function FileViewRenderer (props: ItemObject.File & CommonViewRendererPro
 
         // Define renderers for each file type
         const imageRenderer = <img src={ preview[1] } alt="" className="object-preview" />;
-        const plainTextRenderer = <div className="object-preview" dangerouslySetInnerHTML={ {
+        const plainTextRenderer = <div className="object-preview ui text-left" dangerouslySetInnerHTML={ {
             __html: preview[1].replace(/\r?\n/g, "<br />")
         } } />;
 
