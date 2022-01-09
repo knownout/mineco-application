@@ -1,23 +1,17 @@
 import React from "react";
-
-import useRecaptcha from "../../../../lib/use-recaptcha";
 import MakeFormData from "../../../../lib/make-form-data";
 
-import { appRoutesList, makeRoute, serverRoutesList } from "../../../../lib/routes-list";
-import CacheController, { cacheKeysList } from "../../../../lib/cache-controller";
+import { makeRoute, serverRoutesList } from "../../../../lib/routes-list";
 
 import { RequestOptions, Response, VariableOptions } from "../../../cms-types/requests";
-import { Account } from "../../../cms-types/account";
 
 import { ItemObject } from "../item-object-renderers/renderers";
-import verifyAuthentication from "../../../cms-lib/verify-authentication";
 import Button from "../../../../common/button";
 
 import prettyBytes from "pretty-bytes";
 import Notify from "../../../../common/notify";
 import classNames from "../../../../lib/class-names";
-
-const cacheController = new CacheController(localStorage);
+import { useFullAuthentication } from "../../../../lib/use-full-authentication";
 
 /**
  * Common view renderers properties list
@@ -35,32 +29,6 @@ export interface CommonViewRendererProps {
 
 export interface CommonRootComponentProps {
     notify?: Notify;
-}
-
-/**
- * Function for requiring full authentication data and recaptcha token
- */
-async function useFullAuthentication () {
-    // Verify is user authorized and get fresh account data
-    const authResult = await verifyAuthentication();
-    const accountData = cacheController.getItem<Account.Response>(cacheKeysList.accountData);
-
-    // Verify authentication
-    if (!authResult || !accountData) {
-        cacheController.removeItem(cacheKeysList.accountData);
-        window.location.href = appRoutesList.auth;
-
-        throw new Error("Не удалось проверить данные аккаунта");
-    }
-
-    const token = await useRecaptcha();
-    const formDataEntries = {
-        [RequestOptions.recaptchaToken]: token,
-        [RequestOptions.accountLogin]: accountData.login,
-        [RequestOptions.accountHash]: accountData.hash
-    };
-
-    return { token, accountData, formDataEntries };
 }
 
 interface FileViewRendererProps extends CommonViewRendererProps, ItemObject.File {
@@ -173,14 +141,14 @@ export function FileViewRenderer (props: FileViewRendererProps) {
         /**
          * Information about file and controls (remove button)
          */
-        const fileControls = <div className="file-controls ui flex row center-ai wrap">
+        const fileControls = <div className="file-controls ui flex row center-ai">
             <div className="file-info-block ui text-left lh-24">
                 <span className="file-name ui word-break-all text-left">{ filename }</span>{ " " }
                 { preview && <span className="file-size ui badge fz-14 w-fit">{ prettyBytes(preview[0].size) }</span> }
             </div>
             <div className="file-controls-block ui flex w-fit row">
                 <Button icon="bi bi-trash-fill" onClick={ () => deleteFileHandler(filename) }>
-                    Удалить файл
+                    Удалить
                 </Button>
             </div>
         </div>;
@@ -218,20 +186,10 @@ export function FileViewRenderer (props: FileViewRendererProps) {
     async function deleteFileHandler (filename: string) {
         setLoading(true);
 
-        const token = await useRecaptcha();
-        const authResult = verifyAuthentication();
-        const accountData = cacheController.getItem<Account.Response>(cacheKeysList.accountData);
-
-        // Verify authentication
-        if (!authResult || !accountData) {
-            window.location.href = appRoutesList.auth;
-            throw new Error("Не удалось проверить данные аккаунта");
-        }
+        const { formDataEntries } = await useFullAuthentication();
 
         const formData = new MakeFormData({
-            [RequestOptions.recaptchaToken]: token,
-            [RequestOptions.accountLogin]: accountData.login,
-            [RequestOptions.accountHash]: accountData.hash,
+            ...formDataEntries,
             [RequestOptions.deleteFile]: filename
         });
 

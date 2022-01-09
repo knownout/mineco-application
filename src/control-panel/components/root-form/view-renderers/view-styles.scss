@@ -9,6 +9,10 @@ div.view {
         width: fit-content;
         height: 100%;
     }
+
+    textarea {
+        resize: none;
+    }
 }
 
 div.initial-view {
@@ -45,7 +49,7 @@ div.view.files-view {
         width: fit-content;
 
         max-width: calc(100% - 20px);
-        padding: 20px;
+        padding: 10px;
         border: 1px solid rgba(#000, .1);
         border-radius: 10px;
 
@@ -53,6 +57,11 @@ div.view.files-view {
         backdrop-filter: blur(7px);
 
         gap: 20px;
+
+        button {
+            min-width: fit-content;
+            white-space: nowrap;
+        }
     }
 
     div.object-preview {
@@ -76,7 +85,6 @@ div.view.variable-view {
     textarea {
         width: 100%;
         height: 100%;
-        resize: none;
     }
 
     div.variable-controls {
@@ -110,6 +118,72 @@ div.view.variable-view {
             button {
                 margin-left: 0;
             }
+        }
+    }
+}
+
+div.view.material-view {
+    div.view-content-wrapper {
+        padding: 20px;
+
+        textarea {
+            line-height: 22px;
+            height: 200px;
+            min-height: 200px;
+            margin-bottom: 20px;
+
+            padding: 20px;
+
+            opacity: .8;
+        }
+
+        div[id^="react-editor-js-"] {
+            padding: 20px;
+            border-radius: 10px;
+
+            background: rgba(#fff, .7);
+        }
+
+        div.input-component.date-input {
+            max-width: 200px;
+        }
+
+        div.material-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+
+            z-index: 20;
+            overflow: hidden;
+
+            overflow-x: auto;
+            max-width: calc(100% - 20px);
+            padding: 10px;
+
+            border: 1px solid rgba(#000, .1);
+            background: rgba(#D1D1D1, .5);
+
+            backdrop-filter: blur(6px);
+
+            button {
+                min-width: fit-content;
+            }
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        div.title-and-date.ui.flex.row.margin.optimize.gap {
+            flex-direction: column;
+        }
+
+        div.view-content-wrapper {
+            padding: 0;
+        }
+    }
+
+    @media screen and (max-height: 500px) {
+        div.view-content-wrapper div.material-controls.ui.flex.row.border-radius-10.gap {
+            padding: 3px;
         }
     }
 }

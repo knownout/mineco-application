@@ -31,9 +31,8 @@
     .ui {
         textarea {
             padding: 10px;
+            cursor: text;
             border-radius: 10px;
-
-
         }
 
         &.flex {
@@ -187,6 +186,12 @@
                 box-shadow: none;
             }
         }
+
+        textarea.interactive {
+            cursor: text;
+        }
+
+        button.interactive:focus { opacity: 1; }
 
         &.clean {
             font-style: normal;

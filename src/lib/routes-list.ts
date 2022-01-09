@@ -19,7 +19,9 @@ export const serverRoutesList = {
     deleteFile: "/app/files/delete",
 
     updateVariable: "/app/variables/update",
-    getMaterial: "/app/materials/get"
+    getMaterial: "/app/materials/get",
+
+    deleteMaterial: "/app/materials/delete"
 };
 
 /**

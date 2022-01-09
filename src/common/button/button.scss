@@ -1,5 +1,6 @@
 button.button-component {
     overflow: hidden;
+    min-width: fit-content;
     transition: 300ms ease all;
 
     i.button-icon {

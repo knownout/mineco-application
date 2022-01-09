@@ -23,7 +23,7 @@ import InitialView from "./view-renderers/initital-view";
 import { FileViewRenderer, VariableViewRenderer } from "./view-renderers/item-objects-view";
 
 import "./root-form.scss";
-import MaterialViewRenderer from "./view-renderers/materials-view-renderer";
+import MaterialViewRenderer from "./view-renderers/material-view-renderer";
 import Type = ItemObject.Type;
 
 interface RootFormState {
@@ -175,7 +175,11 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
         };
 
         const viewRenderers = [
-            <MaterialViewRenderer { ...itemData as ItemObject.Material } { ...commonProps } />,
+            <MaterialViewRenderer { ...itemData as ItemObject.Material } { ...commonProps } notify={ this.notify }
+                                  onMaterialDelete={ () => this.setState({
+                                      contentVersion: this.state.contentVersion + 1,
+                                      selectedItem: -1
+                                  }) } />,
             <FileViewRenderer { ...itemData as ItemObject.File } { ...commonProps }
                               onFileDelete={ () => this.setState({
                                   contentVersion: this.state.contentVersion + 1,

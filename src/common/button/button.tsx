@@ -24,7 +24,7 @@ export default function Button (props: ExtendedButtonProps) {
     // Class name for root element (button)
     const rootClassName = classNames("ui interactive clean padding-20 border-radius-10 flex row center", {
         disabled: disabled || waiting, waiting
-    }, props.className, "opacity-75 button-component");
+    }, props.className, "opacity-95 button-component");
 
     /**
      * Native click event handler
