@@ -179,6 +179,10 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                   onMaterialDelete={ () => this.setState({
                                       contentVersion: this.state.contentVersion + 1,
                                       selectedItem: -1
+                                  }) }
+                                  onMaterialUpdate={ () => this.setState({
+                                      contentVersion: this.state.contentVersion + 1,
+                                      selectedItem: -1
                                   }) } />,
             <FileViewRenderer { ...itemData as ItemObject.File } { ...commonProps }
                               onFileDelete={ () => this.setState({
@@ -248,7 +252,6 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                     .then(response => response.json())
                     .catch(reject) as Response<unknown>;
 
-                console.log(response);
                 // Check response
                 if (response && response.success)
                     return this.setState({ contentVersion: this.state.contentVersion + 1 }, resolve);

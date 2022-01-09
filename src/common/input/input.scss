@@ -83,4 +83,10 @@ div.input-component {
             box-shadow: 0 0 0 3px rgba(#0066FF, .2);
         }
     }
+
+    &.error {
+        div.wrapper, div.icon-holder {
+            box-shadow: 0 0 0 3px rgba(red, .2);
+        }
+    }
 }

@@ -34,7 +34,6 @@ class Main extends PureComponent {
 
                 <title>Министерство СХ и ПР</title>
             </Helmet>
-
             <Router>
                 <Routes>
                     <Route path="/" element={ <div>Application root</div> } />

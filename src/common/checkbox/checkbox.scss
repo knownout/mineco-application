@@ -1,0 +1,36 @@
+div.checkbox-component {
+    position: relative;
+
+    width: fit-content;
+    cursor: pointer;
+    transition: 100ms ease all;
+
+    opacity: .85;
+    border: 1px solid rgba(#000, .08);
+    background: rgba(#fff, .2);
+    gap: 0;
+
+    i.bi.bi-check-lg {
+        font-size: 0;
+        transition: inherit;
+        opacity: 0;
+
+        color: darken(#0050C9, 10%);
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &.checked {
+        color: darken(#0066FF, 20%);
+        background: rgba(#0066FF, .1);
+
+        gap: 10px;
+
+        i.bi.bi-check-lg {
+            font-size: 20px;
+            opacity: 1;
+        }
+    }
+}

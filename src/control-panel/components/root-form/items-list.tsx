@@ -21,17 +21,18 @@ import {
 export interface ItemsListProps {
     type: ItemObject.Type;
     waitContent: boolean;
-    selectedItem: number;
+    selectedItem?: number;
 
-    contentVersion: number;
+    contentVersion?: number;
+    extensionFiler?: string[];
 
-    setWaitContent (waitContent: boolean): void;
+    setWaitContent? (waitContent: boolean): void;
 
-    updateItemsList (itemsList: ItemObject.Unknown[]): void;
+    updateItemsList? (itemsList: ItemObject.Unknown[]): void;
 
-    resetSelectedItem (): void;
+    resetSelectedItem? (): void;
 
-    onItemClick (index: number): void;
+    onItemClick? (index: number): void;
 }
 
 /**
@@ -45,14 +46,14 @@ export default function ItemsList (props: ItemsListProps) {
     const [ itemsList, setItemsList ] = React.useState<ItemObject.Unknown[]>();
 
     const setSearchQuery = (value: string) => {
-        props.resetSelectedItem();
+        if (props.resetSelectedItem) props.resetSelectedItem();
         _setSearchQuery(value);
     };
 
     // Require fresh items list when searchQuery updated
     React.useEffect(() => {
         // Enable content waiting mode for the parent component
-        props.setWaitContent(true);
+        if (props.setWaitContent) props.setWaitContent(true);
 
         // Get recaptcha client token
         useRecaptcha().then(token => {
@@ -117,9 +118,9 @@ export default function ItemsList (props: ItemsListProps) {
                 .then((response: Response<ItemObject.Unknown[]>) => {
                     if (!response.success) return setItemsList(undefined);
 
-                    props.updateItemsList(response.responseContent as ItemObject.Unknown[]);
+                    props.updateItemsList && props.updateItemsList(response.responseContent as ItemObject.Unknown[]);
                     setItemsList(response.responseContent as ItemObject.Unknown[]);
-                }).finally(() => props.setWaitContent(false));
+                }).finally(() => props.setWaitContent && props.setWaitContent(false));
         });
     }, [ searchQuery, props.contentVersion ]);
 
@@ -141,15 +142,15 @@ export default function ItemsList (props: ItemsListProps) {
                     return [
                         <MaterialRenderer { ...item as ItemObject.Material } key={ index }
                                           selected={ index == props.selectedItem }
-                                          onClick={ () => props.onItemClick(index) } />,
+                                          onClick={ () => props.onItemClick && props.onItemClick(index) } />,
 
-                        <FileRenderer { ...item as ItemObject.File } key={ index }
+                        <FileRenderer { ...item as ItemObject.File } key={ index } filter={ props.extensionFiler }
                                       selected={ index == props.selectedItem }
-                                      onClick={ () => props.onItemClick(index) } />,
+                                      onClick={ () => props.onItemClick && props.onItemClick(index) } />,
 
                         <VariableRenderer { ...item as ItemObject.Variable } key={ index }
                                           selected={ index == props.selectedItem }
-                                          onClick={ () => props.onItemClick(index) } />
+                                          onClick={ () => props.onItemClick && props.onItemClick(index) } />
                     ][props.type];
                 }) }
             </div>

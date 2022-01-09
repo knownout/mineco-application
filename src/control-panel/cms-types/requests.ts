@@ -12,14 +12,27 @@ export interface Response<T = any> {
  */
 const RequestOptions = {
     recaptchaToken: "recaptchaToken",
+
     accountLogin: "accountLogin",
     accountHash: "accountHash",
+
+
+    // Files
     uploadFile: "uploadFile",
     getFilePreview: "getFilePreview",
-    limitSearchResponse: "find:limit",
     deleteFile: "deleteFile",
+
+
+    // Materials
     getMaterial: "getMaterial",
-    deleteMaterial: "deleteMaterial"
+    deleteMaterial: "deleteMaterial",
+    updateMaterialData: "material:updateContent",
+    updateMaterialText: "material:updateText",
+    updateMaterial: "material:updateIdentifier",
+
+
+    // Other
+    limitSearchResponse: "find:limit"
 };
 
 /**

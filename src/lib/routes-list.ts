@@ -15,13 +15,16 @@ export const serverRoutesList = {
 
     uploadFile: "/app/files/upload",
     getFilePreview: "/app/files/preview",
-
     deleteFile: "/app/files/delete",
 
     updateVariable: "/app/variables/update",
-    getMaterial: "/app/materials/get",
 
-    deleteMaterial: "/app/materials/delete"
+    getMaterial: "/app/materials/get",
+    deleteMaterial: "/app/materials/delete",
+    updateMaterial: "/app/materials/update",
+
+    getFile: (file: string, download: boolean) => makeRoute("/app/files/get/?file=" + file + (download
+        ? "&download=true" : ""))
 };
 
 /**

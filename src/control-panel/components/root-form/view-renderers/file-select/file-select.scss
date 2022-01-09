@@ -1,0 +1,35 @@
+div.file-selector.ui.container.grid.center.scroll {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 200;
+    transition: 100ms ease all;
+    transform: scale(0.9, 0.9);
+
+    pointer-events: none;
+
+    opacity: 0;
+    background: rgba(#ccc, .75);
+    backdrop-filter: blur(7px);
+
+    &.display {
+        transform: scale(1, 1);
+        pointer-events: all;
+        opacity: 1;
+    }
+
+    div.content-wrapper.content-wrapper.ui.flex.column.limit-380.h-fit {
+        height: fit-content;
+        min-height: fit-content;
+        max-height: fit-content;
+
+        div.items-list {
+            overflow: visible;
+        }
+
+        button {
+            width: fit-content;
+        }
+    }
+}

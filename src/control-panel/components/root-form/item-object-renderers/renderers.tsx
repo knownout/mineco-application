@@ -28,6 +28,12 @@ export namespace ItemObject {
         tags: string;
         datetime: string;
         preview: string;
+        pinned: string;
+    }
+
+    export interface ProcessedMaterial extends Omit<Material, "tags" | "pinned"> {
+        tags: string[],
+        pinned: boolean;
     }
 
     export interface Variable {
@@ -101,7 +107,7 @@ export function MaterialRenderer (renderer: ItemObject.Material & CommonRenderer
  *
  * @constructor
  */
-export function FileRenderer (renderer: ItemObject.File & CommonRendererProps) {
+export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & { filter?: string[] }) {
     // Split filename with dot
     const fileNameArray = renderer.filename.split(".");
 
@@ -114,6 +120,9 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps) {
     const rootClassName = classNames("file-object ui flex column gap-5 padding-20", {
         selected: renderer.selected
     });
+
+    if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0]))
+        return null;
 
     return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="file-header ui word-break-all">
