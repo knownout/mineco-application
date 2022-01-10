@@ -11,6 +11,8 @@ interface IFileSelectComponentProps {
     callback?: React.MutableRefObject<((file?: (string | undefined)) => void) | null>;
 
     onSelectCancel? (): void;
+
+    exclude?: React.MutableRefObject<string[] | undefined>
 }
 
 export default function FileSelect (props: IFileSelectComponentProps) {
@@ -32,7 +34,7 @@ export default function FileSelect (props: IFileSelectComponentProps) {
         <Loading display={ waitContent } />
         <div className="content-wrapper ui flex column limit-380 h-fit padding gap">
             <Button icon="bi bi-x-lg" onClick={ () => selectionEndHandler() }>Закрыть окно</Button>
-            <ItemsList type={ ItemObject.Type.files } { ...itemsListProperties } extensionFiler={ [ "jpg" ] }
+            <ItemsList type={ ItemObject.Type.files } { ...itemsListProperties } extensionFiler={ props.exclude && props.exclude.current }
                        updateItemsList={ itemsList => setItemsList(itemsList as ItemObject.File[]) }
                        onItemClick={ index => selectionEndHandler(index) } />
         </div>

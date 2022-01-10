@@ -10,8 +10,7 @@ div.file-selector.ui.container.grid.center.scroll {
     pointer-events: none;
 
     opacity: 0;
-    background: rgba(#ccc, .75);
-    backdrop-filter: blur(7px);
+    background: rgba(#ccc, .95);
 
     &.display {
         transform: scale(1, 1);

@@ -69,6 +69,7 @@ export default function ItemsList (props: ItemsListProps) {
                     datetimeTo: [ /<\d{2}\.\d{2}\.\d{4}/, "<" ],
                     identifier: [ /#[a-z0-9]+/, "#" ],
                     tags: [ /\+[A-Za-z0-9А-Яа-яЁё]+/g, "+" ],
+                    excludeTags: [ /-[A-Za-z0-9А-Яа-яЁё]+/g, "-" ],
                     title: [ /!.+/, "!" ]
                 },
                 {

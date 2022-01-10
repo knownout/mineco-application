@@ -121,13 +121,13 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
         selected: renderer.selected
     });
 
-    if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0]))
+    if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0].toLowerCase()))
         return null;
 
     return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="file-header ui word-break-all">
             <span className="extension-badge ui badge opacity-65 fz-14 lh-28">
-                { fileName.extension }
+                { fileName.extension.toLowerCase() }
             </span> { fileName.name }
         </div>
 

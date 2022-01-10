@@ -13,15 +13,13 @@ import Button from "../../../../../common/button";
 import Notify from "../../../../../common/notify";
 
 import { CommonViewRendererProps } from "../item-objects-view";
-import { defaultToolsList, EditorCore } from "./editor-js-config";
+import { defaultLocalization, defaultToolsList } from "./editor-js-config";
 import { ItemObject } from "../../item-object-renderers/renderers";
 
-import { createReactEditorJS } from "react-editor-js";
 import CheckBox from "../../../../../common/checkbox/checkbox";
 import classNames from "../../../../../lib/class-names";
 import FileSelect from "../file-select";
-
-const ReactEditorJS = createReactEditorJS();
+import EditorJS from "@editorjs/editorjs";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file
@@ -66,13 +64,14 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     const [ dateInputError, setDateInputError ] = React.useState(false);
 
     const [ fileSelectDisplay, setFileSelectDisplay ] = React.useState(false);
+
     const fileSelectCallback = React.useRef<((file?: string) => void) | null>(null);
+    const fileSelectFilter = React.useRef<string[] | undefined>();
+
+    const editorJSInstance = React.useRef<EditorJS | null>(null);
 
     // View loading state
     const [ loading, _setLoading ] = React.useState(true);
-
-    // Editor JS initialization
-    const editorCore = React.useRef<EditorCore | null>(null);
 
     const [ materialProps, _setMaterialProps ] = React.useState<ItemObject.ProcessedMaterial>({
         pinned: props.pinned === "1",
@@ -87,16 +86,22 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     const setMaterialProps = (props: Partial<ItemObject.ProcessedMaterial>) =>
         _setMaterialProps(Object.assign({}, materialProps, props));
 
-    const handleInitialize = React.useCallback((instance: EditorCore) => {
-        setLoading(true);
-        editorCore.current = instance;
-    }, []);
-
     // Shortcut for updating loading state
     const setLoading = (loading: boolean) => {
         props.onLoadStateChange && props.onLoadStateChange(loading);
         _setLoading(loading);
     };
+
+    React.useLayoutEffect(() => {
+        const materialData = material as MaterialDataResponse;
+        if (!loading && !editorJSInstance.current) editorJSInstance.current = new EditorJS({
+            holder: "editor-js-holder",
+            tools: { ...defaultToolsList },
+            i18n: defaultLocalization,
+
+            data: materialData.content as EditorJS.OutputData,
+        });
+    }, [ loading ]);
 
     // Require content from the server
     React.useEffect(() => {
@@ -136,6 +141,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             <div className="material-controls ui flex row border-radius-10 gap">
                 <Button icon="bi bi-arrow-clockwise" onClick={ materialUpdateHandler }>Обновить</Button>
                 <Button icon="bi bi-image" onClick={ previewChangeHandler }>Изменить превью</Button>
+                <Button icon="bi bi-plus-lg" onClick={ editorImageAddHandler }>Изображение</Button>
                 <Button icon="bi bi-trash-fill" onClick={ materialDeleteHandler }>Удалить</Button>
                 <Button icon="bi bi-box-arrow-up-right">Открыть</Button>
             </div>
@@ -190,9 +196,33 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             />
 
             <span className="ui opacity-75">Полный текст материала</span>
-            <ReactEditorJS onInitialize={ handleInitialize } tools={ { ...defaultToolsList } }
-                           defaultValue={ materialData.content } onReady={ () => setLoading(false) } />
+            {/*<ReactEditorJS onInitialize={ handleInitialize } tools={ { ...defaultToolsList } }*/ }
+            {/*               defaultValue={ materialData.content } onReady={ () => setLoading(false) } />*/ }
+
+            <div id="editor-js-holder" />
+            <span className="ui opacity-75">Приложения к материалу (файлы)</span>
+            <div className="ui attachments padding-20 border-radius-10 bg-white opacity-85">
+                Hello world
+            </div>
         </React.Fragment>;
+    }
+
+    async function editorImageAddHandler () {
+        setFileSelectDisplay(true);
+
+        fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
+        fileSelectCallback.current = (file?: string) => {
+            if (!file || !editorJSInstance.current) return;
+            const url = serverRoutesList.getFile(file, false);
+
+            editorJSInstance.current.blocks.insert("image", {
+                url,
+                "caption": props.title,
+                "withBorder": false,
+                "withBackground": false,
+                "stretched": false
+            })
+        };
     }
 
     /**
@@ -224,7 +254,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         setLoading(true);
         const { formDataEntries } = await useFullAuthentication();
 
-        if (!editorCore.current) {
+        if (!editorJSInstance.current) {
             props.notify && props.notify.add("Ошибка определения экземпляра редактора");
             return setLoading(false);
         }
@@ -239,7 +269,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             };
         };
 
-        const materialText = await editorCore.current.save();
+        const materialText = await editorJSInstance.current?.save();
         const formData = new MakeFormData({
             ...formDataEntries,
             [RequestOptions.updateMaterial]: props.identifier,
@@ -261,6 +291,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     async function previewChangeHandler () {
         setFileSelectDisplay(true);
 
+        fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
         fileSelectCallback.current = (file?: string) => {
             if (file) setMaterialProps({ preview: serverRoutesList.getFile(file, false) });
         };
@@ -269,7 +300,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     // Render the things that were before
     return <div className="view material-view ui grid center">
         <FileSelect callback={ fileSelectCallback } display={ fileSelectDisplay }
-                    onSelectCancel={ () => setFileSelectDisplay(false) } />
+                    onSelectCancel={ () => setFileSelectDisplay(false) } exclude={ fileSelectFilter } />
         <div className="view-content-wrapper ui flex scroll w-100 h-100 gap">
             { material && getControlsList() }
             { !material && loading && <div className="ui flex gap row w-100 h-100 center opacity-75">

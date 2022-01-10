@@ -115,9 +115,12 @@ export function FileViewRenderer (props: FileViewRendererProps) {
      */
     async function getFilePreviewBlob (filename: string) {
         const { formDataEntries } = await useFullAuthentication();
+        const name = filename.split(".").slice(0, -1).join(".");
+        const ext = filename.split(".").slice(-1)[0].toLocaleLowerCase();
+
         const formData = new MakeFormData({
             ...formDataEntries,
-            [RequestOptions.getFilePreview]: filename
+            [RequestOptions.getFilePreview]: name + "." + ext
         });
 
         // Send preview data request

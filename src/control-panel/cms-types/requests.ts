@@ -46,7 +46,8 @@ export const MaterialSearchOptions = {
     datetimeFrom: "find:materialDatetimeFrom",
     datetimeTo: "find:materialDatetimeTo",
     identifier: "find:materialIdentifier",
-    content: "find:materialContent"
+    content: "find:materialContent",
+    excludeTags: "find:materialExcludeTags"
 };
 
 /**
