@@ -1,6 +1,7 @@
 import React from "react";
 import convertDate from "../../../../lib/convert-date";
 import classNames from "../../../../lib/class-names";
+import { serverRoutesList } from "../../../../lib/routes-list";
 
 /**
  * Namespace for the items that renders in the items list
@@ -29,11 +30,13 @@ export namespace ItemObject {
         datetime: string;
         preview: string;
         pinned: string;
+        attachments: string;
     }
 
-    export interface ProcessedMaterial extends Omit<Material, "tags" | "pinned"> {
-        tags: string[],
+    export interface ProcessedMaterial extends Omit<Material, "tags" | "pinned" | "attachments"> {
+        tags: string[];
         pinned: boolean;
+        attachments: string[];
     }
 
     export interface Variable {
@@ -83,19 +86,23 @@ export function MaterialRenderer (renderer: ItemObject.Material & CommonRenderer
     if (descriptionString.slice(-4) == "....") descriptionString = descriptionString
         .slice(0, descriptionString.length - 1);
 
+    const date = new Date(parseInt(renderer.datetime) * 1000);
     const rootClassName = classNames("material-object ui flex column gap padding-20", {
-        selected: renderer.selected
+        selected: renderer.selected,
+        future: date.getTime() > Date.now()
     });
 
     return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="material-header ui flex row center-ai gap">
-            <img src={ renderer.preview } alt={ renderer.title } className="preview-image" />
+            <img src={ serverRoutesList.getFile(renderer.preview, false) } alt={ renderer.title }
+                 className="preview-image" />
+
             <span className="material-title">{ renderer.title }</span>
         </div>
 
         <div className="material-description ui fz-14 opacity-75">{ descriptionString }</div>
         <div className="material-additional-data ui fz-12 opacity-50 flex column">
-            <span className="date">{ convertDate(new Date(parseInt(renderer.datetime) * 1000)) }</span>
+            <span className="date">{ convertDate(date) }</span>
             <span className="identifier">#{ renderer.identifier }</span>
         </div>
     </div>;
@@ -121,6 +128,7 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
         selected: renderer.selected
     });
 
+    if (renderer.filename.slice(0, 9) == "_default-") return null;
     if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0].toLowerCase()))
         return null;
 

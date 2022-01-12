@@ -156,7 +156,9 @@ div.view.material-view {
                     opacity: .75;
                     transition: 100ms ease;
 
-                    &:hover { opacity: 1; }
+                    &:hover {
+                        opacity: 1;
+                    }
                 }
 
                 div.ce-block__content {
@@ -210,8 +212,50 @@ div.view.material-view {
 
             backdrop-filter: blur(6px);
 
-            button {
-                min-width: fit-content;
+            button { min-width: fit-content; }
+        }
+
+        div.ui.attachments {
+            position: relative;
+            height: fit-content;
+
+            div.attachment {
+                height: fit-content;
+                max-width: 420px;
+                opacity: .85;
+                transition: 100ms ease all;
+
+                cursor: pointer;
+
+                span.attachment-title {
+                    position: relative;
+                    display: block;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            div.add-attachment {
+                width: 58px;
+                height: 58px;
+                background: rgba(#000, .14);
+                opacity: .75;
+                transition: 100ms ease all;
+
+                cursor: pointer;
+
+                &:hover { opacity: 1; }
+
+                i.plus-icon {
+                    font-size: 28px;
+                }
+
             }
         }
     }
@@ -221,9 +265,7 @@ div.view.material-view {
             flex-direction: column;
         }
 
-        div.view-content-wrapper {
-            padding: 0;
-        }
+        div.view-content-wrapper { padding: 0; }
     }
 
     @media screen and (max-height: 500px) {

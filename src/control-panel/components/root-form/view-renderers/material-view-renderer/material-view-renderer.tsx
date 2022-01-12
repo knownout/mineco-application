@@ -19,7 +19,8 @@ import { ItemObject } from "../../item-object-renderers/renderers";
 import CheckBox from "../../../../../common/checkbox/checkbox";
 import classNames from "../../../../../lib/class-names";
 import FileSelect from "../file-select";
-import EditorJS from "@editorjs/editorjs";
+import EditorJS  from "@editorjs/editorjs";
+import makeIdentifier from "../../../../../lib/make-identifier";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file
@@ -61,28 +62,37 @@ interface MaterialViewRendererProps extends ItemObject.Material, CommonViewRende
 export default function MaterialViewRenderer (props: MaterialViewRendererProps) {
     // Material data container
     const [ material, setMaterial ] = React.useState<MaterialDataResponse>();
+
+    // State used for detecting if wrong date is given
     const [ dateInputError, setDateInputError ] = React.useState(false);
 
+    // If true, file select dialog will be displayed
     const [ fileSelectDisplay, setFileSelectDisplay ] = React.useState(false);
 
-    const fileSelectCallback = React.useRef<((file?: string) => void) | null>(null);
-    const fileSelectFilter = React.useRef<string[] | undefined>();
-
-    const editorJSInstance = React.useRef<EditorJS | null>(null);
-
-    // View loading state
     const [ loading, _setLoading ] = React.useState(true);
 
+    // Material local properties (will rewrite original props in the database after update)
     const [ materialProps, _setMaterialProps ] = React.useState<ItemObject.ProcessedMaterial>({
         pinned: props.pinned === "1",
         tags: props.tags.split(",").map(e => e.trim()).filter(e => e.length > 0),
-        identifier: props.identifier,
+        identifier: props.identifier === "create-new" ? makeIdentifier() : props.identifier,
         preview: props.preview,
         description: props.description,
         title: props.title,
-        datetime: formatDate(new Date(parseInt(props.datetime) * 1000))
+        datetime: formatDate(new Date(parseInt(props.datetime) * 1000)),
+        attachments: props.attachments.split(",").map(e => e.trim()).filter(e => e.length > 0)
     });
 
+    // File select dialog callback function mutable reference
+    const fileSelectCallback = React.useRef<((file?: ItemObject.File) => void) | null>(null);
+
+    // File select dialog extension filters
+    const fileSelectFilter = React.useRef<string[] | undefined>();
+
+    // Editor instance
+    const editorJSInstance = React.useRef<EditorJS | null>(null);
+
+    // Shortcut for updating local material props like component state
     const setMaterialProps = (props: Partial<ItemObject.ProcessedMaterial>) =>
         _setMaterialProps(Object.assign({}, materialProps, props));
 
@@ -92,21 +102,24 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         _setLoading(loading);
     };
 
+    // Render editor
     React.useLayoutEffect(() => {
         const materialData = material as MaterialDataResponse;
-        if (!loading && !editorJSInstance.current) editorJSInstance.current = new EditorJS({
+        if (!loading && !editorJSInstance.current && materialData) editorJSInstance.current = new EditorJS({
             holder: "editor-js-holder",
             tools: { ...defaultToolsList },
             i18n: defaultLocalization,
+            logLevel: "ERROR" as any,
 
             data: materialData.content as EditorJS.OutputData,
         });
-    }, [ loading ]);
+    }, [ props.identifier, loading, material ]);
 
     // Require content from the server
     React.useEffect(() => {
         setLoading(true);
         setMaterial(undefined);
+        editorJSInstance.current = null;
 
         useRecaptcha().then(async token => {
             const formData = new MakeFormData({
@@ -118,7 +131,15 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 .then(response => response.json()) as Response<MaterialDataResponse>;
 
 
-            if (response && response.success) setMaterial(response.responseContent as MaterialDataResponse);
+            if (response && response.success) {
+                setMaterial(response.responseContent as MaterialDataResponse);
+
+                setMaterialProps({
+                    attachments: (response.responseContent as MaterialDataResponse).data.attachments
+                        .split(",").map(e => e.trim()).filter(e => e.length > 0)
+                });
+            }
+
             setLoading(false);
         });
     }, [ props.identifier ]);
@@ -146,23 +167,25 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 <Button icon="bi bi-box-arrow-up-right">Открыть</Button>
             </div>
             <div className="title-and-date ui flex row margin optimize gap">
-                <Input placeholder="Заголовок материала" className="title-input"
+                <Input placeholder="Заголовок материала" className="title-input" maxLength={ 128 }
                        onInput={ value => setMaterialProps({ title: value }) }>
                     { materialProps.title }
                 </Input>
 
                 <Input placeholder="Дата публикации" className={ classNames("date-input", { error: dateInputError }) }
-                       onInput={ dateInputHandler }>
+                       onInput={ dateInputHandler } maxLength={ 19 }>
                     { materialProps.datetime }
                 </Input>
             </div>
+
+            {/* Material options */ }
 
             <span className="ui opacity-75">Параметры материала</span>
             <div className="material-options ui flex row wrap margin optimize gap">
                 <Input placeholder="Идентификатор" className="identifier-input" maxLength={ 156 }
                        mask={ [ [ /[^A-Za-z0-9\-_]/g, "" ] ] }
                        onInput={ value => setMaterialProps({ identifier: value }) }>
-                    { props.identifier }
+                    { props.identifier === "create-new" ? makeIdentifier() : props.identifier }
                 </Input>
 
                 <CheckBox checked={ materialProps.pinned }
@@ -170,6 +193,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                     Закрепить материал
                 </CheckBox>
             </div>
+
+            {/* Material tags list */ }
 
             <span className="ui opacity-75">Теги материала</span>
             <div className="material-tags ui flex row wrap margin optimize gap">
@@ -188,32 +213,63 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 }) }
             </div>
 
+            {/* Material description */ }
+
             <span className="ui opacity-75">Краткое содержание материала</span>
             <textarea className="ui clean interactive material-description"
                       placeholder="Введите краткое содержание материала"
-                      defaultValue={ materialData.data.description }
+                      defaultValue={ materialData.data.description } maxLength={ 1200 }
                       onInput={ e => setMaterialProps({ description: (e.target as HTMLTextAreaElement).value }) }
             />
 
-            <span className="ui opacity-75">Полный текст материала</span>
-            {/*<ReactEditorJS onInitialize={ handleInitialize } tools={ { ...defaultToolsList } }*/ }
-            {/*               defaultValue={ materialData.content } onReady={ () => setLoading(false) } />*/ }
+            {/* Material text editor */ }
 
+            <span className="ui opacity-75">Полный текст материала</span>
             <div id="editor-js-holder" />
             <span className="ui opacity-75">Приложения к материалу (файлы)</span>
-            <div className="ui attachments padding-20 border-radius-10 bg-white opacity-85">
-                Hello world
+            <div className="ui attachments opacity-85 flex row wrap gap">
+                { materialProps.attachments.map((filename, index) => <div
+                    className="attachment ui padding-20 border-radius-10 bg-white" key={ index }
+                    onClick={ () => editorAttachmentDeleteHandler(filename) }>{ filename }</div>) }
+
+                <div className="add-attachment ui grid center border-radius-10" onClick={ editorAttachmentAddHandler }>
+                    <i className="bi bi-plus-lg" />
+                </div>
             </div>
         </React.Fragment>;
+    }
+
+    /**
+     * Handler for adding new attachments
+     */
+    function editorAttachmentAddHandler () {
+        fileSelectFilter.current = undefined;
+        fileSelectCallback.current = (file?: ItemObject.File) => {
+            if (!file) return;
+            const localAttachments = materialProps.attachments.filter(e => e != file.filename);
+            localAttachments.push(file.filename);
+
+            setMaterialProps({ attachments: localAttachments });
+        }
+
+        setFileSelectDisplay(true);
+    }
+
+    /**
+     * Delete attachments on click
+     * @param filename attachment name
+     */
+    function editorAttachmentDeleteHandler (filename: string) {
+        setMaterialProps({ attachments: materialProps.attachments.filter(e => e != filename) });
     }
 
     async function editorImageAddHandler () {
         setFileSelectDisplay(true);
 
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
-        fileSelectCallback.current = (file?: string) => {
+        fileSelectCallback.current = (file?: ItemObject.File) => {
             if (!file || !editorJSInstance.current) return;
-            const url = serverRoutesList.getFile(file, false);
+            const url = serverRoutesList.getFile(file.filename, false);
 
             editorJSInstance.current.blocks.insert("image", {
                 url,
@@ -260,19 +316,21 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         }
 
         const materialPropsConverter = (props: ItemObject.ProcessedMaterial): ItemObject.Material => {
-            const { pinned, tags, datetime, ...pureProps } = props;
+            const { pinned, tags, datetime, attachments, ...pureProps } = props;
             return {
                 ...pureProps,
                 pinned: pinned ? "1" : "0",
                 tags: tags.join(","),
-                datetime: (new Date(datetime).getTime() / 1000).toString()
+                datetime: (new Date(datetime).getTime() / 1000).toString(),
+                attachments: attachments.join(",")
             };
         };
 
         const materialText = await editorJSInstance.current?.save();
+
         const formData = new MakeFormData({
             ...formDataEntries,
-            [RequestOptions.updateMaterial]: props.identifier,
+            [RequestOptions.updateMaterial]: props.identifier === "create-new" ? materialProps.identifier : props.identifier,
             [RequestOptions.updateMaterialData]: JSON.stringify(materialPropsConverter(materialProps)),
             [RequestOptions.updateMaterialText]: JSON.stringify(materialText)
         });
@@ -288,12 +346,16 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         } else props.notify && props.notify.add("Ошибка обновления материала");
     }
 
+    /**
+     * Handler for changing material preview
+     * (will be visible after update)
+     */
     async function previewChangeHandler () {
         setFileSelectDisplay(true);
 
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
-        fileSelectCallback.current = (file?: string) => {
-            if (file) setMaterialProps({ preview: serverRoutesList.getFile(file, false) });
+        fileSelectCallback.current = (file?: ItemObject.File) => {
+            if (file) setMaterialProps({ preview: file.filename });
         };
     }
 

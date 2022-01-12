@@ -65,7 +65,7 @@ export default function InitialView (props: InitialViewProps) {
             </tr>
             <tr>
                 <td><code>#abcde</code></td>
-                <td><code>найти материал по его 16-значному идентификатору (ссылке)</code></td>
+                <td><code>найти материал по его идентификатору (ссылке)</code></td>
             </tr>
         </tbody>
     </table>;

@@ -43,4 +43,13 @@ div.material-object {
     div.material-additional-data span {
         font-weight: 700;
     }
+
+    overflow: hidden;
+    span.material-title {
+        word-break: break-word;
+    }
+
+    &.future div.material-additional-data span.date {
+        color: darken(#0050C9, 10%);
+    }
 }

@@ -38,6 +38,8 @@ button.button-component {
     }
 
     &.waiting {
+        opacity: .4;
+        pointer-events: none;
 
         i.button-icon {
             font-size: 0;

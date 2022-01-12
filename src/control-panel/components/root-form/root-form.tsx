@@ -165,35 +165,41 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
     }
 
     public genericViewRenderer () {
+        const onContentUpdate = () => this.setState({
+            selectedItem: -1, contentVersion: this.state.contentVersion + 1
+        });
+
+        const commonProps = { onLoadStateChange: (loadState: boolean) => this.setState({ waitContent: loadState }) };
+
+        /** Props for the empty (new) material (just stub) */
+        const empty = {
+            identifier: "create-new", attachments: "",
+            title: "", datetime: (Date.now() / 1000).toString(),
+            preview: "_default-minecoBuilding.jpg", description: "",
+            tags: "", pinned: ""
+        } as ItemObject.Material;
+
+        // -2 used to create new materials
+        if (this.state.selectedItem === -2)
+            return <MaterialViewRenderer { ...commonProps } { ...empty } notify={ this.notify }
+                                         onMaterialDelete={ onContentUpdate }
+                                         onMaterialUpdate={ onContentUpdate } />;
+
+        // Show initial form if no items selected
         if (this.state.selectedItem < 0)
             return <InitialView type={ this.state.itemType } waitContent={ this.state.waitContent }
                                 onGenericButtonClick={ this.genericButtonClickEventHandler } />;
 
         const itemData = this.state.itemsList[this.state.selectedItem];
-        const commonProps = {
-            onLoadStateChange: (loadState: boolean) => this.setState({ waitContent: loadState })
-        };
 
         const viewRenderers = [
             <MaterialViewRenderer { ...itemData as ItemObject.Material } { ...commonProps } notify={ this.notify }
-                                  onMaterialDelete={ () => this.setState({
-                                      contentVersion: this.state.contentVersion + 1,
-                                      selectedItem: -1
-                                  }) }
-                                  onMaterialUpdate={ () => this.setState({
-                                      contentVersion: this.state.contentVersion + 1,
-                                      selectedItem: -1
-                                  }) } />,
+                                  onMaterialDelete={ onContentUpdate }
+                                  onMaterialUpdate={ onContentUpdate } />,
             <FileViewRenderer { ...itemData as ItemObject.File } { ...commonProps }
-                              onFileDelete={ () => this.setState({
-                                  contentVersion: this.state.contentVersion + 1,
-                                  selectedItem: -1
-                              }) } />,
+                              onFileDelete={ onContentUpdate } />,
             <VariableViewRenderer { ...itemData as ItemObject.Variable } notify={ this.notify } { ...commonProps }
-                                  onContentUpdate={ () => this.setState({
-                                      contentVersion: this.state.contentVersion + 1,
-                                      selectedItem: -1
-                                  }) } />
+                                  onContentUpdate={ onContentUpdate } />
         ];
 
         return viewRenderers[this.state.itemType];
@@ -206,6 +212,7 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
     public genericButtonClickEventHandler (event: React.MouseEvent<HTMLButtonElement>) {
         switch (this.state.itemType) {
             case Type.materials:
+                this.setState({ selectedItem: -2 })
                 break;
 
             case Type.files:

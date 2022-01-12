@@ -8,7 +8,7 @@ import Button from "../../../../../common/button";
 
 interface IFileSelectComponentProps {
     display?: boolean;
-    callback?: React.MutableRefObject<((file?: (string | undefined)) => void) | null>;
+    callback?: React.MutableRefObject<((file?: ItemObject.File) => void) | null>;
 
     onSelectCancel? (): void;
 
@@ -23,7 +23,7 @@ export default function FileSelect (props: IFileSelectComponentProps) {
 
     function selectionEndHandler (index?: number) {
         if (index !== undefined && itemsList && props.callback
-            && props.callback.current) props.callback.current(itemsList[index].filename);
+            && props.callback.current) props.callback.current(itemsList[index]);
         else if (props.callback && props.callback.current) props.callback.current();
 
         props.onSelectCancel && props.onSelectCancel();

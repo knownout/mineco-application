@@ -6,6 +6,7 @@ const list = require("@editorjs/list");
 const image = require("@editorjs/simple-image");
 const table = require("@editorjs/table");
 const raw = require("@editorjs/raw");
+const paragraph = require("@editorjs/paragraph");
 
 export const defaultToolsList = {
     header: {
@@ -18,6 +19,14 @@ export const defaultToolsList = {
     },
     delimiter,
     image,
+    paragraph: {
+        class: paragraph,
+        inlineToolbar: true,
+        config: {
+            preserveBlank: true,
+            placeholder: "Введите текст"
+        }
+    },
     list: {
         class: list,
         inlineToolbar: true
