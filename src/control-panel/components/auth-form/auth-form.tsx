@@ -139,7 +139,7 @@ export default function AuthForm () {
 
             {/* Authentication button */ }
             <Button icon="bi bi-hand-index-fill" onAsyncClick={ authenticationHandler } disabled={ !authButtonEnabled }
-                    element={ authButtonRef }>
+                    element={ authButtonRef } className="margin optimize">
                 Войти в аккаунт
             </Button>
         </div>

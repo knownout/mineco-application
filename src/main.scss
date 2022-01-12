@@ -46,7 +46,7 @@ b, strong {
  * Application root element styles
  */
 
-.grecaptcha-badge { pointer-events: none; opacity: 0; }
+div.grecaptcha-badge { pointer-events: none; opacity: 0 !important; display: none !important }
 
 div#app-root {
     position: fixed;

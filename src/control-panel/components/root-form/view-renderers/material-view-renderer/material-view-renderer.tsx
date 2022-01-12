@@ -20,7 +20,7 @@ import CheckBox from "../../../../../common/checkbox/checkbox";
 import classNames from "../../../../../lib/class-names";
 import FileSelect from "../file-select";
 import EditorJS  from "@editorjs/editorjs";
-import makeIdentifier from "../../../../../lib/make-identifier";
+import makeIdentifier from "../../../../cms-lib/make-identifier";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file
