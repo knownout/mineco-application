@@ -16,7 +16,7 @@ import { ItemObject } from "./item-object-renderers/renderers";
 import ItemsList from "./items-list";
 
 import { Account } from "../../cms-types/account";
-import { RequestOptions, Response } from "../../cms-types/requests";
+import { RequestOptions, Response } from "../../../lib/types/requests";
 import verifyAuthentication from "../../cms-lib/verify-authentication";
 
 import InitialView from "./view-renderers/initital-view";

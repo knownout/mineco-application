@@ -1,3 +1,5 @@
+import { ItemObject } from "../../control-panel/components/root-form/item-object-renderers/renderers";
+
 /**
  * Server response type
  */
@@ -68,5 +70,10 @@ export const VariableOptions = {
     updateVariableName: "variable:variableName",
     updateVariableValue: "variable:updateVariable"
 };
+
+/**
+ * Type for material data server response
+ */
+export type MaterialDataResponse = { data: ItemObject.Material, content: unknown, tags: string[] }
 
 export { RequestOptions };

@@ -4,7 +4,7 @@ import MakeFormData from "../../lib/make-form-data";
 
 import { Account } from "../cms-types/account";
 import CacheController, { cacheKeysList } from "../../lib/cache-controller";
-import { RequestOptions, Response } from "../cms-types/requests";
+import { RequestOptions, Response } from "../../lib/types/requests";
 
 import { MD5 } from "crypto-js";
 

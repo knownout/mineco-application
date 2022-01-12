@@ -1,11 +1,10 @@
 import React from "react";
 
-import { RequestOptions, Response } from "../../../../cms-types/requests";
+import { MaterialDataResponse, RequestOptions, Response } from "../../../../../lib/types/requests";
 
-import useRecaptcha from "../../../../../lib/use-recaptcha";
 import MakeFormData from "../../../../../lib/make-form-data";
 
-import { makeRoute, serverRoutesList } from "../../../../../lib/routes-list";
+import { appRoutesList, makeRoute, serverRoutesList } from "../../../../../lib/routes-list";
 import { useFullAuthentication } from "../../../../../lib/use-full-authentication";
 
 import Input from "../../../../../common/input";
@@ -19,7 +18,7 @@ import { ItemObject } from "../../item-object-renderers/renderers";
 import CheckBox from "../../../../../common/checkbox/checkbox";
 import classNames from "../../../../../lib/class-names";
 import FileSelect from "../file-select";
-import EditorJS  from "@editorjs/editorjs";
+import EditorJS from "@editorjs/editorjs";
 import makeIdentifier from "../../../../cms-lib/make-identifier";
 
 // This renderer may be too complex, so I decided
@@ -37,11 +36,6 @@ function formatDate (date: Date) {
     [ month, day, hours, minutes ] = [ month, day, hours, minutes ].map(e => e.padStart(2, "0"));
     return `${ month }.${ day }.${ year } ${ hours }:${ minutes }`;
 }
-
-/**
- * Type for material data server response
- */
-type MaterialDataResponse = { data: ItemObject.Material, content: unknown, tags: string[] }
 
 /**
  * Properties list for the material view renderer
@@ -121,27 +115,25 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         setMaterial(undefined);
         editorJSInstance.current = null;
 
-        useRecaptcha().then(async token => {
-            const formData = new MakeFormData({
-                [RequestOptions.recaptchaToken]: token,
-                [RequestOptions.getMaterial]: props.identifier
-            });
-
-            const response = await fetch(makeRoute(serverRoutesList.getMaterial), formData.fetchObject)
-                .then(response => response.json()) as Response<MaterialDataResponse>;
-
-
-            if (response && response.success) {
-                setMaterial(response.responseContent as MaterialDataResponse);
-
-                setMaterialProps({
-                    attachments: (response.responseContent as MaterialDataResponse).data.attachments
-                        .split(",").map(e => e.trim()).filter(e => e.length > 0)
-                });
-            }
-
-            setLoading(false);
+        const formData = new MakeFormData({
+            // [RequestOptions.recaptchaToken]: token,
+            [RequestOptions.getMaterial]: props.identifier
         });
+
+        fetch(makeRoute(serverRoutesList.getMaterial), formData.fetchObject)
+            .then(response => response.json())
+            .then((response: Response<MaterialDataResponse>) => {
+                if (response && response.success) {
+                    setMaterial(response.responseContent as MaterialDataResponse);
+
+                    setMaterialProps({
+                        attachments: (response.responseContent as MaterialDataResponse).data.attachments
+                            .split(",").map(e => e.trim()).filter(e => e.length > 0)
+                    });
+                }
+
+                setLoading(false);
+            });
     }, [ props.identifier ]);
 
     /**
@@ -164,7 +156,10 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 <Button icon="bi bi-image" onClick={ previewChangeHandler }>Изменить превью</Button>
                 <Button icon="bi bi-plus-lg" onClick={ editorImageAddHandler }>Изображение</Button>
                 <Button icon="bi bi-trash-fill" onClick={ materialDeleteHandler }>Удалить</Button>
-                <Button icon="bi bi-box-arrow-up-right">Открыть</Button>
+                <Button icon="bi bi-box-arrow-up-right"
+                        onClick={ () => window.open(appRoutesList.material + props.identifier, "_blank") }>
+                    Открыть
+                </Button>
             </div>
             <div className="title-and-date ui flex row margin optimize gap">
                 <Input placeholder="Заголовок материала" className="title-input" maxLength={ 128 }

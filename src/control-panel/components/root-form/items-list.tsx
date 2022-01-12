@@ -16,7 +16,7 @@ import {
     RequestOptions,
     Response,
     VariableOptions
-} from "../../cms-types/requests";
+} from "../../../lib/types/requests";
 
 export interface ItemsListProps {
     type: ItemObject.Type;

@@ -32,7 +32,8 @@ export const serverRoutesList = {
  */
 export const appRoutesList = {
     auth: "/control-panel/auth",
-    cms: "/control-panel"
+    cms: "/control-panel",
+    material: "/dev/render/"
 };
 
 /**

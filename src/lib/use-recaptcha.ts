@@ -15,15 +15,27 @@ export default function useRecaptcha (): Promise<string> {
 
     return new Promise((resolve, reject) => {
         // Check if recaptcha instance exist
-        if (!recaptcha) reject("no-recaptcha-instance");
+        let iterations = 0;
+        const interval = setInterval(() => {
+            if (iterations > 100) {
+                clearInterval(interval);
+                return reject("no-recaptcha-instance");
+            }
 
-        recaptcha.ready(() => {
-            // Check if recaptcha instance fully loaded
-            if (!("execute" in recaptcha)) reject("bad-recaptcha-instance");
+            if (!recaptcha) {
+                iterations += 1;
+                return;
+            }
 
-            // Get client token
-            recaptcha.execute("6LfML98dAAAAAAOl4xfqwdf4qSlyGIHiNx71wvDd", { action: "login" })
-                .then(token => resolve(token));
-        });
+            clearInterval(interval);
+            recaptcha.ready(() => {
+                // Check if recaptcha instance fully loaded
+                if (!("execute" in recaptcha)) reject("bad-recaptcha-instance");
+
+                // Get client token
+                recaptcha.execute("6LfML98dAAAAAAOl4xfqwdf4qSlyGIHiNx71wvDd", { action: "login" })
+                    .then(token => resolve(token));
+            });
+        }, 100);
     });
 }

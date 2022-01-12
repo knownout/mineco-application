@@ -3,7 +3,7 @@ import MakeFormData from "../../../../lib/make-form-data";
 
 import { makeRoute, serverRoutesList } from "../../../../lib/routes-list";
 
-import { RequestOptions, Response, VariableOptions } from "../../../cms-types/requests";
+import { RequestOptions, Response, VariableOptions } from "../../../../lib/types/requests";
 
 import { ItemObject } from "../item-object-renderers/renderers";
 import Button from "../../../../common/button";
