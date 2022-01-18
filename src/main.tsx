@@ -7,7 +7,7 @@ import Helmet from "react-helmet";
 import ControlPanel from "./control-panel";
 
 import "./main.scss";
-import MaterialsRenderer from "./application/dev/materials-renderer";
+import Application from "./application/application";
 
 /**
  * Root component
@@ -37,9 +37,8 @@ class Main extends PureComponent {
             </Helmet>
             <Router>
                 <Routes>
-                    <Route path="/" element={ <div className="ui container grid center w-100 h-100">В разработке</div> } />
-                    <Route path="/dev/render/:identifier" element={ <MaterialsRenderer /> } />
                     <Route path="/control-panel/*" element={ <ControlPanel /> } />
+                    <Route path="/*" element={ <Application /> } />
                 </Routes>
             </Router>
         </React.Fragment>;
