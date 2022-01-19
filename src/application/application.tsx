@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import TitlePage from "./title-page";
 
 /**
  * Application root component
@@ -21,7 +22,7 @@ export default class Application extends React.PureComponent {
 
             <React.StrictMode>
                 <Routes>
-                    <Route path="/" element={ <div>Root form</div> } />
+                    <Route path="/" element={ <TitlePage /> } />
                     <Route path="/dev" element={ <div>Dev</div> } />
                 </Routes>
             </React.StrictMode>

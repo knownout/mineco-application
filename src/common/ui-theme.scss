@@ -135,6 +135,11 @@
             max-width: 460px;
         }
 
+        &.limit-1920 {
+            width: 100%;
+            max-width: 1920px;
+        }
+
         &.fz-14 { font-size: 14px; }
 
         &.fz-12 { font-size: 12px; }
