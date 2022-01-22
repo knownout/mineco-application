@@ -191,7 +191,6 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                 onGenericButtonClick={ this.genericButtonClickEventHandler } />;
 
         const itemData = this.state.itemsList[this.state.selectedItem];
-
         const viewRenderers = [
             <MaterialViewRenderer { ...itemData as ItemObject.Material } { ...commonProps } notify={ this.notify }
                                   onMaterialDelete={ onContentUpdate }

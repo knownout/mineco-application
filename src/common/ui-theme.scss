@@ -29,9 +29,10 @@
     }
 
     .ui {
-        textarea {
-            padding: 10px;
+        textarea, div.textarea {
+            padding: 20px;
             cursor: text;
+            background: #fff;
             border-radius: 10px;
         }
 

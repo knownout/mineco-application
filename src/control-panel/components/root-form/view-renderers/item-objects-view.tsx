@@ -144,9 +144,11 @@ export function FileViewRenderer (props: FileViewRendererProps) {
         /**
          * Information about file and controls (remove button)
          */
+        const name = filename.split("/").slice(1).join("/");
         const fileControls = <div className="file-controls ui flex row center-ai">
             <div className="file-info-block ui text-left lh-24">
-                <span className="file-name ui word-break-all text-left">{ filename }</span>{ " " }
+                <span
+                    className="file-name ui word-break-all text-left">{ name.length > 0 ? name : filename }</span>{ " " }
                 { preview && <span className="file-size ui badge fz-14 w-fit">{ prettyBytes(preview[0].size) }</span> }
             </div>
             <div className="file-controls-block ui flex w-fit row">
@@ -224,6 +226,10 @@ interface VariableViewRendererProps extends CommonViewRendererProps, ItemObject.
  */
 export function VariableViewRenderer (props: VariableViewRendererProps) {
     const [ value, setValue ] = React.useState<string>(String(props.value));
+    React.useEffect(() => {
+        if (value != String(props.value)) setValue(String(props.value));
+    }, [ props.value ])
+
     /**
      * Shortcut for the loading state updating
      * @param loading loading state
@@ -268,7 +274,7 @@ export function VariableViewRenderer (props: VariableViewRendererProps) {
 
     return <div className="view variable-view ui grid center">
         <div className="view-content-wrapper ui flex column padding-20">
-            <textarea className="ui w-100 interactive clean opacity-65" defaultValue={ String(props.value) }
+            <textarea className="ui w-100 interactive clean opacity-65" value={ value }
                       placeholder={ `Введите значение для переменной "${ props.name }"` }
                       onInput={ event => {
                           const target = event.target as HTMLTextAreaElement;

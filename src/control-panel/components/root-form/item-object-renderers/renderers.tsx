@@ -132,11 +132,13 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
     if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0].toLowerCase()))
         return null;
 
+    const name = fileName.name.split("/").slice(1).join("/")
+
     return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="file-header ui word-break-all">
             <span className="extension-badge ui badge opacity-65 fz-14 lh-28">
                 { fileName.extension.toLowerCase() }
-            </span> { fileName.name }
+            </span> { name.length > 0 ? name : fileName.name }
         </div>
 
         <div className="file-additional-data ui fz-12 opacity-50 flex row wrap gap-5">
