@@ -11,6 +11,10 @@ import Header from "../header";
 
 import "./page-renderers.scss";
 
+interface TitlePageRendererProps {
+    navigationMenu: { [key: string]: { [key: string]: string } };
+}
+
 /**
  * Title page renderer state
  */
@@ -29,12 +33,9 @@ interface TitlePageRendererState {
 
     // Important data from the database
     importantData?: string;
-
-    // Navigation menu items from the database
-    navigationMenu?: { [key: string]: { [key: string]: string } };
 }
 
-export default class TitlePageRenderer extends React.PureComponent<{}, TitlePageRendererState> {
+export default class TitlePageRenderer extends React.PureComponent<TitlePageRendererProps, TitlePageRendererState> {
     public readonly state: TitlePageRendererState = {
         loading: true
     };
@@ -61,12 +62,8 @@ export default class TitlePageRenderer extends React.PureComponent<{}, TitlePage
         const importantDataResponse = await require<ItemObject.Variable[]>(serverRoutesList.searchVariables,
             { [VariableOptions.variableName]: "Важная информация" });
 
-        // Get navigation menu items
-        const navigationMenuResponse = await require<ItemObject.Variable[]>(serverRoutesList.searchVariables,
-            { [VariableOptions.variableName]: "Панель навигации" });
-
         // Check if materials, important data and navigation menu items list exist
-        if (!materialsListResponse.responseContent || !navigationMenuResponse.responseContent || !importantDataResponse.responseContent)
+        if (!materialsListResponse.responseContent || !importantDataResponse.responseContent)
             return this.setState({ error: materialsListResponse.errorCodes?.join(" ") });
 
         const materialsList = materialsListResponse.responseContent;
@@ -81,7 +78,6 @@ export default class TitlePageRenderer extends React.PureComponent<{}, TitlePage
 
                 importantData: importantDataResponse.responseContent[0].value as string,
                 // Try to parse nav menu items
-                navigationMenu: JSON.parse(navigationMenuResponse.responseContent[0].value as string),
 
                 loading: false
             });
@@ -93,7 +89,7 @@ export default class TitlePageRenderer extends React.PureComponent<{}, TitlePage
     render () {
         return <div className="ui container title-page">
             <Loading display={ this.state.loading } error={ this.state.error } />
-            { this.state.navigationMenu && <Header navigationMenu={ this.state.navigationMenu } /> }
+            { this.props.navigationMenu && <Header navigationMenu={ this.props.navigationMenu } /> }
         </div>;
     }
 }

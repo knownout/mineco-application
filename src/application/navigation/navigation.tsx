@@ -10,6 +10,8 @@ export interface NavigationProps {
     mobile?: boolean;
 }
 
+
+// TODO: move resize handlers from navigation to application
 /**
  * Navigation menu component
  *
