@@ -67,7 +67,7 @@ export const FileSearchOptions = {
 };
 
 export const VariableOptions = {
-    variableName: "find:variableName",
+    variableName: "variable:variableName",
     updateVariableName: "variable:variableName",
     updateVariableValue: "variable:updateVariable"
 };

@@ -5,14 +5,18 @@
 
 .ui.container {
     position: absolute;
+
     display: grid;
 
-    top: 0;
-    left: 0;
-
-    overflow: hidden;
     width: 100%;
+
     height: 100%;
+    top: 0;
+
+    left: 0;
+    overflow: hidden;
+
+    &.block { display: block }
 
     place-items: center;
 
@@ -20,20 +24,28 @@
         position: relative;
         display: block;
 
-        overflow: hidden;
-        overflow-y: auto;
-
         width: fit-content;
         height: fit-content;
+
         max-height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
     }
 
     .ui {
         textarea, div.textarea {
             padding: 20px;
+            overflow-x: auto;
             cursor: text;
-            background: #fff;
+            word-break: break-word;
+
             border-radius: 10px;
+            background: #FFF;
+        }
+
+        &.relative {
+            position: relative;
+            display: block;
         }
 
         &.flex {
@@ -136,9 +148,14 @@
             max-width: 460px;
         }
 
-        &.limit-1920 {
+        &.limit-1420 {
             width: 100%;
-            max-width: 1920px;
+            max-width: 1420px;
+        }
+
+        &.limit-1280 {
+            width: 100%;
+            max-width: 1280px;
         }
 
         &.fz-14 { font-size: 14px; }
@@ -243,28 +260,28 @@
             }
 
             &::after {
-                all: inherit;
                 position: absolute;
                 display: block;
-
-                top: 2px;
-                left: 2px;
-
                 width: calc(100% - 3px);
+
                 min-width: calc(100% - 3px);
-
                 height: calc(100% - 3px);
-                min-height: calc(100% - 3px);
 
+                min-height: calc(100% - 3px);
+                top: 2px;
+
+                left: 2px;
                 margin: 0;
 
                 padding: 0;
 
                 content: "";
-                animation-duration: 1s;
 
+                animation-duration: 1s;
                 border-top-color: transparent;
+
                 border-bottom-color: #333;
+                all: inherit;
             }
 
             @keyframes rotate {

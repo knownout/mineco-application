@@ -1,0 +1,118 @@
+header.header-component {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    div.header-wrapper {
+        min-width: 100%;
+
+        &.no-logo nav.navigation-menu { width: 100%; }
+    }
+
+    div.scrollarea-content { width: fit-content; overflow: visible; }
+
+    a.header-logo-component {
+        height: 58px;
+        margin-left: auto;
+
+        cursor: pointer;
+
+        transition: 100ms ease all;
+
+        white-space: nowrap;
+        text-decoration: none;
+
+        color: #35624E;
+
+        border: 1px solid rgba(#35624E, .1);
+        background: rgba(#35624E, .2);
+        backdrop-filter: blur(4px);
+
+        &:hover { background: rgba(#35624E, .25); }
+
+        img {
+            position: relative;
+            display: block;
+
+            width: 38px;
+            filter: drop-shadow(0 0 20px rgba(#fff, .4));
+        }
+
+        h1 {
+            position: relative;
+            display: block;
+
+            margin: 0;
+            padding: 0;
+
+            font-size: 16px;
+        }
+    }
+
+    &.mobile {
+        position: fixed;
+        display: block;
+
+        width: 100%;
+        max-width: 420px;
+
+        height: 100%;
+        max-height: 100%;
+
+        right: 0;
+        left: unset;
+
+        overflow: hidden;
+        overflow-y: auto;
+
+        transition: 100ms ease all;
+        transform: translateX(100%);
+        border: 1px solid rgba(#A5CEBB, .4);
+        background: rgba(#FFF, .75);
+
+        backdrop-filter: blur(4px);
+
+        div.header-wrapper.ui.flex.row.padding.w-fit.relative.gap {
+            height: fit-content;
+            flex-direction: column-reverse;
+        }
+
+        a.header-logo-component {
+            width: 100%;
+            backdrop-filter: none;
+        }
+
+        &.open {
+            transform: translateX(0);
+        }
+    }
+}
+
+div.mobile-menu-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+
+    cursor: pointer;
+
+    transition: 100ms ease all;
+    color: lighten(#A5CEBB, 22%);
+    border-radius: 10px;
+    background: rgba(#3E725B, .75);
+
+    i { transition: 100ms ease all }
+
+    &:hover {
+        background: rgba(#3E725B, .7);
+    }
+
+    &.open {
+        color: #222;
+        background: rgba(#CCC, .75);
+
+        i {
+            transform: rotate(90deg);
+        }
+    }
+}
