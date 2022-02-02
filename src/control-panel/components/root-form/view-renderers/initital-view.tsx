@@ -22,7 +22,9 @@ interface InitialViewProps {
  */
 export default function InitialView (props: InitialViewProps) {
     // No-selection text for the variable
-    const variableNoSelectionText = <span>Выберите переменную из списка или воспользуйтесь поиском, чтобы начать</span>;
+    const variableNoSelectionText = <div>
+        <span>Выберите переменную из списка или воспользуйтесь поиском, чтобы начать</span>
+    </div>;
 
     // Generic no-selection text for the files and materials
     const genericNoSelectionText = (type: Type.files | Type.materials) =>
@@ -91,9 +93,16 @@ export default function InitialView (props: InitialViewProps) {
             </tr>
         </tbody>
     </table>;
+    const variableHint = <table>
+        <tbody>
+            <tr>
+                <td><code>Внимание!</code></td>
+                <td><code>Ошибки в значениях переменных могут привести к неработоспособности сайта</code></td>
+            </tr>
+        </tbody>
+    </table>;
 
-    const genericHintText = props.type == Type.variables ? null :
-        [ materialSearchHint, fileSearchHint ][props.type];
+    const genericHintText = [ materialSearchHint, fileSearchHint, variableHint ][props.type];
 
     return <div className="view initial-view ui grid center">
         <div className="view-content-wrapper ui flex text-center center column limit-380 gap-20">

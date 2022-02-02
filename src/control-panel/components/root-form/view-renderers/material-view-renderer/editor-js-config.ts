@@ -3,7 +3,7 @@ import EditorJS from "@editorjs/editorjs";
 const header = require("@editorjs/header");
 const delimiter = require("@editorjs/delimiter");
 const list = require("@editorjs/list");
-const image = require("@editorjs/simple-image");
+
 const table = require("@editorjs/table");
 const raw = require("@editorjs/raw");
 const paragraph = require("@editorjs/paragraph");
@@ -18,7 +18,6 @@ export const defaultToolsList = {
         }
     },
     delimiter,
-    image,
     paragraph: {
         class: paragraph,
         inlineToolbar: true,
@@ -70,7 +69,7 @@ export const defaultLocalization = {
             "Delimiter": "Разделитель",
             "Raw HTML": "HTML-фрагмент",
             "Table": "Таблица",
-            "Heading": "Заголовок",
+            "Heading": "Заголовок"
         }
     }
 } as EditorJS.I18nConfig;

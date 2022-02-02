@@ -11,7 +11,6 @@ export interface NavigationProps {
 }
 
 
-// TODO: move resize handlers from navigation to application
 /**
  * Navigation menu component
  *
@@ -43,7 +42,7 @@ export default function Navigation (props: NavigationProps) {
 
     return <nav className={ classNames("navigation-menu", { mobile: props.mobile }) }>
         { Object.entries(props.navigationMenu).map(([ title, subItems ], index) =>
-            <MenuItem key={ index } right={ index > Object.keys(props.navigationMenu).length / 2 }
+            <MenuItem key={ index } right={ index >= Object.keys(props.navigationMenu).length / 2 }
                       subItems={ subItems }>{ title }</MenuItem>) }
     </nav>;
 }

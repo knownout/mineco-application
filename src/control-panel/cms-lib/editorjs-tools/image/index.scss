@@ -1,0 +1,148 @@
+.image-tool {
+    --bg-color: #CDD1E0;
+    --front-color: #388AE5;
+    --border-color: #E8E8EB;
+
+    &__image {
+        margin-bottom: 10px;
+        overflow: hidden;
+        border-radius: 3px;
+
+        &-picture {
+            display: block;
+            max-width: 100%;
+            vertical-align: bottom;
+        }
+
+        &-preloader {
+            position: relative;
+            display: none;
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            background-position: center center;
+            background-size: cover;
+
+            &::after {
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                top: 50%;
+                left: 50%;
+                margin-top: -30px;
+                margin-left: -30px;
+                z-index: 3;
+                box-sizing: border-box;
+                content: "";
+                animation: image-preloader-spin 2s infinite linear;
+                border: 2px solid var(--bg-color);
+                border-top-color: var(--front-color);
+                border-radius: 50%;
+            }
+        }
+    }
+
+    &__caption {
+        &[contentEditable="true"][data-placeholder]::before {
+            position: absolute !important;
+            display: none;
+            font-weight: normal;
+            content: attr(data-placeholder);
+            color: #707684;
+        }
+
+        &[contentEditable="true"][data-placeholder]:empty {
+            &::before {
+                display: block;
+            }
+
+            &:focus::before {
+                display: none;
+            }
+        }
+    }
+
+    &--empty {
+        &__image {
+            display: none;
+        }
+    }
+
+    &--empty,
+    &--loading {
+        &__caption {
+            display: none;
+        }
+    }
+
+    &--filled {
+        .cdx-button {
+            display: none;
+        }
+
+        &__image {
+            &-preloader {
+                display: none;
+            }
+        }
+    }
+
+    &--loading {
+        &__image {
+            display: flex;
+            min-height: 200px;
+            border: 1px solid var(--border-color);
+            background-color: #FFF;
+
+            &-picture {
+                display: none;
+            }
+        }
+
+        .cdx-button {
+            display: none;
+        }
+    }
+
+    /**
+     * Tunes
+     * ----------------
+     */
+
+    &--withBorder {
+        &__image {
+            border: 1px solid var(--border-color);
+        }
+    }
+
+    &--withBackground {
+        &__image {
+            padding: 15px;
+            background: var(--bg-color);
+
+            &-picture {
+                max-width: 60%;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    &--stretched {
+        &__image {
+            &-picture {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@keyframes image-preloader-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

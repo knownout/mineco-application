@@ -11,7 +11,6 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 
 // Common node module functions import
-import { readFileSync } from "fs";
 import { resolve } from "path";
 
 /*
@@ -50,6 +49,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [ MiniCssExtractPlugin.loader, "css-loader", "postcss-loader" ]
+            },
+            {
+                test: /\.js$/,
+                use: [ "babel-loader" ]
+            },
+            {
+                test: /\.svg$/,
+                use: [ "raw-loader" ]
             }
         ]
     },
@@ -120,12 +127,12 @@ module.exports = {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,
-                    reuseExistingChunk: true,
+                    reuseExistingChunk: true
                 },
                 default: {
                     minChunks: 2,
                     priority: -20,
-                    reuseExistingChunk: true,
+                    reuseExistingChunk: true
                 }
             }
         },
@@ -148,7 +155,7 @@ module.exports = {
         static: {
             publicPath: "/public/",
             directory: "./public"
-        },
+        }
 
         // https: certificates
     }

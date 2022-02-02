@@ -15,11 +15,15 @@ import { CommonViewRendererProps } from "../item-objects-view";
 import { defaultLocalization, defaultToolsList } from "./editor-js-config";
 import { ItemObject } from "../../item-object-renderers/renderers";
 
+import ImageTool from "../../../../cms-lib/editorjs-tools/image";
+
 import CheckBox from "../../../../../common/checkbox/checkbox";
 import classNames from "../../../../../lib/class-names";
 import FileSelect from "../file-select";
 import EditorJS from "@editorjs/editorjs";
 import makeIdentifier from "../../../../cms-lib/make-identifier";
+import AttachesTool from "../../../../cms-lib/editorjs-tools/attaches";
+import SimpleCarousel from "../../../../cms-lib/editorjs-tools/carousel";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file
@@ -99,13 +103,31 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     // Render editor
     React.useLayoutEffect(() => {
         const materialData = material as MaterialDataResponse;
+        const image = {
+            class: ImageTool as any,
+            inlineToolbar: true,
+            config: { uploader: editorImageAddHandler }
+        };
+
+        const attaches = {
+            class: AttachesTool,
+            inlineToolbar: true,
+            config: { uploader: editorAttachmentAddHandler }
+        };
+
+        const carousel = {
+            class: SimpleCarousel,
+            inlineToolbar: true,
+            config: { uploader: editorImageAddHandler }
+        };
+
         if (!loading && !editorJSInstance.current && materialData) editorJSInstance.current = new EditorJS({
             holder: "editor-js-holder",
-            tools: { ...defaultToolsList },
+            tools: { ...defaultToolsList, image, attaches, carousel },
             i18n: defaultLocalization,
             logLevel: "ERROR" as any,
 
-            data: materialData.content as EditorJS.OutputData,
+            data: materialData.content as EditorJS.OutputData
         });
     }, [ props.identifier, loading, material ]);
 
@@ -125,11 +147,11 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             .then((response: Response<MaterialDataResponse>) => {
                 if (response && response.success) {
                     setMaterial(response.responseContent as MaterialDataResponse);
-
-                    setMaterialProps({
-                        attachments: (response.responseContent as MaterialDataResponse).data.attachments
-                            .split(",").map(e => e.trim()).filter(e => e.length > 0)
-                    });
+                    //
+                    // setMaterialProps({
+                    //     attachments: (response.responseContent as MaterialDataResponse).data.attachments
+                    //         .split(",").map(e => e.trim()).filter(e => e.length > 0)
+                    // });
                 }
 
                 setLoading(false);
@@ -154,7 +176,6 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             <div className="material-controls ui flex row border-radius-10 gap">
                 <Button icon="bi bi-arrow-clockwise" onClick={ materialUpdateHandler }>Обновить</Button>
                 <Button icon="bi bi-image" onClick={ previewChangeHandler }>Изменить превью</Button>
-                <Button icon="bi bi-plus-lg" onClick={ editorImageAddHandler }>Изображение</Button>
                 <Button icon="bi bi-trash-fill" onClick={ materialDeleteHandler }>Удалить</Button>
                 <Button icon="bi bi-box-arrow-up-right"
                         onClick={ () => window.open(appRoutesList.material + props.identifier, "_blank") }>
@@ -221,16 +242,16 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
             <span className="ui opacity-75">Полный текст материала</span>
             <div id="editor-js-holder" />
-            <span className="ui opacity-75">Приложения к материалу (файлы)</span>
-            <div className="ui attachments opacity-85 flex row wrap gap">
-                { materialProps.attachments.map((filename, index) => <div
-                    className="attachment ui padding-20 border-radius-10 bg-white" key={ index }
-                    onClick={ () => editorAttachmentDeleteHandler(filename) }>{ filename }</div>) }
+            {/*<span className="ui opacity-75">Приложения к материалу (файлы)</span>*/ }
+            {/*<div className="ui attachments opacity-85 flex row wrap gap">*/ }
+            {/*    { materialProps.attachments.map((filename, index) => <div*/ }
+            {/*        className="attachment ui padding-20 border-radius-10 bg-white" key={ index }*/ }
+            {/*        onClick={ () => editorAttachmentDeleteHandler(filename) }>{ filename }</div>) }*/ }
 
-                <div className="add-attachment ui grid center border-radius-10" onClick={ editorAttachmentAddHandler }>
-                    <i className="bi bi-plus-lg" />
-                </div>
-            </div>
+            {/*    <div className="add-attachment ui grid center border-radius-10" onClick={ editorAttachmentAddHandler }>*/ }
+            {/*        <i className="bi bi-plus-lg" />*/ }
+            {/*    </div>*/ }
+            {/*</div>*/ }
         </React.Fragment>;
     }
 
@@ -239,15 +260,23 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
      */
     function editorAttachmentAddHandler () {
         fileSelectFilter.current = undefined;
-        fileSelectCallback.current = (file?: ItemObject.File) => {
-            if (!file) return;
-            const localAttachments = materialProps.attachments.filter(e => e != file.filename);
-            localAttachments.push(file.filename);
-
-            setMaterialProps({ attachments: localAttachments });
-        }
-
         setFileSelectDisplay(true);
+
+        return new Promise(resolve => {
+            fileSelectCallback.current = (file?: ItemObject.File) => {
+                if (!file) return resolve(null);
+
+                const filename = file.filename.split("/").slice(1).join("/");
+                return resolve({
+                    "success": 1, "file": {
+                        "url": "/" + serverRoutesList.getFile(file.filename, false)
+                            .split("/").filter(e => e.length > 0).slice(2).join("/"),
+                        "name": filename,
+                        "title": filename
+                    }
+                });
+            };
+        });
     }
 
     /**
@@ -258,22 +287,22 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         setMaterialProps({ attachments: materialProps.attachments.filter(e => e != filename) });
     }
 
-    async function editorImageAddHandler () {
+    function editorImageAddHandler () {
+        fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
         setFileSelectDisplay(true);
 
-        fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
-        fileSelectCallback.current = (file?: ItemObject.File) => {
-            if (!file || !editorJSInstance.current) return;
-            const url = serverRoutesList.getFile(file.filename, false);
+        return new Promise((resolve) => {
+            fileSelectCallback.current = (file?: ItemObject.File) => {
+                if (!file || !editorJSInstance.current) return resolve(null);
+                resolve({
+                    "success": 1,
+                    "file": {
+                        "url": serverRoutesList.getFile(file.filename, false)
 
-            editorJSInstance.current.blocks.insert("image", {
-                url,
-                "caption": props.title,
-                "withBorder": false,
-                "withBackground": false,
-                "stretched": false
-            })
-        };
+                    }
+                });
+            };
+        });
     }
 
     /**

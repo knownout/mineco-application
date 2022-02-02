@@ -10,9 +10,9 @@ import Loading from "../../common/loading";
 import Header from "../header";
 
 import "./page-renderers.scss";
+import { HeaderComponentProps } from "../header/header";
 
-interface TitlePageRendererProps {
-    navigationMenu: { [key: string]: { [key: string]: string } };
+interface TitlePageRendererProps extends HeaderComponentProps {
 }
 
 /**
@@ -89,7 +89,8 @@ export default class TitlePageRenderer extends React.PureComponent<TitlePageRend
     render () {
         return <div className="ui container title-page">
             <Loading display={ this.state.loading } error={ this.state.error } />
-            { this.props.navigationMenu && <Header navigationMenu={ this.props.navigationMenu } /> }
+            { this.props.navigationMenu &&
+                <Header { ...this.props } /> }
         </div>;
     }
 }

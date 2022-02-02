@@ -33,7 +33,7 @@ class Main extends PureComponent {
                 <meta property="og:image"
                       content="/public/mineco-logo-448x252.png" />
 
-                <title>Министерство СХ и ПР</title>
+                <title>Министерство СХ и ПР ПМР</title>
             </Helmet>
             <Router>
                 <Routes>
