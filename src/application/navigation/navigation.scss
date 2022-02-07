@@ -29,7 +29,7 @@ nav.navigation-menu {
         border: 1px solid rgba(#3E725B, .05);
         border-top: none;
         border-radius: 10px;
-        background: rgba(lighten(#A5CEBB, 22%), .55);
+        background: rgba(lighten(#A5CEBB, 22%), .9);
 
         div.scroll-wrapper {
             position: relative;
@@ -106,7 +106,7 @@ nav.navigation-menu {
     &:not(.mobile) {
         color: lighten(#A5CEBB, 22%);
         border-radius: 10px;
-        background: linear-gradient(45deg, rgba(#3E725B, .85), rgba(#549477, .85));
+        background: linear-gradient(45deg, rgba(#3E725B, .95), rgba(#549477, .98));
 
         div.sub-items-list {
             position: absolute;

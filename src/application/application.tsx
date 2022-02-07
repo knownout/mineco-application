@@ -92,16 +92,23 @@ export default class Application extends React.PureComponent<{}, IApplicationSta
             this.setState({ error: "invalid-variable" });
         }
 
-        const item = this.wrapper.current;
-        if (!item) return;
-
         // Get contentWidth and minifiedContentWidth
-        const getWidth = (i: Element) => (i as HTMLElement).offsetWidth;
-        const width = Array.from(item.children).map(e => getWidth(e)).reduce((a, b) => a + b) + 30;
-        const logoWidth = (Array.from(item.children)[1] as HTMLElement).offsetWidth;
+        const getContentWidth = () => {
+            const item = this.wrapper.current;
+            if (!item) return;
 
-        this.setState({ contentWidth: width, minifiedContentWidth: width - (logoWidth - 58) },
-            this.handleWindowResize);
+            const getWidth = (i: Element) => (i as HTMLElement).offsetWidth;
+            const width = Array.from(item.children).map(e => getWidth(e)).reduce((a, b) => a + b) + 30;
+            const logoWidth = (Array.from(item.children)[1] as HTMLElement).offsetWidth;
+
+            this.setState({ contentWidth: width, minifiedContentWidth: width - (logoWidth - 58) },
+                this.handleWindowResize);
+        };
+
+        const interval = setInterval(() => {
+            if (this.state.contentWidth === 0) getContentWidth();
+            else clearInterval(interval);
+        }, 100);
     }
 
     render () {
@@ -143,6 +150,7 @@ export default class Application extends React.PureComponent<{}, IApplicationSta
         showLogoText: this.state.contentWidth <= window.innerWidth,
         mobile: this.state.minifiedContentWidth > window.innerWidth
     });
+
 
     /**
      * Mobile menu open/close event handler

@@ -48,6 +48,10 @@
             display: block;
         }
 
+        &.absolute {
+            position: absolute;
+        }
+
         &.flex {
             display: flex;
             flex-direction: column;
