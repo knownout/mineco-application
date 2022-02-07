@@ -23,7 +23,6 @@ import FileSelect from "../file-select";
 import EditorJS from "@editorjs/editorjs";
 import makeIdentifier from "../../../../cms-lib/make-identifier";
 import AttachesTool from "../../../../cms-lib/editorjs-tools/attaches";
-import SimpleCarousel from "../../../../cms-lib/editorjs-tools/carousel";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file
@@ -115,15 +114,9 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             config: { uploader: editorAttachmentAddHandler }
         };
 
-        const carousel = {
-            class: SimpleCarousel,
-            inlineToolbar: true,
-            config: { uploader: editorImageAddHandler }
-        };
-
         if (!loading && !editorJSInstance.current && materialData) editorJSInstance.current = new EditorJS({
             holder: "editor-js-holder",
-            tools: { ...defaultToolsList, image, attaches, carousel },
+            tools: { ...defaultToolsList, image, attaches },
             i18n: defaultLocalization,
             logLevel: "ERROR" as any,
 
@@ -277,14 +270,6 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 });
             };
         });
-    }
-
-    /**
-     * Delete attachments on click
-     * @param filename attachment name
-     */
-    function editorAttachmentDeleteHandler (filename: string) {
-        setMaterialProps({ attachments: materialProps.attachments.filter(e => e != filename) });
     }
 
     function editorImageAddHandler () {
