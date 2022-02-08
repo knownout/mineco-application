@@ -31,9 +31,11 @@ export interface HeaderComponentProps extends Omit<NavigationProps, "mobile"> {
  * @internal
  * @constructor
  */
-export function HeaderLogoComponent (props: { showLogoText: boolean, titleName: string }) {
-    return <a className="header-logo-component ui flex row center gap-20 padding-20 border-radius-10"
-              style={ props.showLogoText ? {} : { width: 58 } } href="/">
+export function HeaderLogoComponent (props: { showLogoText: boolean, titleName: string; className?: string; }) {
+    return <a className={
+        classNames("header-logo-component ui flex row center gap-20 padding-20 border-radius-10",
+            props.className)
+    } style={ props.showLogoText ? {} : { width: 58 } } href="/">
         { props.showLogoText && <h1 className="page-title">{ props.titleName }</h1> }
         <img src="/public/mineco-logo-transparent.png" alt="Логотип Министерства" />
     </a>;

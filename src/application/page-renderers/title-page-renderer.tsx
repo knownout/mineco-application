@@ -13,9 +13,12 @@ import Loading from "../../common/loading";
 import Header from "../header";
 
 import "./page-renderers.scss";
-import { HeaderComponentProps } from "../header/header";
+import { HeaderComponentProps, HeaderLogoComponent } from "../header/header";
 import Condition from "../../common/condition";
 import convertDate from "../../lib/convert-date";
+import PredefinedIcons from "./predefined-icons";
+import classNames from "../../lib/class-names";
+import Button from "../../common/button";
 
 interface TitlePageRendererProps extends HeaderComponentProps {
 }
@@ -41,6 +44,8 @@ interface TitlePageRendererState {
 
     // Relative links list (footer)
     linksList?: { [key: string]: string };
+
+    socialLinks?: { [key: string]: string }[];
 }
 
 export default class TitlePageRenderer extends React.PureComponent<TitlePageRendererProps, TitlePageRendererState> {
@@ -73,16 +78,15 @@ export default class TitlePageRenderer extends React.PureComponent<TitlePageRend
         const linksListResponse = await require<ItemObject.Variable[]>(serverRoutesList.searchVariables,
             { [VariableOptions.variableName]: "Полезные ссылки" });
 
+        const socialLinksResponse = await require<ItemObject.Variable[]>(serverRoutesList.searchVariables,
+            { [VariableOptions.variableName]: "Социальные сети" });
+
         // Check if materials, important data and navigation menu items list exist
-        if (!materialsListResponse.responseContent || !importantDataResponse.responseContent || !linksListResponse.responseContent)
+
+        if (!materialsListResponse.responseContent || !importantDataResponse.responseContent
+            || !linksListResponse.responseContent || !socialLinksResponse.responseContent)
             return this.setState({ error: materialsListResponse.errorCodes?.join(" ") });
 
-        let linksList = {};
-        try {
-            linksList = JSON.parse(linksListResponse.responseContent[0].value as string);
-        } catch {
-            return this.setState({ error: "invalid-variable_links-list" });
-        }
         const materialsList = materialsListResponse.responseContent;
         const pinnedMaterial = pinnedMaterialResponse.responseContent
             ? pinnedMaterialResponse.responseContent[0]
@@ -94,11 +98,10 @@ export default class TitlePageRenderer extends React.PureComponent<TitlePageRend
                 materialsList,
 
                 importantData: importantDataResponse.responseContent[0].value as string,
-                linksList,
+                linksList: JSON.parse(linksListResponse.responseContent[0].value as string),
+                socialLinks: JSON.parse(socialLinksResponse.responseContent[0].value as string)
                 // Try to parse nav menu items
-
-                loading: false
-            });
+            }, () => setTimeout(() => this.setState({ loading: false }), 120));
         } catch {
             this.setState({ error: "invalid-variable" });
         }
@@ -109,18 +112,64 @@ export default class TitlePageRenderer extends React.PureComponent<TitlePageRend
             false);
         const remarkPlugins = [ remarkGfm, remarkInlineLinks ];
 
+        const socialIcons = this.state.socialLinks?.reverse().map((block, index) => {
+            const SocialIcon = (props: { title: string, link: string; icon: string; open: boolean; }) =>
+                <a href={ props.link }
+                   className={ classNames("social-icon ui flex relative row center-ai", { open: props.open }) }>
+                    <div className="icon-holder ui relative"
+                         dangerouslySetInnerHTML={ { __html: props.icon } } />
+                    <span className="label">{ props.title }</span>
+                </a>;
+
+            return <div className="social-icons-block ui flex row wrap gap" key={ index }>
+                {
+                    Object.entries(block).map(([ title, link ], index) => {
+                        const iconInnerHTML = PredefinedIcons[title as keyof typeof PredefinedIcons].default;
+                        let label = title[0].toLocaleUpperCase() + title.slice(1).toLocaleLowerCase();
+
+                        if ([ "email", "phone" ].includes(title)) label = link.split(":").pop() + "";
+
+                        return <SocialIcon title={ label } link={ link } icon={ iconInnerHTML } key={ index }
+                                           open={ [ "email", "phone" ].includes(title) } />;
+                    })
+                }
+            </div>;
+        });
+
+        const navMenu = this.props.navigationMenu;
+        const virtualReception = navMenu["Контакты"] ? navMenu["Контакты"]["Виртуальная приемная"] || "#" : "#";
+        const hotLines = navMenu["Контакты"] ? navMenu["Контакты"]["Горячие линии"] || "#" : "#";
+
         const titleContent = <Condition condition={ this.props.navigationMenu && this.state.pinnedMaterial }>
             <Header { ...this.props } />
 
             <section className="title-content ui flex center w-100 relative">
                 <div className="background-cover ui w-100 h-100 absolute"
                      style={ { backgroundImage: `url("${ pinnedMaterialPreview }")` } } />
+
+                { this.props.mobile &&
+                    <HeaderLogoComponent showLogoText={ true } titleName={ this.props.titleName }
+                                         className="mobile-title" /> }
+
+                <article className="social-content ui relative flex">
+                    <div className="social-icons-holder ui flex relative column gap">
+                        { this.state.socialLinks && socialIcons }
+                    </div>
+                    <div className="external-menu-buttons ui flex column gap">
+                        <a href={ virtualReception } className="button-holder">
+                            <Button>Виртуальная приемная</Button>
+                        </a>
+                        <a href={ hotLines } className="button-holder">
+                            <Button>Горячие линии</Button>
+                        </a>
+                    </div>
+                </article>
                 <article className="pinned-material ui relative">
                     <a href={ appRoutesList.material + this.state.pinnedMaterial?.identifier }
-                       className="material-wrapper ui flex row">
+                       className="material-wrapper ui flex">
                         <img src={ pinnedMaterialPreview } alt={ this.state.pinnedMaterial?.title }
                              className="preview-image" />
-                        <div className="pinned-material-text ui flex column">
+                        <div className="pinned-material-text ui flex column center-jc">
                             <span className="title">{ this.state.pinnedMaterial?.title }</span>
                             <div className="description">
                                 <ReactMarkdown remarkPlugins={ remarkPlugins }>

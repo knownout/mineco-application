@@ -168,6 +168,10 @@ export default class Application extends React.PureComponent<{}, IApplicationSta
         if (!target.closest || target.closest("header.header-component")) return;
         if (target.closest("div.mobile-menu-button")) return;
 
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+
         this.setState({ mobileMenuOpen: false });
     };
 }
