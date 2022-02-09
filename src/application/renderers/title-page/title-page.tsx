@@ -1,11 +1,10 @@
 import React from "react";
-import { ApplicationContext } from "../../application";
 import Header from "../../header";
 
 import "./title-page.scss";
 
+// TODO: Create new renderer for pages (separate to application renderer) to avoid code duplication (Header)
 export default function TitlePage () {
-    const context = React.useContext(ApplicationContext);
     const [ scrollHeight, setScrollHeight ] = React.useState(0);
 
     const componentScrollHandler = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {

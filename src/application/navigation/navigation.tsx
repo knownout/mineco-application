@@ -15,6 +15,7 @@ export interface NavigationProps {
 
     children?: any;
 
+    // Reference
     element? (ref: HTMLElement | null): void;
 }
 
@@ -36,13 +37,18 @@ export default function Navigation (props: NavigationProps) {
         <Link to={ props.link } className="menu-sub-item padding">{ props.children }</Link>;
 
     /**
+     * Function for cleaning strings from extra whitespaces and casing
+     * @param str string that should be cleaned
+     */
+    const clean = (str: any) => String(str).replace(/\s/g, "").toLocaleLowerCase();
+
+    /**
      * Menu item renderer (wrapper for the sub items with title)
      * @constructor
      */
     const MenuItem = (props: {
         children: string, subItems: { [key: string]: string }, right: boolean; query?: string; mobile: boolean
     }) => {
-        const clean = (str: any) => String(str).replace(/\s/g, "").toLocaleLowerCase();
         const entries = props.mobile
             ? Object.entries(props.subItems).filter(([ k ]) => clean(k).includes(clean(props.query)))
             : Object.entries(props.subItems);
@@ -66,6 +72,10 @@ export default function Navigation (props: NavigationProps) {
         { props.children }
         { props.mobile && <Input placeholder="Поиск по меню" className="ui margin-bottom" onInput={ setQuery }
                                  icon="bi bi-search" /> }
+        { clean(query).length > 0 && <span
+            className="search-badge ui opacity-50 fz-14 margin-bottom text-center w-100 padding">
+            Результат поиска по запросу <b>«{ query }»</b>
+        </span> }
         { Object.entries(props.navigationMenu).map(([ title, subItems ], index) =>
             <MenuItem key={ index } right={ index >= Object.keys(props.navigationMenu).length / 2 }
                       subItems={ subItems } query={ query } mobile={ Boolean(props.mobile) }>{ title }</MenuItem>) }
