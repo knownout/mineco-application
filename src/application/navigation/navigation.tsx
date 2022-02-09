@@ -12,6 +12,10 @@ export interface NavigationProps {
 
     // Is application in mobile state
     mobile?: boolean;
+
+    children?: any;
+
+    element? (ref: HTMLElement | null): void;
 }
 
 
@@ -57,7 +61,9 @@ export default function Navigation (props: NavigationProps) {
         </div>;
     };
 
-    return <nav className={ classNames("navigation-menu", { mobile: props.mobile }) }>
+    return <nav className={ classNames("navigation-menu", { mobile: props.mobile }) }
+                ref={ ref => props.element && props.element(ref) }>
+        { props.children }
         { props.mobile && <Input placeholder="Поиск по меню" className="ui margin-bottom" onInput={ setQuery }
                                  icon="bi bi-search" /> }
         { Object.entries(props.navigationMenu).map(([ title, subItems ], index) =>

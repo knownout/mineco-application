@@ -15,9 +15,11 @@ function SocialDataRenderer (props: { socialData: { [key: string]: string }[] })
             ? keyData[1].split(":").slice(1).join(":")
             : keyData[0][0].toLocaleUpperCase() + keyData[0].slice(1).toLocaleLowerCase();
 
-        const icon = Icons[keyData[0] as keyof typeof Icons].default;
+        const icon = Icons[keyData[0] as keyof typeof Icons];
         return <a href={ keyData[1] } className="ui clean flex row gap" target="_blank" key={ index }>
-            <span className="icon-holder ui flex center" dangerouslySetInnerHTML={ { __html: icon } } />
+            <span className="icon-holder ui flex center">
+                { icon }
+            </span>
             <span className="item-title">{ title }</span>
         </a>;
     };
@@ -33,35 +35,68 @@ function SocialDataRenderer (props: { socialData: { [key: string]: string }[] })
 
 export default function Header (props: { scrollHeight: number }) {
     const context = React.useContext(ApplicationContext);
+    const [ mobile, setMobile ] = React.useState(false);
+    const [ open, setOpen ] = React.useState(false);
+
     const variablesData = context.variablesData as VariablesStorage;
 
     const staticContent = React.useRef<HTMLDivElement | null>();
+    const navigationMenu = React.useRef<HTMLElement | null>();
+
+    const windowResizeHandler = (width: number) => setMobile(window.innerWidth < width);
+    React.useLayoutEffect(() => {
+        const current = navigationMenu.current;
+        if (!current) return;
+
+        const handler = windowResizeHandler.bind(null, current.offsetWidth);
+
+        window.addEventListener("resize", handler);
+        handler();
+
+        return () => window.removeEventListener("resize", handler);
+    }, [ navigationMenu.current ]);
+
     const dynamicContentStyles = { width: `calc(100vw - ${ getScrollbarWidth() }px)` } as React.CSSProperties;
 
-    return <header className="header-component ui flex column center">
+    const navigationCondition = !mobile || (mobile && open);
+
+    const mobileMenuButton = <Button className={ classNames("mobile-menu", { open }) } children="Меню"
+                                     icon="bi bi-three-dots" onClick={ () => setOpen(!open) } />;
+
+    const extraButtonsSection = <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
+        <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Виртуальная приемная</Button>
+        <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
+    </div>;
+
+    return <header className={ classNames("header-component ui flex column center", { mobile }) }>
         { variablesData && <>
-            <div className="static-top-container ui flex row limit-1080 center"
+            { mobile && mobileMenuButton }
+            <div className="static-top-container ui flex row center gap-20"
                  ref={ ref => staticContent.current = ref }>
 
                 <div className="data-container ui flex column gap-20">
-                    <div className="website-title ui flex row limit-380 center gap">
+                    <div className="website-title ui flex row center gap">
                         <div className="mineco-logo-holder">
                             <img src="/public/mineco-logo-transparent.png" alt="Логотип Министерства" />
                         </div>
                         <h1 className="mineco-title-text">{ variablesData.websiteTitle }</h1>
                     </div>
-                    <SocialDataRenderer socialData={ variablesData.socialData } />
+                    { !mobile && <SocialDataRenderer socialData={ variablesData.socialData } /> }
                 </div>
 
-                <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
-                    <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Виртуальная приемная</Button>
-                    <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
-                </div>
+                { !mobile && extraButtonsSection }
             </div>
             <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
-                fixed: staticContent.current ? props.scrollHeight > staticContent.current.offsetHeight : false
-            }) } style={ dynamicContentStyles }>
-                <Navigation navigationMenu={ variablesData.navigationPanel } />
+                fixed: !mobile && staticContent.current ? props.scrollHeight > staticContent.current.offsetHeight
+                    : false, open
+            }) } style={ open ? {} : dynamicContentStyles }>
+                { navigationCondition &&
+                    <Navigation navigationMenu={ variablesData.navigationPanel } mobile={ mobile }
+                                element={ ref => navigationMenu.current = ref }>
+                        { mobile && <div className="social-data-holder ui margin-bottom">
+                            <SocialDataRenderer socialData={ variablesData.socialData } />
+                        </div> }
+                    </Navigation> }
             </div>
         </> }
     </header>;
