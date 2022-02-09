@@ -16,7 +16,7 @@ export default function Button (props: ExtendedButtonProps) {
 
     // Separate native props from custom props
     const {
-        children, icon, className, disabled, element,
+        children, icon, className, disabled, element, spanClassName,
         onClick, onAsyncClick, onAsyncException,
         ...nativeProps
     } = props;
@@ -25,6 +25,8 @@ export default function Button (props: ExtendedButtonProps) {
     const rootClassName = classNames("ui interactive clean padding-20 border-radius-10 flex row center", {
         disabled: disabled || waiting, waiting
     }, props.className, "opacity-95 button-component");
+
+    const textClassName = classNames("text ui flex row", spanClassName);
 
     /**
      * Native click event handler
@@ -63,6 +65,6 @@ export default function Button (props: ExtendedButtonProps) {
     return <button className={ rootClassName } { ...nativeProps } onClick={ clickHandler } ref={ element }>
         <i className="ui loading-spinner dark opacity-85" />
         { icon && <i className={ classNames("button-icon", icon) } /> }
-        <span className="text ui flex row">{ children }</span>
+        <span className={ textClassName }>{ children }</span>
     </button>;
 }

@@ -1,7 +1,10 @@
 import React from "react";
 import "./navigation.scss";
+
 import classNames from "../../lib/class-names";
 import Input from "../../common/input";
+
+import { Link } from "react-router-dom";
 
 export interface NavigationProps {
     // Navigation menu items list
@@ -26,7 +29,7 @@ export default function Navigation (props: NavigationProps) {
      * @constructor
      */
     const MenuSubItem = (props: { children: string, link: string; query?: string; mobile: boolean }) =>
-        <a href={ props.link } className="menu-sub-item padding">{ props.children }</a>;
+        <Link to={ props.link } className="menu-sub-item padding">{ props.children }</Link>;
 
     /**
      * Menu item renderer (wrapper for the sub items with title)

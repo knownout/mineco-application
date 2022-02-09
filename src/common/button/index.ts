@@ -19,6 +19,9 @@ export interface ButtonProps {
 
     element?: React.RefObject<HTMLButtonElement>;
 
+    // Class name for button title (span) element
+    spanClassName?: string;
+
     // Add-on over native onClick event
     onClick? (event: React.MouseEvent<HTMLButtonElement>): void;
 
