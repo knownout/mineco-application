@@ -6,6 +6,7 @@ import Navigation from "../navigation";
 
 import Icons from "./icons";
 import classNames from "../../lib/class-names";
+import getScrollbarWidth from "../../lib/scrollbar-width";
 
 function SocialDataRenderer (props: { socialData: { [key: string]: string }[] }) {
     const socialDataBlockEntry = (keyData: [ string, string ], index: number) => {
@@ -35,6 +36,7 @@ export default function Header (props: { scrollHeight: number }) {
     const variablesData = context.variablesData as VariablesStorage;
 
     const staticContent = React.useRef<HTMLDivElement | null>();
+    const dynamicContentStyles = { width: `calc(100vw - ${ getScrollbarWidth() }px)` } as React.CSSProperties;
 
     return <header className="header-component ui flex column center">
         { variablesData && <>
@@ -58,7 +60,7 @@ export default function Header (props: { scrollHeight: number }) {
             </div>
             <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
                 fixed: staticContent.current ? props.scrollHeight > staticContent.current.offsetHeight : false
-            }) }>
+            }) } style={ dynamicContentStyles }>
                 <Navigation navigationMenu={ variablesData.navigationPanel } />
             </div>
         </> }

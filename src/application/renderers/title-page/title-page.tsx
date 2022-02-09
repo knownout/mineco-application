@@ -15,7 +15,7 @@ export default function TitlePage () {
     return <div className="title-page ui container block scroll-y" onScroll={ componentScrollHandler }>
         <Header scrollHeight={ scrollHeight } />
         <div className="ui flex center w-100"
-             style={ { height: 2000, background: "linear-gradient(to top, red, green)" } }>123
+             style={ { height: 2000 } }>123
         </div>
     </div>;
 }
