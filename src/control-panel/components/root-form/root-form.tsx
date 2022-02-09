@@ -128,11 +128,13 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                 return <Tab.Panel key={ index }>
                                     <ItemsList type={ type } { ...itemsListProperties }
                                                onItemClick={ index => this.setState({
-                                                   selectedItem: this.state.selectedItem === index ? -1 : index
+                                                   selectedItem: this.state.selectedItem === index ? -1 : index,
+                                                   contentVersion: this.state.contentVersion + 1
                                                }) }
                                                updateItemsList={ itemsList => this.setState({ itemsList }) }
                                                resetSelectedItem={ () => this.setState({
-                                                   selectedItem: -1
+                                                   selectedItem: -1,
+                                                   contentVersion: this.state.contentVersion + 1
                                                }) }
                                     />
                                 </Tab.Panel>;
@@ -183,7 +185,8 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
         if (this.state.selectedItem === -2)
             return <MaterialViewRenderer { ...commonProps } { ...empty } notify={ this.notify }
                                          onMaterialDelete={ onContentUpdate }
-                                         onMaterialUpdate={ onContentUpdate } />;
+                                         onMaterialUpdate={ onContentUpdate }
+                                         uploadFile={ this.componentFileUploadHandler } />;
 
         // Show initial form if no items selected
         if (this.state.selectedItem < 0)
@@ -194,7 +197,8 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
         const viewRenderers = [
             <MaterialViewRenderer { ...itemData as ItemObject.Material } { ...commonProps } notify={ this.notify }
                                   onMaterialDelete={ onContentUpdate }
-                                  onMaterialUpdate={ onContentUpdate } />,
+                                  onMaterialUpdate={ onContentUpdate }
+                                  uploadFile={ this.componentFileUploadHandler } />,
             <FileViewRenderer { ...itemData as ItemObject.File } { ...commonProps }
                               onFileDelete={ onContentUpdate } />,
             <VariableViewRenderer { ...itemData as ItemObject.Variable } notify={ this.notify } { ...commonProps }
@@ -211,7 +215,7 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
     public genericButtonClickEventHandler (event: React.MouseEvent<HTMLButtonElement>) {
         switch (this.state.itemType) {
             case Type.materials:
-                this.setState({ selectedItem: -2 })
+                this.setState({ selectedItem: -2 });
                 break;
 
             case Type.files:
@@ -226,7 +230,7 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
     /**
      * Method for uploading files to the server
      */
-    public componentFileUploadHandler () {
+    public componentFileUploadHandler (callback?: (state: boolean) => void) {
         const cacheController = new CacheController(localStorage);
 
         // Create input file html element
@@ -243,8 +247,10 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
 
                 // Check if account data exist and get it
                 const accountData = cacheController.getItem<Account.Response>(cacheKeysList.accountData);
-                if (!accountData || !token || !dialog.files)
+                if (!accountData || !token || !dialog.files) {
+                    if (callback) callback(false);
                     return reject("Ошибка создания запроса, файл не загружен");
+                }
 
                 const formData = new MakeFormData({
                     [RequestOptions.recaptchaToken]: token,
@@ -259,9 +265,13 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                     .catch(reject) as Response<unknown>;
 
                 // Check response
-                if (response && response.success)
+                if (response && response.success) {
+                    if (callback) callback(true);
                     return this.setState({ contentVersion: this.state.contentVersion + 1 }, resolve);
-                else return reject();
+                } else {
+                    if (callback) callback(false);
+                    return reject();
+                }
             }).finally(() => this.setState({ waitContent: false }, () => dialog.remove()))
                 .catch(() => this.notify.add("Ошибка загрузки файла на сервер"));
         };

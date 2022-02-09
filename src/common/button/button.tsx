@@ -63,6 +63,6 @@ export default function Button (props: ExtendedButtonProps) {
     return <button className={ rootClassName } { ...nativeProps } onClick={ clickHandler } ref={ element }>
         <i className="ui loading-spinner dark opacity-85" />
         { icon && <i className={ classNames("button-icon", icon) } /> }
-        <span className="text">{ children }</span>
+        <span className="text ui flex row">{ children }</span>
     </button>;
 }

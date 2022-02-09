@@ -50,6 +50,8 @@ interface MaterialViewRendererProps extends ItemObject.Material, CommonViewRende
     onMaterialDelete? (): void;
 
     onMaterialUpdate? (): void;
+
+    uploadFile? (): void;
 }
 
 /**
@@ -69,7 +71,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     const [ loading, _setLoading ] = React.useState(true);
 
     // Material local properties (will rewrite original props in the database after update)
-    const [ materialProps, _setMaterialProps ] = React.useState<ItemObject.ProcessedMaterial>({
+    const _getDefaultMaterialObject = () => ({
         pinned: props.pinned === "1",
         tags: props.tags.split(",").map(e => e.trim()).filter(e => e.length > 0),
         identifier: props.identifier === "create-new" ? makeIdentifier() : props.identifier,
@@ -79,6 +81,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         datetime: formatDate(new Date(parseInt(props.datetime) * 1000)),
         attachments: props.attachments.split(",").map(e => e.trim()).filter(e => e.length > 0)
     });
+
+    const [ materialProps, _setMaterialProps ] = React.useState<ItemObject.ProcessedMaterial>(_getDefaultMaterialObject());
 
     // File select dialog callback function mutable reference
     const fileSelectCallback = React.useRef<((file?: ItemObject.File) => void) | null>(null);
@@ -135,6 +139,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             [RequestOptions.getMaterial]: props.identifier
         });
 
+        _setMaterialProps(_getDefaultMaterialObject());
+
         fetch(makeRoute(serverRoutesList.getMaterial), formData.fetchObject)
             .then(response => response.json())
             .then((response: Response<MaterialDataResponse>) => {
@@ -168,7 +174,13 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         return <React.Fragment>
             <div className="material-controls ui flex row border-radius-10 gap">
                 <Button icon="bi bi-arrow-clockwise" onClick={ materialUpdateHandler }>Обновить</Button>
-                <Button icon="bi bi-image" onClick={ previewChangeHandler }>Изменить превью</Button>
+                <Button onClick={ previewChangeHandler }>
+                    <span className="preview-image-wrapper">
+                        <img src={ serverRoutesList.getFile(materialProps.preview, false) } alt=""
+                             className="preview-image" /> Открыть
+                    </span>
+                    Изменить превью
+                </Button>
                 <Button icon="bi bi-trash-fill" onClick={ materialDeleteHandler }>Удалить</Button>
                 <Button icon="bi bi-box-arrow-up-right"
                         onClick={ () => window.open(appRoutesList.material + props.identifier, "_blank") }>
@@ -178,12 +190,12 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             <div className="title-and-date ui flex row margin optimize gap">
                 <Input placeholder="Заголовок материала" className="title-input" maxLength={ 128 }
                        onInput={ value => setMaterialProps({ title: value }) }>
-                    { materialProps.title }
+                    { materialData.data.title }
                 </Input>
 
                 <Input placeholder="Дата публикации" className={ classNames("date-input", { error: dateInputError }) }
                        onInput={ dateInputHandler } maxLength={ 19 }>
-                    { materialProps.datetime }
+                    { formatDate(new Date(parseInt(props.datetime) * 1000)) }
                 </Input>
             </div>
 
@@ -370,7 +382,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
     // Render the things that were before
     return <div className="view material-view ui grid center">
-        <FileSelect callback={ fileSelectCallback } display={ fileSelectDisplay }
+        <FileSelect callback={ fileSelectCallback } display={ fileSelectDisplay } uploadFile={ props.uploadFile }
                     onSelectCancel={ () => setFileSelectDisplay(false) } exclude={ fileSelectFilter } />
         <div className="view-content-wrapper ui flex scroll w-100 h-100 gap">
             { material && getControlsList() }

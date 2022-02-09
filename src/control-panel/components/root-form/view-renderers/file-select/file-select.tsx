@@ -9,15 +9,17 @@ import Button from "../../../../../common/button";
 interface IFileSelectComponentProps {
     display?: boolean;
     callback?: React.MutableRefObject<((file?: ItemObject.File) => void) | null>;
+    exclude?: React.MutableRefObject<string[] | undefined>;
 
     onSelectCancel? (): void;
 
-    exclude?: React.MutableRefObject<string[] | undefined>
+    uploadFile? (callback?: (state: boolean) => void): void;
 }
 
 export default function FileSelect (props: IFileSelectComponentProps) {
     const [ waitContent, setWaitContent ] = React.useState(true);
     const [ itemsList, setItemsList ] = React.useState<ItemObject.File[]>();
+    const [ contentVersion, setContentVersion ] = React.useState(0);
 
     const itemsListProperties = { waitContent, setWaitContent };
 
@@ -33,10 +35,15 @@ export default function FileSelect (props: IFileSelectComponentProps) {
         className={ classNames("file-selector ui container grid center scroll", { display: props.display }) }>
         <Loading display={ waitContent } />
         <div className="content-wrapper ui flex column limit-380 h-fit padding gap">
+            <Button icon="bi bi-cloud-arrow-up-fill" onClick={
+                () => props.uploadFile
+                    && props.uploadFile(state => setContentVersion(contentVersion + Number(state)))
+            }>Загрузить файл</Button>
             <Button icon="bi bi-x-lg" onClick={ () => selectionEndHandler() }>Закрыть окно</Button>
-            <ItemsList type={ ItemObject.Type.files } { ...itemsListProperties } extensionFiler={ props.exclude && props.exclude.current }
+            <ItemsList type={ ItemObject.Type.files } { ...itemsListProperties }
+                       extensionFiler={ props.exclude && props.exclude.current }
                        updateItemsList={ itemsList => setItemsList(itemsList as ItemObject.File[]) }
-                       onItemClick={ index => selectionEndHandler(index) } />
+                       onItemClick={ index => selectionEndHandler(index) } contentVersion={ contentVersion } />
         </div>
     </div>;
 }

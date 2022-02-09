@@ -2,7 +2,8 @@
  * Class for creating search masks in the input fields
  */
 export default class InlineSearch {
-    constructor (private readonly searchQuery: string) {}
+    constructor (private readonly searchQuery: string) {
+    }
 
     /**
      * Get special requests from the main search
@@ -20,7 +21,7 @@ export default class InlineSearch {
                 return "";
             }
 
-            searchQuery = searchQuery.replace(regexp, matcher);
+            searchQuery = searchQuery.replace(regexp, matcher).trim();
             entries[key] = matches.map(e => e.trim().replace(symbol, ""))
                 .filter(e => e.length > 0);
         });

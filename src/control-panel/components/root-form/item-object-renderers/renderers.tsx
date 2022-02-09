@@ -132,13 +132,21 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
     if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0].toLowerCase()))
         return null;
 
-    const name = fileName.name.split("/").slice(1).join("/")
+    const name = fileName.name.split("/").slice(1).join("/");
+
+    const canRenderPreview = [ "png", "jpg", "jpeg" ]
+        .includes(String(renderer.filename.split(".").pop()).toLocaleLowerCase());
 
     return <div className={ rootClassName } onClick={ renderer.onClick }>
-        <div className="file-header ui word-break-all">
-            <span className="extension-badge ui badge opacity-65 fz-14 lh-28">
+        <div className="file-header ui word-break-all flex row wrap center-ai gap-5">
+            <span className="extension-badge ui badge opacity-65 fz-14 lh-22">
                 { fileName.extension.toLowerCase() }
-            </span> { name.length > 0 ? name : fileName.name }
+            </span>
+            { canRenderPreview && <span className="preview-image-wrapper ui">
+                <img src={ serverRoutesList.getFile(renderer.filename, false) }
+                     alt="" className="preview-image" />
+            </span> }
+            { name.length > 0 ? name : fileName.name }
         </div>
 
         <div className="file-additional-data ui fz-12 opacity-50 flex row wrap gap-5">

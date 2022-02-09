@@ -7,7 +7,7 @@ export { default } from "./button";
  */
 export interface ButtonProps {
     // Button text
-    children: string;
+    children: any;
 
     // Inline renders icon before button text
     // Will be hidden while performing async requests
