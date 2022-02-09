@@ -41,7 +41,7 @@ function SocialDataRenderer (props: { socialData: { [key: string]: string }[] })
      * Convert social data variable to the array of social data blocks
      */
     const socialDataBlocks = props.socialData.map((data, index) => {
-        return <div className="social-data-block ui flex row gap-5" key={ index }>
+        return <div className="social-data-block ui flex row gap-5 wrap" key={ index }>
             { Object.entries(data).map(socialDataBlockEntry) }
         </div>;
     });
@@ -131,7 +131,7 @@ export default function Header (props: { scrollHeight: number }) {
             }) } style={ open ? {} : dynamicContentStyles }>
 
                 {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
-                
+
                 { navigationCondition &&
                     <Navigation navigationMenu={ variablesData.navigationPanel } mobile={ mobile }
                                 element={ ref => navigationMenu.current = ref }>
