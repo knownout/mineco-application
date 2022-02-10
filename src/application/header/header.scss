@@ -1,4 +1,5 @@
 header.header-component {
+    position: relative;
     background: linear-gradient(45deg, lighten(#F3F0DF, 8%), lighten(#F3F0DF, 5%));
 
     button {
@@ -56,10 +57,10 @@ header.header-component {
         div.website-title { max-width: 560px; }
 
         h1.mineco-title-text {
-            font-size: 20px;
-            font-weight: 700;
-
             margin: 0;
+            font-size: 20px;
+
+            font-weight: 700;
 
             text-transform: uppercase;
             opacity: .8;
@@ -113,17 +114,17 @@ header.header-component {
 
         div.dynamic-container {
             position: fixed !important;
+            width: 100vw;
+
+            height: 100%;
             top: 0;
 
             left: 0;
-            z-index: 81;
+            padding: 20px;
 
+            z-index: 81;
             overflow: hidden;
             overflow-y: auto;
-
-            width: 100vw;
-            height: 100%;
-            padding: 20px;
 
             background: #DDD;
         }
@@ -145,8 +146,8 @@ header.header-component {
 
     div.social-data {
         a[href] {
-            font-size: 14px;
             padding: 10px;
+            font-size: 14px;
 
             transition: 100ms ease all;
 

@@ -101,6 +101,9 @@ export default function Header (props: { scrollHeight: number }) {
         <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
     </div>;
 
+    const fixed = !mobile && staticContent.current ? props.scrollHeight > staticContent.current.offsetHeight
+        : false;
+
     return <header className={ classNames("header-component ui flex column center", { mobile }) }>
         { variablesData && <>
             { mobile && mobileMenuButton }
@@ -126,9 +129,8 @@ export default function Header (props: { scrollHeight: number }) {
             {/* Dynamic content (navigation menu) */ }
 
             <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
-                fixed: !mobile && staticContent.current ? props.scrollHeight > staticContent.current.offsetHeight
-                    : false, open
-            }) } style={ open ? {} : dynamicContentStyles }>
+                fixed, open
+            }) } style={ open ? {} : fixed ? dynamicContentStyles : {} }>
 
                 {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
 
