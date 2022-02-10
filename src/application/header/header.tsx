@@ -107,7 +107,7 @@ export default function Header (props: HeaderProps) {
         <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
     </div>;
 
-    return <header className={ classNames("header-component ui flex column center", { mobile }) }>
+    return <header className={ classNames("header-component ui flex column center w-100", { mobile }) }>
         { variablesData && <>
             { mobile && mobileMenuButton }
 
@@ -134,7 +134,8 @@ export default function Header (props: HeaderProps) {
 
             <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
                 fixed: !mobile && props.fixed, open
-            }) } style={ open ? {} : dynamicContentStyles } ref={ ref => dynamicContent.current = ref }>
+            }) } style={ (open || !props.fixed) ? {} : dynamicContentStyles }
+                 ref={ ref => dynamicContent.current = ref }>
 
                 {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
 

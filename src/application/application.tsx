@@ -4,15 +4,12 @@ import ApplicationBuilder from "./application-builder";
 import { ItemObject } from "../control-panel/components/root-form/item-object-renderers/renderers";
 
 import { Helmet } from "react-helmet";
-import { Route, Routes } from "react-router-dom";
 
 import Loading from "../common/loading";
 
 import { makeRoute, serverRoutesList } from "../lib/routes-list";
 import { Response, VariableOptions } from "../lib/types/requests";
-
-import NotFoundPage from "./renderers/not-found";
-import TitlePage from "./renderers/title-page/title-page";
+import ApplicationRouter from "./renderers/application-router";
 
 /**
  * Interface for application variables storage
@@ -31,7 +28,7 @@ export interface VariablesStorage<Obj = { [key: string]: string }> {
 /**
  * Container for both of variables and material storages
  */
-interface ApplicationContextStorage {
+export interface ApplicationContextStorage {
     variablesData?: Partial<VariablesStorage>;
 
     pinnedMaterial?: ItemObject.Material,
@@ -112,10 +109,7 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
                 <Loading display={ this.state.loading } error={ this.state.error } />
 
                 <ApplicationContext.Provider value={ { variablesData: this.state.variablesData } }>
-                    <Routes>
-                        <Route path="/" element={ <TitlePage /> } />
-                        <Route path="*" element={ <NotFoundPage /> } />
-                    </Routes>
+                    <ApplicationRouter />
                 </ApplicationContext.Provider>
             </React.StrictMode>
         </React.Fragment>;
