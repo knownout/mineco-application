@@ -8,6 +8,7 @@ import Icons from "./icons";
 import classNames from "../../lib/class-names";
 import getScrollbarWidth from "../../lib/scrollbar-width";
 import { Link } from "react-router-dom";
+import Condition from "../../common/condition";
 
 /**
  * Component for rendering social icons (like telegram, email, etc.)
@@ -72,7 +73,9 @@ export default function Header (props: HeaderProps) {
     // Get variables data from context
     const variablesData = context.variablesData as VariablesStorage;
 
+    // References to navigation menu and dynamic-content div
     const navigationMenu = React.useRef<HTMLElement | null>();
+    const dynamicContent = React.useRef<HTMLDivElement | null>();
 
     /**
      * Function for handling window resize
@@ -94,39 +97,34 @@ export default function Header (props: HeaderProps) {
         return () => window.removeEventListener("resize", handler);
     }, [ navigationMenu.current ]);
 
-    // Styles for dynamic content block (navigation menu)
-    const dynamicContentStyles = { width: `calc(100vw - ${ getScrollbarWidth() }px)` } as React.CSSProperties;
-    const dynamicContent = React.useRef<HTMLDivElement | null>();
-
-    const navigationCondition = !mobile || (mobile && open);
-
-    const mobileMenuButton = <Button className={ classNames("mobile-menu", { open }) } children="Меню"
-                                     icon="bi bi-three-dots" onClick={ () => setOpen(!open) } />;
-
-
+    /**
+     * Component for rendering header extra buttons
+     * @constructor
+     * @internal
+     */
     function ExtraButtons () {
+        // Check if list of navigation items is defined
         const navigationPanel = context.variablesData?.navigationPanel;
         if (!navigationPanel) return null;
 
-        const nav = navigationPanel["Контакты"];
-
-        const virtualReception = nav ? nav["Виртуальная приемная"] : String();
-        const hotLines = nav ? nav["Горячие линии"] : String();
+        // Define the name of additional buttons (should be identical with navigation item names)
+        const itemNames = [ "Виртуальная приемная", "Горячие линии" ];
 
         return <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
-            <Link to={ virtualReception } className="ui clean">
-                <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Виртуальная приемная</Button>
-            </Link>
-
-            <Link to={ hotLines } className="ui clean">
-                <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
-            </Link>
+            { itemNames.map((item, key) =>
+                <Link to={ navigationPanel["Контакты"][item] } className="ui clean" key={ key }>
+                    <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">{ item }</Button>
+                </Link>
+            ) }
         </div>;
     }
 
     return <header className={ classNames("header-component ui flex column center w-100", { mobile }) }>
         { variablesData && <>
-            { mobile && mobileMenuButton }
+            <Condition condition={ mobile }>
+                <Button className={ classNames("mobile-menu", { open }) } children="Меню"
+                        icon="bi bi-three-dots" onClick={ () => setOpen(!open) } />
+            </Condition>
 
             {/* Static content */ }
 
@@ -151,12 +149,12 @@ export default function Header (props: HeaderProps) {
 
             <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
                 fixed: !mobile && props.fixed, open
-            }) } style={ (open || !props.fixed) ? {} : dynamicContentStyles }
+            }) } style={ (open || !props.fixed) ? {} : { width: `calc(100vw - ${ getScrollbarWidth() }px)` } }
                  ref={ ref => dynamicContent.current = ref }>
 
                 {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
 
-                { navigationCondition &&
+                { (!mobile || (mobile && open)) &&
                     <Navigation navigationMenu={ variablesData.navigationPanel } mobile={ mobile }
                                 element={ ref => navigationMenu.current = ref }>
                         { mobile && <div className="social-data-holder ui margin-bottom">

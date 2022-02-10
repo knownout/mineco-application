@@ -70,22 +70,10 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
 
         // If no variables data, return error
         if (!variables.responseContent) return this.setState({ error: "invalid-variable" });
-
-        // Function for fetching material(s) data from server
-        // const fetchMaterials = genericFetchFunction.bind(this, serverRoutesList.searchMaterials);
-        // const formData = new MakeFormData({
-        //     [MaterialSearchOptions.tags]: "Новости",
-        //     [MaterialSearchOptions.pinned]: "0"
-        // });
+        
         const builder = new ApplicationBuilder();
 
         try {
-            // const { materialsList, pinnedMaterial } = builder.allocateMaterials(
-            //     (await fetchMaterials(formData.fetchObject)).responseContent as ItemObject.Material[],
-            //
-            //     (await fetchMaterials(formData.add({ [MaterialSearchOptions.pinned]: "1" }).fetchObject))
-            //         .responseContent as ItemObject.Material[]
-            // );
 
             this.setState({
                 variablesData: builder.getApplicationVariables(variables.responseContent)

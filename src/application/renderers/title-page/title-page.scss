@@ -1,0 +1,105 @@
+div.title-page {
+    div.pinned-data-block {
+        color: #FFF;
+        gap: 40px;
+
+        div.background-image {
+            display: block;
+
+            top: 0;
+            left: 0;
+            background-repeat: no-repeat;
+
+            background-position: center center;
+            background-size: cover;
+
+            filter: brightness(50%);
+        }
+
+        section.important-data, section.pinned-material {
+            p {
+                margin: 0;
+
+                line-height: 22px;
+                opacity: .8;
+
+                &:not(:last-child) {
+                    margin-bottom: 15px;
+                }
+
+                a[href] {
+                    padding: 3px;
+                    transition: 100ms ease all;
+                    white-space: nowrap;
+                    text-decoration: none;
+
+                    color: lighten(#A5CEBB, 10%);
+                    border-radius: 4px;
+                    background: rgba(#A5CEBB, .2);
+
+                    &:hover {
+                        background: rgba(#A5CEBB, .3);
+                    }
+                }
+            }
+        }
+
+        section.pinned-material {
+            width: fit-content;
+            max-width: 560px;
+
+            gap: 10px;
+
+            div.material-title {
+                padding: 20px;
+                border: 1px solid rgba(darken(#FFF, 10%), .2);
+
+                border-radius: 10px;
+                background: rgba(darken(#FFF, 10%), .1);
+                backdrop-filter: blur(6px) brightness(75%);
+
+                span.title {
+                    font-size: 32px;
+                    font-weight: 700;
+                }
+
+                div.description {
+                    opacity: .85;
+                }
+            }
+
+            img {
+                max-width: 100%;
+                border-radius: 10px;
+                //max-height: 320px;
+            }
+        }
+
+        section.important-data {
+            width: 460px;
+
+            padding: 20px;
+            border: 1px solid rgba(darken(#FFF, 10%), .2);
+            border-radius: 10px;
+            background: rgba(darken(#FFF, 10%), .1);
+
+            backdrop-filter: blur(6px) brightness(75%);
+
+            div.blocks-wrapper {
+                width: 100%;
+                overflow: hidden;
+
+                article.important-data-block {
+                    width: 460px;
+                    max-width: 100%;
+                }
+            }
+
+            span.section-title {
+                font-size: 24px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
