@@ -33,8 +33,8 @@ export default function Navigation (props: NavigationProps) {
      * Sub item renderer (item inside list)
      * @constructor
      */
-    const MenuSubItem = (props: { children: string, link: string; query?: string; mobile: boolean }) =>
-        <Link to={ props.link } className="menu-sub-item padding">{ props.children }</Link>;
+    const MenuSubItem = React.memo((props: { children: string, link: string; query?: string; mobile: boolean }) =>
+        <Link to={ props.link } className="menu-sub-item padding">{ props.children }</Link>);
 
     /**
      * Function for cleaning strings from extra whitespaces and casing
@@ -46,26 +46,30 @@ export default function Navigation (props: NavigationProps) {
      * Menu item renderer (wrapper for the sub items with title)
      * @constructor
      */
-    const MenuItem = (props: {
+    const MenuItem = React.memo((props: {
         children: string, subItems: { [key: string]: string }, right: boolean; query?: string; mobile: boolean
     }) => {
+        const [ hover, setHover ] = React.useState(false);
+
         const entries = props.mobile
             ? Object.entries(props.subItems).filter(([ k ]) => clean(k).includes(clean(props.query)))
             : Object.entries(props.subItems);
-
+        
         if (entries.length == 0) return null;
+
         return <div
-            className="menu-item ui relative">
+            className="menu-item ui relative" onMouseEnter={ () => setHover(true) }
+            onMouseLeave={ () => setTimeout(() => setHover(false), 100) }>
             <span className="item-title ui relative">{ props.children }</span>
             <div className={ classNames("sub-items-list ui flex column", { right: props.right }) }>
                 <div className="scroll-wrapper">
-                    { entries.map(([ title, link ], index) =>
+                    { (hover || props.mobile) && entries.map(([ title, link ], index) =>
                         <MenuSubItem key={ index } link={ link } query={ query }
                                      mobile={ props.mobile }>{ title }</MenuSubItem>) }
                 </div>
             </div>
         </div>;
-    };
+    });
 
     return <nav className={ classNames("navigation-menu", { mobile: props.mobile }) }
                 ref={ ref => props.element && props.element(ref) }>

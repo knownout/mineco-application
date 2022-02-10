@@ -49,11 +49,17 @@ function SocialDataRenderer (props: { socialData: { [key: string]: string }[] })
     return <div className="social-data ui flex column gap-5" children={ socialDataBlocks } />;
 }
 
+interface HeaderProps {
+    fixed: boolean;
+
+    staticContentRef (ref: HTMLDivElement | null): void;
+}
+
 /**
  * Component for creating application header
  * @constructor
  */
-export default function Header (props: { scrollHeight: number }) {
+export default function Header (props: HeaderProps) {
     const context = React.useContext(ApplicationContext);
 
     // Application mobile state
@@ -65,7 +71,6 @@ export default function Header (props: { scrollHeight: number }) {
     // Get variables data from context
     const variablesData = context.variablesData as VariablesStorage;
 
-    const staticContent = React.useRef<HTMLDivElement | null>();
     const navigationMenu = React.useRef<HTMLElement | null>();
 
     /**
@@ -90,6 +95,7 @@ export default function Header (props: { scrollHeight: number }) {
 
     // Styles for dynamic content block (navigation menu)
     const dynamicContentStyles = { width: `calc(100vw - ${ getScrollbarWidth() }px)` } as React.CSSProperties;
+    const dynamicContent = React.useRef<HTMLDivElement | null>();
 
     const navigationCondition = !mobile || (mobile && open);
 
@@ -108,7 +114,8 @@ export default function Header (props: { scrollHeight: number }) {
             {/* Static content */ }
 
             <div className="static-top-container ui flex row center gap-20"
-                 ref={ ref => staticContent.current = ref }>
+                 ref={ ref => props.staticContentRef(ref) } style={ (!mobile && props.fixed && dynamicContent.current)
+                ? { marginBottom: dynamicContent.current.offsetHeight } : {} }>
 
                 <div className="data-container ui flex column gap-20">
                     <div className="website-title ui flex row center gap">
@@ -126,9 +133,8 @@ export default function Header (props: { scrollHeight: number }) {
             {/* Dynamic content (navigation menu) */ }
 
             <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
-                fixed: !mobile && staticContent.current ? props.scrollHeight > staticContent.current.offsetHeight
-                    : false, open
-            }) } style={ open ? {} : dynamicContentStyles }>
+                fixed: !mobile && props.fixed, open
+            }) } style={ open ? {} : dynamicContentStyles } ref={ ref => dynamicContent.current = ref }>
 
                 {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
 
