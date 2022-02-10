@@ -13,7 +13,7 @@ export default class ApplicationBuilder {
      * @param transform transformation type
      * @private
      */
-    private static getVariableValue (list: ItemObject.Variable[], name: string, transform?: "json" | "special") {
+    public static getVariableValue (list: ItemObject.Variable[], name: string, transform?: "json" | "special") {
         let response: ItemObject.Variable | null = null;
 
         // Get variable from list

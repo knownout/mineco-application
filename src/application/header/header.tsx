@@ -7,6 +7,7 @@ import Navigation from "../navigation";
 import Icons from "./icons";
 import classNames from "../../lib/class-names";
 import getScrollbarWidth from "../../lib/scrollbar-width";
+import { Link } from "react-router-dom";
 
 /**
  * Component for rendering social icons (like telegram, email, etc.)
@@ -102,10 +103,26 @@ export default function Header (props: HeaderProps) {
     const mobileMenuButton = <Button className={ classNames("mobile-menu", { open }) } children="Меню"
                                      icon="bi bi-three-dots" onClick={ () => setOpen(!open) } />;
 
-    const extraButtonsSection = <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
-        <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Виртуальная приемная</Button>
-        <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
-    </div>;
+
+    function ExtraButtons () {
+        const navigationPanel = context.variablesData?.navigationPanel;
+        if (!navigationPanel) return null;
+
+        const nav = navigationPanel["Контакты"];
+
+        const virtualReception = nav ? nav["Виртуальная приемная"] : String();
+        const hotLines = nav ? nav["Горячие линии"] : String();
+
+        return <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
+            <Link to={ virtualReception } className="ui clean">
+                <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Виртуальная приемная</Button>
+            </Link>
+
+            <Link to={ hotLines } className="ui clean">
+                <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">Горячие линии</Button>
+            </Link>
+        </div>;
+    }
 
     return <header className={ classNames("header-component ui flex column center w-100", { mobile }) }>
         { variablesData && <>
@@ -127,7 +144,7 @@ export default function Header (props: HeaderProps) {
                     { !mobile && <SocialDataRenderer socialData={ variablesData.socialData } /> }
                 </div>
 
-                { !mobile && extraButtonsSection }
+                { !mobile && <ExtraButtons /> }
             </div>
 
             {/* Dynamic content (navigation menu) */ }
