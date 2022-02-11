@@ -50,7 +50,8 @@ export default function Navigation (props: NavigationProps) {
         children: string, subItems: { [key: string]: string }, right: boolean; query?: string; mobile: boolean
     }) => {
         const [ hover, setHover ] = React.useState(false);
-
+        const [ lock, setLock ] = React.useState(false);
+        
         const entries = props.mobile
             ? Object.entries(props.subItems).filter(([ k ]) => clean(k).includes(clean(props.query)))
             : Object.entries(props.subItems);
@@ -58,10 +59,18 @@ export default function Navigation (props: NavigationProps) {
         if (entries.length == 0) return null;
 
         const onEnter = () => setHover(true);
-        const onLeave = () => setTimeout(() => setHover(false), 100);
+        const onLeave = () => {
+            setLock(true);
+
+            setTimeout(() => {
+                setHover(false);
+                setLock(false);
+            }, 100);
+        };
 
         return <div
-            className="menu-item ui relative" onMouseEnter={ onEnter } onMouseLeave={ onLeave }
+            className={ classNames("menu-item ui relative", { lock }) } onMouseEnter={ onEnter }
+            onMouseLeave={ onLeave }
             onTouchStart={ onEnter }>
             <span className="item-title ui relative">{ props.children }</span>
             <div className={ classNames("sub-items-list ui flex column", { right: props.right }) }>
