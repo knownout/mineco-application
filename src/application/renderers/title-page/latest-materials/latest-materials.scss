@@ -1,0 +1,94 @@
+div.title-page section.latest-materials-block {
+    display: flex;
+    margin-bottom: 40px;
+    flex-direction: row;
+
+    justify-content: center;
+    gap: 20px;
+
+    article.material {
+        display: flex;
+        max-width: 320px;
+
+        height: fit-content;
+        flex-direction: column;
+        cursor: pointer;
+
+        transition: 100ms ease all;
+        gap: 10px;
+
+        &:hover {
+            margin-bottom: 12px;
+            transform: scale(1.04, 1.04);
+            gap: 0;
+
+            div.material-data {
+                border-top-width: 0;
+                border-radius: 0 0 10px 10px;
+                background: rgba(#333, .12);
+            }
+
+            img.preview-image {
+                border-bottom-width: 0;
+                border-radius: 10px 10px 0 0;
+                box-shadow: none;
+            }
+        }
+
+        div.material-data {
+            transition: 100ms ease all;
+            transform-origin: center center;
+            border: 1px solid rgba(#333, .15);
+
+            border-radius: 10px;
+
+            background: rgba(#333, .07);
+        }
+
+        img.preview-image {
+            max-width: 100%;
+            height: auto;
+
+            transition: 100ms ease all;
+            border: 1px solid rgba(#000, .1);
+
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(#000, .05);
+        }
+
+        div.description p {
+            margin: 0;
+            word-break: break-word;
+
+            &:not(:last-child) {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 720px) {
+        flex-direction: column;
+
+        article.material {
+            width: 100%;
+
+            &:hover {
+                margin-bottom: 0;
+                transform: scale(1, 1);
+                gap: 10px;
+
+                div.material-data {
+                    border-top-width: 1px;
+                    border-radius: 10px;
+                    background: rgba(#333, .12);
+                }
+
+                img.preview-image {
+                    border-bottom-width: 1px;
+                    border-radius: 10px;
+                    background: rgba(#333, .12);
+                }
+            }
+        }
+    }
+}

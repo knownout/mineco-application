@@ -1,0 +1,199 @@
+div.title-page div.pinned-data-block {
+    position: relative;
+    display: flex;
+
+    height: fit-content;
+    margin-bottom: 20px;
+    padding: 20px;
+
+    overflow: hidden;
+
+    flex-direction: row;
+
+    justify-content: center;
+    color: #FFF;
+
+    gap: 20px;
+
+    div.background-image {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        max-height: calc(100% - 40px);
+
+        top: 0;
+        left: 0;
+
+        z-index: 1;
+        overflow: hidden;
+
+        background-repeat: no-repeat;
+
+        background-position: center center;
+        background-size: cover;
+
+        &::before {
+            position: absolute;
+            display: block;
+
+            width: calc(100% + 40px);
+            height: calc(100% + 40px);
+
+            top: -20px;
+            left: -20px;
+            content: "";
+
+            background-image: inherit;
+            background-position: inherit;
+            background-size: inherit;
+
+            box-shadow: inset 0 0 20px -5px rgba(#000, .6);
+            filter: brightness(50%) blur(5px);
+        }
+
+
+    }
+
+    section.important-data, section.pinned-material {
+        z-index: 3;
+
+        p {
+            margin: 0;
+
+            line-height: 22px;
+            opacity: .8;
+
+            &:not(:last-child) {
+                margin-bottom: 15px;
+            }
+
+            a[href] {
+                padding: 3px;
+                transition: 100ms ease all;
+                white-space: nowrap;
+                text-decoration: none;
+
+                color: lighten(#A5CEBB, 10%);
+                border-radius: 4px;
+                background: rgba(#A5CEBB, .2);
+
+                &:hover {
+                    background: rgba(#A5CEBB, .3);
+                }
+            }
+        }
+    }
+
+    section.pinned-material {
+        width: 560px;
+        max-width: 100%;
+
+        height: fit-content;
+        gap: 10px;
+
+        div.material-title {
+            padding: 20px;
+            transition: 100ms ease all;
+
+            border: 1px solid rgba(darken(#FFF, 10%), .2);
+            border-radius: 10px;
+            background: rgba(darken(#FFF, 10%), .1);
+
+            span.title {
+                font-size: 32px;
+                font-weight: 700;
+            }
+
+            div.description {
+                opacity: .85;
+            }
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+
+            box-shadow: 0 0 12px rgba(#000, .2);
+        }
+    }
+
+    section.important-data {
+        min-width: 320px;
+        max-width: 380px;
+
+        height: fit-content;
+        max-height: 100%;
+
+        overflow: hidden;
+
+        border: 1px solid rgba(darken(#FFF, 10%), .2);
+        border-radius: 10px;
+
+        background: rgba(darken(#FFF, 10%), .1);
+        //backdrop-filter: blur(6px) brightness(75%);
+
+        div.blocks-wrapper {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        span.section-title {
+            padding: 20px 20px 0;
+            font-size: 24px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+        }
+
+        div.carousel-component div.switch-buttons div.switch-button {
+            background: rgba(#FFF, .3);
+
+            &.active {
+                background: #FFF;
+            }
+        }
+
+        div.carousel-component div.carousel-content { height: 100%; overflow: hidden; }
+
+        div.carousel-component div.carousel-item-wrapper {
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto;
+
+            article.important-data-block {
+                width: 100%;
+                padding: 5px 20px 20px;
+            }
+        }
+    }
+
+    div.carousel-component {
+        width: 100%;
+    }
+
+    a.pinned-material-link {
+        color: #FFF;
+
+        &:hover {
+            div.material-title {
+                background: rgba(darken(#FFF, 10%), .2);
+            }
+        }
+    }
+
+    @media screen and (max-width: 960px) {
+        padding: 10px;
+        align-items: center;
+
+        flex-direction: column-reverse;
+
+        section.important-data, section.pinned-material {
+            width: 100%;
+            max-width: 660px;
+
+            word-break: break-word;
+        }
+    }
+}

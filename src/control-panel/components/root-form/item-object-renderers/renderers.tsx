@@ -2,6 +2,7 @@ import React from "react";
 import convertDate from "../../../../lib/convert-date";
 import classNames from "../../../../lib/class-names";
 import { serverRoutesList } from "../../../../lib/routes-list";
+import { setWordsLimit } from "../../../../lib/words-limit";
 
 /**
  * Namespace for the items that renders in the items list
@@ -68,29 +69,13 @@ interface CommonRendererProps {
  * @constructor
  */
 export function MaterialRenderer (renderer: ItemObject.Material & CommonRendererProps) {
-    // Limit of words for the material description
-    const descriptionWordsLimit = 10;
-
-    // Array of all words of the description (not sliced)
-    const descriptionWordsArray = renderer.description.split(" ").map(e => e.trim())
-        .filter(e => e.length > 0);
-
-    // Description string form the sliced descriptionWordsArray
-    let descriptionString = descriptionWordsArray.slice(0, descriptionWordsLimit)
-        .join(" ").trim();
-
-    // Add dots to the end of string if limit exceeded
-    if (descriptionWordsLimit < descriptionWordsArray.length) descriptionString += "...";
-
-    // Remove extra dots at the end of the description string
-    if (descriptionString.slice(-4) == "....") descriptionString = descriptionString
-        .slice(0, descriptionString.length - 1);
-
     const date = new Date(parseInt(renderer.datetime) * 1000);
     const rootClassName = classNames("material-object ui flex column gap padding-20", {
         selected: renderer.selected,
         future: date.getTime() > Date.now()
     });
+
+    const descriptionString = setWordsLimit(renderer.description);
 
     return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="material-header ui flex row center-ai gap">

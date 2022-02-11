@@ -70,7 +70,7 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
 
         // If no variables data, return error
         if (!variables.responseContent) return this.setState({ error: "invalid-variable" });
-        
+
         const builder = new ApplicationBuilder();
 
         try {

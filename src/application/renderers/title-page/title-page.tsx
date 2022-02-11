@@ -1,21 +1,32 @@
 import React from "react";
-import "./title-page.scss";
-import Loading from "../../../common/loading";
-import { serverRoutesList } from "../../../lib/routes-list";
-import Application, { ApplicationContext, ApplicationContextStorage } from "../../application";
-import MakeFormData from "../../../lib/make-form-data";
-import { MaterialSearchOptions } from "../../../lib/types/requests";
-import ApplicationBuilder from "../../application-builder";
-import { ItemObject } from "../../../control-panel/components/root-form/item-object-renderers/renderers";
-import ReactMarkdown from "react-markdown";
-import RemarkConfig from "../remark-config";
 
+import { ItemObject } from "../../../control-panel/components/root-form/item-object-renderers/renderers";
+
+import { serverRoutesList } from "../../../lib/routes-list";
+import MakeFormData from "../../../lib/make-form-data";
+import { MaterialSearchOptions, RequestOptions } from "../../../lib/types/requests";
+
+import Application, { ApplicationContextStorage } from "../../application";
+import ApplicationBuilder from "../../application-builder";
+
+import Loading from "../../../common/loading";
+
+import TopContentBlock from "./top-block";
+import MaterialsList from "./latest-materials";
+
+import "./title-page.scss";
+
+/**
+ * Component for rendering website title page
+ * @constructor
+ * @internal
+ */
 export default function TitlePage () {
-    const context = React.useContext(ApplicationContext);
     const [ loading, setLoading ] = React.useState(true);
     const [ error, setError ] = React.useState<any>();
 
     type MaterialsData = Omit<ApplicationContextStorage, "variablesData">;
+
     const [ materialData, setMaterialsData ] = React.useState<Partial<MaterialsData>>({
         materialsList: undefined,
         pinnedMaterial: undefined
@@ -28,9 +39,11 @@ export default function TitlePage () {
 
         const formData = new MakeFormData({
             [MaterialSearchOptions.tags]: "Новости",
-            [MaterialSearchOptions.pinned]: "0"
+            [MaterialSearchOptions.pinned]: "0",
+            [RequestOptions.limitSearchResponse]: "10"
         });
 
+        // Try to get and allocate materials from the server
         new Promise<void>(async resolve => {
             try {
                 const { materialsList, pinnedMaterial } = builder.allocateMaterials(
@@ -52,38 +65,17 @@ export default function TitlePage () {
         });
     }, []);
 
+    // Get materials as variables
     const { materialsList, pinnedMaterial } = materialData as Required<MaterialsData>;
-    const previewImage = pinnedMaterial && serverRoutesList.getFile(pinnedMaterial.preview, false);
 
-    function TopContentBlock (props: { pinnedMaterial: ItemObject.Material }) {
-        const importantData = context.variablesData?.importantData;
-        if (!importantData) return null;
-
-        return <div className="pinned-data-block ui flex center-jc row padding-20 relative w-100">
-            <div className="background-image ui absolute w-100 h-100"
-                 style={ { backgroundImage: `url(${ previewImage })` } } />
-            <section className="pinned-material ui flex column relative">
-                <div className="material-title ui flex gap-10 column">
-                    <span className="title">{ props.pinnedMaterial.title }</span>
-                    <div className="description ui flex column relative">
-                        <ReactMarkdown remarkPlugins={ RemarkConfig } children={ props.pinnedMaterial.description } />
-                    </div>
-                </div>
-                <img src={ previewImage } alt={ props.pinnedMaterial.title } />
-            </section>
-            <section className="important-data ui flex relative gap-20 h-100">
-                <span className="section-title">Важная информация</span>
-                <div className="blocks-wrapper ui flex row relative">
-                    <article className="important-data-block ui flex column relative">
-                        <ReactMarkdown remarkPlugins={ RemarkConfig } children={ importantData[0] } />
-                    </article>
-                </div>
-            </section>
-        </div>;
-    }
-
-    return <div className="title-page ui flex column w-100 h-fit center-ai relative">
-        <Loading display={ loading } error={ error } />
-        { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
+    return <div className="title-page-holder ui flex w-100 h-100 relative">
+        <div className="title-page ui flex column w-100 h-fit center-ai relative">
+            <Loading display={ loading } error={ error } />
+            { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
+            { materialsList && <MaterialsList materials={ materialsList } /> }
+        </div>
     </div>;
 }
+
+
+

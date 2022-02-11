@@ -1,0 +1,59 @@
+div.carousel-component {
+    max-width: 100%;
+
+    div.switch-buttons {
+        div.switch-button {
+            width: 8px;
+            height: 8px;
+
+            margin: 5px;
+            cursor: pointer;
+            transition: 100ms ease all;
+
+            border-radius: 50%;
+
+            background: rgba(#000, .4);
+
+            &.active {
+                pointer-events: none;
+                background: #000;
+            }
+
+            &::before {
+                position: absolute;
+                display: block;
+                width: calc(100% + 10px);
+
+                height: calc(100% + 10px);
+                top: -5px;
+                left: -5px;
+
+                content: "";
+                cursor: pointer;
+            }
+        }
+    }
+
+    div.carousel-content {
+        div.carousel-item {
+            @keyframes carousel-item-enter {
+                from {
+                    transform: translateY(5px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            &-exit-active {
+                animation: 100ms linear forwards carousel-item-enter reverse;
+            }
+
+            &-enter-active {
+                animation: 100ms linear forwards carousel-item-enter;
+            }
+        }
+    }
+}
