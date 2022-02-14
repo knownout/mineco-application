@@ -1,0 +1,85 @@
+div.extra-buttons-container {
+    margin-top: 60px;
+    align-items: center;
+
+    &::before {
+        position: absolute;
+        display: block;
+        width: 100%;
+
+        height: 100%;
+        top: 0;
+
+        left: 0;
+        content: "";
+
+        background: #FFF;
+
+        mask-image: linear-gradient(180deg, transparent 0%, transparent 20%, #000 20%, #000 100%);
+    }
+
+    a.extra-button {
+        width: 100%;
+
+        height: fit-content;
+        padding: 60px;
+
+        overflow: hidden;
+        align-items: center;
+        cursor: pointer;
+        transition: 100ms ease all;
+
+        border-radius: 10px;
+
+        span.button-title { font-size: 28px; }
+
+        &:hover {
+            z-index: 2;
+            transform: scale(1.02, 1.02);
+            box-shadow: 0 0 10px rgba(#000, .08);
+        }
+
+        div.background-image {
+            top: 0;
+            left: 0;
+
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+
+            filter: brightness(55%) contrast(80%);
+        }
+
+        img.button-icon {
+            width: auto;
+            height: 64px;
+
+            filter: invert(100%);
+        }
+    }
+
+    div.short-button-holder a.extra-button {
+        width: 100%;
+        height: 100%;
+
+        align-items: center;
+        justify-content: center;
+        text-align: right;
+        background: linear-gradient(45deg, rgba(#2D5041, .8), rgba(#5CB68C, .8));
+
+        div.background-image {
+            background-size: contain;
+        }
+    }
+
+    div.rest-buttons-block {
+        a.extra-button {
+            padding: 40px;
+            opacity: .9;
+
+            span.button-title { font-size: 24px; }
+
+            img.button-icon { height: 44px; }
+        }
+    }
+}

@@ -6,7 +6,7 @@ import { serverRoutesList } from "../../../lib/routes-list";
 import MakeFormData from "../../../lib/make-form-data";
 import { MaterialSearchOptions, RequestOptions } from "../../../lib/types/requests";
 
-import Application, { ApplicationContextStorage } from "../../application";
+import Application, { ApplicationContext, ApplicationContextStorage } from "../../application";
 import ApplicationBuilder from "../../application-builder";
 
 import Loading from "../../../common/loading";
@@ -15,6 +15,7 @@ import TopContentBlock from "./top-block";
 import MaterialsList from "./latest-materials";
 
 import "./title-page.scss";
+import ExtraButtons from "./extra-buttons";
 
 /**
  * Component for rendering website title page
@@ -22,6 +23,7 @@ import "./title-page.scss";
  * @internal
  */
 export default function TitlePage () {
+    const context = React.useContext(ApplicationContext);
     const [ loading, setLoading ] = React.useState(true);
     const [ error, setError ] = React.useState<any>();
 
@@ -73,6 +75,8 @@ export default function TitlePage () {
             <Loading display={ loading } error={ error } />
             { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
             { materialsList && <MaterialsList materials={ materialsList } /> }
+
+            { context.variablesData?.extraButtons && <ExtraButtons buttons={ context.variablesData.extraButtons } /> }
         </div>
     </div>;
 }
