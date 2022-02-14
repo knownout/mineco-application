@@ -1,7 +1,19 @@
 div.title-page {
+    background: linear-gradient(45deg, #E9E9E9, #EFEFEF);
+
     div.loading-component {
         position: fixed;
     }
 
     a.material-link { color: #222; }
+
+    button {
+        background: linear-gradient(45deg, rgba(#3E725B, .8), rgba(#549477, .8));
+
+        &:focus, &:active, &.focus, &.value {
+            box-shadow: 0 0 0 3px rgba(darken(#A5CEBB, 10%), .5) !important;
+        }
+
+        span.text, i.button-icon { color: #FFF; }
+    }
 }

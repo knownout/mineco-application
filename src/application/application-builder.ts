@@ -56,6 +56,8 @@ export default class ApplicationBuilder {
             socialData: getValue("Социальные сети", "json") as Obj[],
             usefulLinks: getValue("Полезные ссылки", "json") as Obj,
 
+            extraButtons: getValue("Кнопки (главная страница)", "json") as VariablesStorage["extraButtons"],
+
             websiteTitle: getValue("Название сайта") as string,
             navigationPanel: getValue("Панель навигации",
                 "json") as { [key: string]: Obj }

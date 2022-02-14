@@ -22,6 +22,8 @@ export interface VariablesStorage<Obj = { [key: string]: string }> {
     socialData: Obj[];
     usefulLinks: Obj;
 
+    extraButtons: { [key: string]: [ string | null, string, string ] };
+
     navigationPanel: { [key: string]: Obj };
 }
 
@@ -74,7 +76,6 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
         const builder = new ApplicationBuilder();
 
         try {
-
             this.setState({
                 variablesData: builder.getApplicationVariables(variables.responseContent)
             }, () => setTimeout(() => this.setState({ loading: false }), 100));

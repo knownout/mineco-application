@@ -12,6 +12,7 @@ import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 
 import "./latest-materials.scss";
+import Button from "../../../../common/button";
 
 /**
  * Component for rendering latest materials list
@@ -39,10 +40,15 @@ export default function MaterialsList (props: { materials: ItemObject.Material[]
         return () => window.removeEventListener("resize", windowResizeHandler);
     });
 
-    return <section className="latest-materials-block ui padding-20">
-        { props.materials.slice(0, limit).map((material, index) =>
-            <Material material={ material } key={ index } />) }
-    </section>;
+    return <>
+        <section className="latest-materials-block ui padding-20">
+            { props.materials.slice(0, limit).map((material, index) =>
+                <Material material={ material } key={ index } />) }
+        </section>
+        <Link to="tag/Новости" className="ui clean color-white materials-archive-link">
+            <Button className="materials-archive-button">Перейти в архив новостей</Button>
+        </Link>
+    </>;
 }
 
 /**
