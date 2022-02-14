@@ -27,6 +27,10 @@ div.title-page section.latest-materials-block {
             width: calc(100% - 2px);
             transition: 100ms ease all;
             transform-origin: center center;
+
+            span.material-title {
+                word-break: break-word;
+            }
         }
 
         img.preview-image {

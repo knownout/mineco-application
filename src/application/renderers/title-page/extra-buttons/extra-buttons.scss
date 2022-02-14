@@ -2,6 +2,14 @@ div.extra-buttons-container {
     margin-top: 60px;
     align-items: center;
 
+    div.extra-buttons-block {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+
+        gap: 20px;
+    }
+
     &::before {
         position: absolute;
         display: block;
@@ -31,7 +39,7 @@ div.extra-buttons-container {
 
         border-radius: 10px;
 
-        span.button-title { font-size: 28px; }
+        span.button-title { font-size: 28px; word-break: break-word; }
 
         &:hover {
             z-index: 2;
@@ -62,9 +70,11 @@ div.extra-buttons-container {
         width: 100%;
         height: 100%;
 
+        padding: 20px;
         align-items: center;
         justify-content: center;
-        text-align: right;
+        text-align: center;
+
         background: linear-gradient(45deg, rgba(#2D5041, .8), rgba(#5CB68C, .8));
 
         div.background-image {
@@ -80,6 +90,44 @@ div.extra-buttons-container {
             span.button-title { font-size: 24px; }
 
             img.button-icon { height: 44px; }
+        }
+    }
+
+    @media screen and (max-width: 1040px) {
+        div.extra-buttons-block {
+            flex-direction: column;
+        }
+
+        div.long-buttons-holder, div.short-button-holder {
+            width: 100% !important;
+        }
+
+        div.short-button-holder {
+            a.extra-button {
+                padding: 80px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 820px) {
+        div.extra-buttons-block {
+            flex-direction: column;
+        }
+
+        a.extra-button {
+            span.button-title {
+                font-size: 20px !important;
+            }
+
+            img.button-icon {
+                height: 48px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 440px) {
+        a.extra-button {
+            padding: 20px !important;
         }
     }
 }

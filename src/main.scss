@@ -23,15 +23,15 @@ body {
     position: fixed;
     display: block;
 
+    width: 100%;
+    height: 100%;
+
     top: 0;
     right: 0;
-
     bottom: 0;
     left: 0;
-    overflow: hidden;
-    width: 100%;
 
-    height: 100%;
+    overflow: hidden;
 }
 
 /*
@@ -46,7 +46,9 @@ b, strong {
  * Application root element styles
  */
 
-div.grecaptcha-badge { pointer-events: none; opacity: 0 !important; display: none !important }
+div.grecaptcha-badge { display: none !important; pointer-events: none; opacity: 0 !important; }
+
+div.not-found { z-index: 90 }
 
 div#app-root {
     position: fixed;

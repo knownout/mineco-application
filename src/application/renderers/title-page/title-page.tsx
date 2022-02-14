@@ -16,6 +16,7 @@ import MaterialsList from "./latest-materials";
 
 import "./title-page.scss";
 import ExtraButtons from "./extra-buttons";
+import UsefulLinks from "./useful-links";
 
 /**
  * Component for rendering website title page
@@ -77,6 +78,7 @@ export default function TitlePage () {
             { materialsList && <MaterialsList materials={ materialsList } /> }
 
             { context.variablesData?.extraButtons && <ExtraButtons buttons={ context.variablesData.extraButtons } /> }
+            { context.variablesData?.usefulLinks && <UsefulLinks links={ context.variablesData.usefulLinks } /> }
         </div>
     </div>;
 }

@@ -32,7 +32,7 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
     }
 
     const buttons = Object.entries(props.buttons);
-    const defaultWidth = buttons.length >= 3 ? 75 : 100;
+    const defaultWidth = buttons.length >= 3 ? 70 : 100;
 
     // Get first two long buttons and one short (if exist)
     const longButtons = buttons.slice(0, 2);
@@ -44,7 +44,7 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
 
     // Render buttons relative to its count
     return <div className="extra-buttons-container ui flex column w-100 relative padding-20 gap-20">
-        <div className="extra-buttons-block ui flex row relative limit-1280 gap-20">
+        <div className="extra-buttons-block ui limit-1280">
             <div className="long-buttons-holder ui flex column gap-20" style={ { width: defaultWidth + "%" } }>
                 { longButtons.map(renderButton) }
             </div>

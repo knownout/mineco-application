@@ -104,9 +104,13 @@ div.title-page div.pinned-data-block {
             span.title {
                 font-size: 32px;
                 font-weight: 700;
+
+                word-break: break-word;
             }
 
             div.description {
+                word-break: break-word;
+
                 opacity: .85;
             }
         }
@@ -120,7 +124,6 @@ div.title-page div.pinned-data-block {
     }
 
     section.important-data {
-        min-width: 320px;
         max-width: 380px;
 
         height: fit-content;
@@ -132,7 +135,6 @@ div.title-page div.pinned-data-block {
         border-radius: 10px;
 
         background: rgba(darken(#FFF, 10%), .1);
-        //backdrop-filter: blur(6px) brightness(75%);
 
         div.blocks-wrapper {
             width: 100%;
@@ -145,6 +147,7 @@ div.title-page div.pinned-data-block {
             font-weight: 700;
 
             text-transform: uppercase;
+            word-break: break-word;
         }
 
         div.carousel-component div.switch-buttons div.switch-button {
@@ -165,6 +168,8 @@ div.title-page div.pinned-data-block {
             article.important-data-block {
                 width: 100%;
                 padding: 5px 20px 20px;
+
+                p, a { word-break: break-word !important; }
             }
         }
     }

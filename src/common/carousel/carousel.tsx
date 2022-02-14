@@ -36,7 +36,7 @@ export default function Carousel (props: { items: any[] }) {
 
     // Reference to item wrapper (to avoid "deprecated" warning from React)
     const nodeRef = React.useRef(null);
-    
+
     return <div className="carousel-component ui flex column relative">
         <div className="switch-buttons ui flex row center relative">
             { Array(props.items.length).fill(String()).map((_, key) =>
@@ -47,7 +47,7 @@ export default function Carousel (props: { items: any[] }) {
         <div className="carousel-content ui flex relative">
             <CSSTransition in={ animation } onExited={ () => updateItem(true) } timeout={ 100 }
                            classNames="carousel-item" nodeRef={ nodeRef }>
-                <div ref={ nodeRef } className="carousel-item-wrapper ui flex column relative">{ item }</div>
+                <div ref={ nodeRef } className="carousel-item-wrapper">{ item }</div>
             </CSSTransition>
         </div>
     </div>;

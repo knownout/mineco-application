@@ -35,6 +35,13 @@ div.carousel-component {
     }
 
     div.carousel-content {
+        div.carousel-item-wrapper {
+            position: relative;
+            display: flex;
+            
+            flex-direction: column;
+        }
+
         div.carousel-item {
             @keyframes carousel-item-enter {
                 from {

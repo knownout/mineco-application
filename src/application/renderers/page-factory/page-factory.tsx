@@ -14,8 +14,8 @@ export default function PageFactory (props: { children?: any }) {
         setFixed(scrollTop > staticContent.current.offsetHeight);
     };
 
-    return <div className="title-page ui container relative flex column" onScroll={ componentScrollHandler }>
-        <div className="content-wrapper ui flex column relative h-100 w-100">
+    return <div className="title-page ui container relative flex column">
+        <div className="content-wrapper ui flex column relative h-100 w-100" onScroll={ componentScrollHandler }>
             <Header fixed={ fixed } staticContentRef={ ref => staticContent.current = ref } />
             <div className="page-content-wrapper ui grid center w-100 scroll-y">
                 { props.children }
