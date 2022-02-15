@@ -1,7 +1,6 @@
 import React from "react";
 import "./useful-links.scss";
 import { VariablesStorage } from "../../../application";
-import getScrollbarWidth from "../../../../lib/scrollbar-width";
 import Carousel from "../../../../common/carousel";
 
 /**
@@ -32,10 +31,7 @@ export default function UsefulLinks (props: { links: VariablesStorage["usefulLin
     });
 
     return <div className="useful-links-block ui flex column w-100 relative gap"
-                style={ {
-                    backgroundImage: `url("/public/link-icons/background.jpg")`,
-                    width: `calc(100vw - ${ getScrollbarWidth() }px)`
-                } }>
+                style={ { backgroundImage: `url("/public/link-icons/background.jpg")` } }>
 
         <span className="block-title ui fz-14 color-white fz-28 fw-700 relative">Полезные ссылки</span>
         <div className="links-list ui flex row no-wrap relative">

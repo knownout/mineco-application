@@ -2,9 +2,9 @@ nav.navigation-menu {
     position: relative;
     display: flex;
 
-    flex-direction: row;
     width: fit-content;
     min-width: fit-content;
+    flex-direction: row;
 
     pointer-events: all;
 
@@ -39,21 +39,21 @@ nav.navigation-menu {
 
         div.scroll-wrapper {
             position: relative;
-            overflow: hidden;
-            overflow-y: auto;
-
             height: 100%;
             max-height: 100%;
+
             padding: 10px 0;
+            overflow: hidden;
+            overflow-y: auto;
         }
 
         a[href] {
             position: relative;
             display: block;
 
-            font-size: 14px;
-
             padding: 10px;
+
+            font-size: 14px;
             transition: 100ms ease all;
 
             word-break: break-word;
@@ -66,12 +66,12 @@ nav.navigation-menu {
             }
         }
 
-        a[href="---"] {
-            left: 10px;
+        a[href="/---"] {
             width: calc(100% - 20px);
             height: 1px;
-
             min-height: 1px;
+
+            left: 10px;
             margin: 10px 0;
             padding: 0;
 
@@ -82,14 +82,14 @@ nav.navigation-menu {
     }
 
     &.mobile {
-        flex-direction: column;
         width: 100% !important;
+        flex-direction: column;
 
         div.sub-items-list {
             position: relative;
-            left: 0;
-
             width: 100% !important;
+
+            left: 0;
             padding-top: 20px;
 
             transform: translateY(-10px);
@@ -115,12 +115,12 @@ nav.navigation-menu {
         div.sub-items-list {
             position: absolute;
             display: block;
-            bottom: 0;
-
             min-width: 180px;
-            max-width: 150%;
 
+            max-width: 150%;
             max-height: calc(100vh - 82px);
+
+            bottom: 0;
 
             transform: translateY(100%) scale(0.9, 0.9);
 
@@ -137,10 +137,10 @@ nav.navigation-menu {
 
             &::before {
                 position: absolute;
-                top: -10px;
-                left: -10px;
                 width: calc(100% + 20px);
                 height: calc(100% + 20px);
+                top: -10px;
+                left: -10px;
                 content: "";
                 background: transparent;
             }

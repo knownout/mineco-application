@@ -6,7 +6,7 @@ import { serverRoutesList } from "../../../lib/routes-list";
 import MakeFormData from "../../../lib/make-form-data";
 import { MaterialSearchOptions, RequestOptions } from "../../../lib/types/requests";
 
-import Application, { ApplicationContext, ApplicationContextStorage } from "../../application";
+import Application, { ApplicationContext, ApplicationContextStorage, VariablesStorage } from "../../application";
 import ApplicationBuilder from "../../application-builder";
 
 import Loading from "../../../common/loading";
@@ -35,11 +35,22 @@ export default function TitlePage () {
         pinnedMaterial: undefined
     });
 
+    // Extract images from special resources
+    const extractResources = {
+        extraButtons: (buttons: VariablesStorage["extraButtons"]) => (Object.entries(buttons).map(item =>
+            item[1].slice(0, 2)).flat().filter(e => Boolean(e)) as string[])
+            .map(e => serverRoutesList.getFile(e, false)),
+
+        usefulLinks: (links: VariablesStorage["usefulLinks"]) => Object.entries(links).map(item =>
+            `/public/link-icons/${ new URL(item[1]).hostname }.png`)
+    };
+
     React.useLayoutEffect(() => {
         // Function for fetching material(s) data from server
         const fetchMaterials = Application.genericFetchFunction.bind(null, serverRoutesList.searchMaterials);
         const builder = new ApplicationBuilder();
 
+        const variables = context.variablesData;
         const formData = new MakeFormData({
             [MaterialSearchOptions.tags]: "Новости",
             [MaterialSearchOptions.pinned]: "0",
@@ -57,7 +68,11 @@ export default function TitlePage () {
                 );
 
                 setMaterialsData({ pinnedMaterial, materialsList });
-                await builder.waitForImages(builder.extractImages(pinnedMaterial, ...materialsList));
+                await builder.waitForImages([
+                    ...builder.extractImages(pinnedMaterial, ...materialsList),
+                    ...(variables?.extraButtons ? extractResources.extraButtons(variables.extraButtons) : []),
+                    ...(variables?.usefulLinks ? extractResources.usefulLinks(variables.usefulLinks) : [])
+                ]);
 
                 setLoading(false);
             } catch {
