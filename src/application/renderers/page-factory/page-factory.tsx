@@ -15,11 +15,11 @@ export default function PageFactory (props: { children?: any }) {
         setFixed(scrollTop > staticContent.current.offsetHeight);
     };
 
-    return <div className="title-page ui container scroll-y h-100" onScroll={ componentScrollHandler }>
-        <div className="header-holder">
+    return <div className="page-factory ui container scroll-y h-100" onScroll={ componentScrollHandler }>
+        <div className="content-holder ui grid center">
             <Header fixed={ fixed } staticContentRef={ ref => staticContent.current = ref } />
+            { props.children }
         </div>
-        <div className="content-holder ui grid center">{ props.children }</div>
         <div className="footer-holder">
             <Footer />
         </div>

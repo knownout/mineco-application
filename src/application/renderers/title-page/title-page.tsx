@@ -17,6 +17,7 @@ import MaterialsList from "./latest-materials";
 import "./title-page.scss";
 import ExtraButtons from "./extra-buttons";
 import UsefulLinks from "./useful-links";
+import PageFactory from "../page-factory";
 
 /**
  * Component for rendering website title page
@@ -87,16 +88,19 @@ export default function TitlePage () {
     // Get materials as variables
     const { materialsList, pinnedMaterial } = materialData as Required<MaterialsData>;
 
-    return <div className="title-page-holder ui flex w-100 h-fit relative">
-        <div className="title-page ui flex column w-100 h-fit center-ai relative">
-            <Loading display={ loading } error={ error } />
-            { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
-            { materialsList && <MaterialsList materials={ materialsList } /> }
+    return <PageFactory>
+        <div className="title-page-holder ui flex w-100 h-fit relative client-view">
+            <div className="title-page ui flex column w-100 h-fit center-ai relative">
+                <Loading display={ loading } error={ error } />
+                { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
+                { materialsList && <MaterialsList materials={ materialsList } /> }
 
-            { context.variablesData?.extraButtons && <ExtraButtons buttons={ context.variablesData.extraButtons } /> }
-            { context.variablesData?.usefulLinks && <UsefulLinks links={ context.variablesData.usefulLinks } /> }
+                { context.variablesData?.extraButtons &&
+                    <ExtraButtons buttons={ context.variablesData.extraButtons } /> }
+                { context.variablesData?.usefulLinks && <UsefulLinks links={ context.variablesData.usefulLinks } /> }
+            </div>
         </div>
-    </div>;
+    </PageFactory>;
 }
 
 

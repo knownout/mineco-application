@@ -49,11 +49,11 @@ b, strong {
 div.grecaptcha-badge { display: none !important; pointer-events: none; opacity: 0 !important; }
 
 div.not-found.ui.container.grid.center.cs-loading-gray.padding-20 {
-    position: fixed;
+    position: fixed !important;
     width: 100vw;
 
     height: 100vh;
-    z-index: 100;
+    z-index: 2000 !important;
 }
 
 div#app-root {
