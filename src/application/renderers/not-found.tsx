@@ -9,7 +9,7 @@ export default function NotFoundPage () {
         setTimeout(() => setLoading(false), 100);
     }, []);
 
-    return <div className="not-found ui container grid center cs-loading-gray">
+    return <div className="not-found ui container grid center cs-loading-gray padding-20 scroll-y">
         <Loading display={ loading } />
         <div className="error-form ui flex column limit-380">
             <span className="ui title margin optimize">404 Страница не найдена</span>

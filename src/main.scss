@@ -48,7 +48,13 @@ b, strong {
 
 div.grecaptcha-badge { display: none !important; pointer-events: none; opacity: 0 !important; }
 
-div.not-found { z-index: 90 }
+div.not-found.ui.container.grid.center.cs-loading-gray.padding-20 {
+    position: fixed;
+    width: 100vw;
+
+    height: 100vh;
+    z-index: 100;
+}
 
 div#app-root {
     position: fixed;

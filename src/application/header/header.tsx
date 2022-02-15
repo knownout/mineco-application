@@ -14,7 +14,7 @@ import Condition from "../../common/condition";
  * Component for rendering social icons (like telegram, email, etc.)
  * @constructor
  */
-function SocialDataRenderer (props: { socialData: { [key: string]: string }[] }) {
+export function SocialDataRenderer (props: { socialData: { [key: string]: string }[] }) {
     /**
      * Social icons block renderer
      * @param keyData social icons variable object entry

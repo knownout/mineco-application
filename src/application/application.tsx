@@ -23,6 +23,7 @@ export interface VariablesStorage<Obj = { [key: string]: string }> {
     usefulLinks: Obj;
 
     extraButtons: { [key: string]: [ string | null, string, string ] };
+    contactData: string;
 
     navigationPanel: { [key: string]: Obj };
 }

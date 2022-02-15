@@ -57,6 +57,7 @@ export default class ApplicationBuilder {
             usefulLinks: getValue("Полезные ссылки", "json") as Obj,
 
             extraButtons: getValue("Кнопки (главная страница)", "json") as VariablesStorage["extraButtons"],
+            contactData: getValue("Контакты (подвал)"),
 
             websiteTitle: getValue("Название сайта") as string,
             navigationPanel: getValue("Панель навигации",

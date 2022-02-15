@@ -71,7 +71,8 @@ export default function TitlePage () {
                 await builder.waitForImages([
                     ...builder.extractImages(pinnedMaterial, ...materialsList),
                     ...(variables?.extraButtons ? extractResources.extraButtons(variables.extraButtons) : []),
-                    ...(variables?.usefulLinks ? extractResources.usefulLinks(variables.usefulLinks) : [])
+                    ...(variables?.usefulLinks ? extractResources.usefulLinks(variables.usefulLinks) : []),
+                    "/public/qr-code-contact.jpg"
                 ]);
 
                 setLoading(false);
