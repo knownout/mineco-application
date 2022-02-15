@@ -1,8 +1,29 @@
 div.title-page {
-    height: 100%;
+    position: relative;
+    display: flex !important;
+    width: 100vw;
 
-    div.page-content-wrapper {
-        height: 100%;
-        min-height: fit-content;
+    flex-direction: column;
+
+    div.header-holder {
+        z-index: 3;
+        flex: 0 1 auto;
+    }
+
+    div[class$="holder"] {
+        position: relative;
+        width: 100%;
+    }
+
+    div.content-holder {
+        min-width: 100%;
+        z-index: 2;
+
+        flex: 1 1 auto;
+    }
+
+    div.footer-holder {
+        z-index: 1;
+        flex: 0 1 auto;
     }
 }

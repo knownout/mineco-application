@@ -9,6 +9,7 @@ export default function ApplicationRouter () {
     return <PageFactory>
         <Routes>
             <Route path="/" element={ <TitlePage /> } />
+            <Route path="/:id" element={ <div>Material</div> } />
             <Route path="*" element={ <NotFoundPage /> } />
         </Routes>
     </PageFactory>;

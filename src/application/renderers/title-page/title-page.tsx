@@ -87,7 +87,7 @@ export default function TitlePage () {
     // Get materials as variables
     const { materialsList, pinnedMaterial } = materialData as Required<MaterialsData>;
 
-    return <div className="title-page-holder ui flex w-100 h-100 relative">
+    return <div className="title-page-holder ui flex w-100 h-fit relative">
         <div className="title-page ui flex column w-100 h-fit center-ai relative">
             <Loading display={ loading } error={ error } />
             { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
