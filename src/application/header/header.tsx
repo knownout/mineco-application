@@ -133,12 +133,12 @@ export default function Header (props: HeaderProps) {
                 ? { marginBottom: dynamicContent.current.offsetHeight } : {} }>
 
                 <div className="data-container ui flex column gap-20">
-                    <div className="website-title ui flex row center gap">
+                    <Link className="website-title ui flex row center gap clean" to="/">
                         <div className="mineco-logo-holder">
                             <img src="/public/mineco-logo-transparent.png" alt="Логотип Министерства" />
                         </div>
                         <h1 className="mineco-title-text">{ variablesData.websiteTitle }</h1>
-                    </div>
+                    </Link>
                     { !mobile && <SocialDataRenderer socialData={ variablesData.socialData } /> }
                 </div>
 
