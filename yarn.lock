@@ -261,6 +261,11 @@
     codex-tooltip "^1.0.2"
     nanoid "^3.1.22"
 
+"@editorjs/embed@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@editorjs/embed/-/embed-2.5.0.tgz#1f42277b8da91e84e9033b5d90b1615a117de456"
+  integrity sha512-kKMblRKWzTYP0mX/sO2/Ysn5wd76eP47DAdQc15qCveocRBCO+pSlY57p6mTd1x79yP+yFo7mv4iaZZFa4idkw==
+
 "@editorjs/header@^2.6.2":
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/@editorjs/header/-/header-2.6.2.tgz#523b6dda72ff882e53f64325840ee7bfc68ee6b7"

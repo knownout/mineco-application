@@ -69,7 +69,7 @@ export default function TitlePage () {
                 );
 
                 setMaterialsData({ pinnedMaterial, materialsList });
-                await builder.waitForImages([
+                await ApplicationBuilder.waitForImages([
                     ...builder.extractImages(pinnedMaterial, ...materialsList),
                     ...(variables?.extraButtons ? extractResources.extraButtons(variables.extraButtons) : []),
                     ...(variables?.usefulLinks ? extractResources.usefulLinks(variables.usefulLinks) : []),

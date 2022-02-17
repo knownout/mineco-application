@@ -161,35 +161,23 @@
 
         &.color-white { color: #FFF; }
 
-        &.limit-380 {
-            width: 100%;
-            max-width: 380px;
-        }
+        &[class*="limit-"] { width: 100%; }
 
-        &.limit-320 {
-            width: 100%;
-            max-width: 380px;
-        }
+        &.limit-380 { max-width: 380px; }
 
-        &.limit-1080 {
-            width: 100%;
-            max-width: 1080px;
-        }
+        &.limit-320 { max-width: 320px; }
 
-        &.limit-460 {
-            width: 100%;
-            max-width: 460px;
-        }
+        &.limit-260 { max-width: 260px; }
 
-        &.limit-1420 {
-            width: 100%;
-            max-width: 1420px;
-        }
+        &.limit-320 { max-width: 380px; }
 
-        &.limit-1280 {
-            width: 100%;
-            max-width: 1280px;
-        }
+        &.limit-1080 { max-width: 1080px; }
+
+        &.limit-460 { max-width: 460px; }
+
+        &.limit-1420 { max-width: 1420px; }
+
+        &.limit-1280 { max-width: 1280px; }
 
         &.fz-14 { font-size: 14px; }
 

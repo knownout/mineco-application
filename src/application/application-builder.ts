@@ -43,6 +43,23 @@ export default class ApplicationBuilder {
     };
 
     /**
+     * Create promises pool for specified images loading
+     * @param linksList list of relative images link
+     * @param buildPath if true, relative links will be converted to direct links
+     */
+    public static async waitForImages (linksList: string[], buildPath: boolean = false) {
+        const promises = linksList.map(link => new Promise<void>(resolve => {
+            const img = document.createElement("img");
+            img.src = buildPath ? serverRoutesList.getFile(link, false) : link;
+
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+        }));
+
+        await Promise.all(promises);
+    }
+
+    /**
      * Method for converting variables list into the state-like object
      * @param list variables list
      */
@@ -63,23 +80,6 @@ export default class ApplicationBuilder {
             navigationPanel: getValue("Панель навигации",
                 "json") as { [key: string]: Obj }
         };
-    }
-
-    /**
-     * Create promises pool for specified images loading
-     * @param linksList list of relative images link
-     * @param buildPath if true, relative links will be converted to direct links
-     */
-    public async waitForImages (linksList: string[], buildPath: boolean = false) {
-        const promises = linksList.map(link => new Promise<void>(resolve => {
-            const img = document.createElement("img");
-            img.src = buildPath ? serverRoutesList.getFile(link, false) : link;
-
-            img.onload = () => resolve();
-            img.onerror = () => resolve();
-        }));
-
-        await Promise.all(promises);
     }
 
     /**

@@ -10,6 +10,19 @@ div.page-factory {
         z-index: 3;
 
         flex: 1 1 auto;
+
+        header {
+            flex: 0 1 auto;
+        }
+
+        div.child-content-holder {
+            position: relative;
+
+            width: 100%;
+
+
+            flex: 1 1 auto;
+        }
     }
 
     div.footer-holder {

@@ -11,6 +11,7 @@ const paragraph = require("@editorjs/paragraph");
 const checklist = require("@editorjs/checklist");
 const warning = require("@editorjs/warning");
 const quote = require("@editorjs/quote");
+const embed = require("@editorjs/embed");
 
 export const defaultToolsList = {
     header: {
@@ -42,7 +43,7 @@ export const defaultToolsList = {
         shortcut: "CMD+SHIFT+O"
     },
     warning,
-
+    embed: embed,
 
     paragraph: {
         class: paragraph,

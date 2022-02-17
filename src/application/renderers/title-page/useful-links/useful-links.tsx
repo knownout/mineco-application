@@ -13,7 +13,8 @@ export default function UsefulLinks (props: { links: VariablesStorage["usefulLin
         const generateIcon = (domain: string) => `/public/link-icons/${ domain }.png`;
 
         const { hostname } = new URL(props.link);
-        return <a href={ props.link } className="useful-link ui clean color-white flex column center gap">
+        return <a href={ props.link } className="useful-link ui clean color-white flex column center gap"
+                  target="_blank">
             <div className="icon-holder ui grid center">
                 <img src={ generateIcon(hostname) } alt={ props.title } />
             </div>

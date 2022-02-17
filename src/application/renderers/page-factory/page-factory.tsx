@@ -16,9 +16,11 @@ export default function PageFactory (props: { children?: any }) {
     };
 
     return <div className="page-factory ui container scroll-y h-100" onScroll={ componentScrollHandler }>
-        <div className="content-holder ui grid center">
+        <div className="content-holder ui flex center">
             <Header fixed={ fixed } staticContentRef={ ref => staticContent.current = ref } />
-            { props.children }
+            <div className="child-content-holder ui grid center">
+                { props.children }
+            </div>
         </div>
         <div className="footer-holder">
             <Footer />

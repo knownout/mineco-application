@@ -51,7 +51,7 @@ export default function Navigation (props: NavigationProps) {
     }) => {
         const [ hover, setHover ] = React.useState(false);
         const [ lock, setLock ] = React.useState(false);
-        
+
         const entries = props.mobile
             ? Object.entries(props.subItems).filter(([ k ]) => clean(k).includes(clean(props.query)))
             : Object.entries(props.subItems);
@@ -75,9 +75,11 @@ export default function Navigation (props: NavigationProps) {
             <span className="item-title ui relative">{ props.children }</span>
             <div className={ classNames("sub-items-list ui flex column", { right: props.right }) }>
                 <div className="scroll-wrapper">
-                    { (hover || props.mobile) && entries.map(([ title, link ], index) =>
-                        <MenuSubItem key={ index } link={ link } query={ query }
-                                     mobile={ props.mobile }>{ title }</MenuSubItem>) }
+                    <div className="inner-scroll-wrapper">
+                        { (hover || props.mobile) && entries.map(([ title, link ], index) =>
+                            <MenuSubItem key={ index } link={ link } query={ query }
+                                         mobile={ props.mobile }>{ title }</MenuSubItem>) }
+                    </div>
                 </div>
             </div>
         </div>;
