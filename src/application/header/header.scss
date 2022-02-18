@@ -84,6 +84,7 @@ header.header-component {
 
     div.dynamic-container {
         height: 58px;
+        z-index: 2;
         background: linear-gradient(45deg, #3E725B, #549477);
 
         &.fixed {
@@ -154,6 +155,32 @@ header.header-component {
             padding: 0;
             background: transparent;
         }
+    }
+}
+
+div.control-panel-bar {
+    color: #EEE;
+    background: linear-gradient(45deg, #111, #222);
+
+    span, a[href] {
+        cursor: pointer;
+        transition: 100ms ease all;
+        white-space: nowrap;
+        color: #EEE;
+
+        border-radius: 5px;
+
+        &:hover {
+            background: rgba(#eee, .2);
+        }
+    }
+
+    div.quick-actions {
+        position: absolute;
+        right: 0;
+
+        padding-left: 60px;
+        background: linear-gradient(-90deg, #222 85%, transparent);
     }
 }
 

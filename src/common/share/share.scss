@@ -1,0 +1,26 @@
+div.share-component {
+    width: fit-content;
+    padding: 10px;
+
+    border-radius: 10px;
+    background: linear-gradient(35deg, #EEE, #F2F2F2);
+
+    a[href] {
+        width: 28px;
+        height: 28px;
+
+        overflow: hidden;
+        transition: 100ms ease all;
+
+        border-radius: 5px;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        &:hover {
+            transform: scale(1.1, 1.1);
+        }
+    }
+}

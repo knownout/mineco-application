@@ -55,14 +55,15 @@ export default function TitlePage () {
         const formData = new MakeFormData({
             [MaterialSearchOptions.tags]: "Новости",
             [MaterialSearchOptions.pinned]: "0",
-            [RequestOptions.limitSearchResponse]: "10"
+            [RequestOptions.limitSearchResponse]: "10",
+            [MaterialSearchOptions.datetimeTo]: Math.floor(Date.now() / 1000)
         });
 
         // Try to get and allocate materials from the server
         new Promise<void>(async resolve => {
             try {
                 const { materialsList, pinnedMaterial } = builder.allocateMaterials(
-                    (await fetchMaterials(formData.fetchObject)).responseContent as ItemObject.Material[],
+                    ((await fetchMaterials(formData.fetchObject)).responseContent as ItemObject.Material[]).reverse(),
 
                     (await fetchMaterials(formData.add({ [MaterialSearchOptions.pinned]: "1" }).fetchObject))
                         .responseContent as ItemObject.Material[]
@@ -88,10 +89,9 @@ export default function TitlePage () {
     // Get materials as variables
     const { materialsList, pinnedMaterial } = materialData as Required<MaterialsData>;
 
-    return <PageFactory>
+    return <PageFactory loader={ <Loading display={ loading } error={ error } /> }>
         <div className="title-page-holder ui flex w-100 h-fit relative client-view">
             <div className="title-page ui flex column w-100 h-fit center-ai relative">
-                <Loading display={ loading } error={ error } />
                 { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
                 { materialsList && <MaterialsList materials={ materialsList } /> }
 
@@ -102,6 +102,3 @@ export default function TitlePage () {
         </div>
     </PageFactory>;
 }
-
-
-

@@ -3,7 +3,7 @@ import React from "react";
 import Input from "../../../common/input";
 import commonMasks from "../../../common/input/common-masks";
 
-import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
+import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
 import useRecaptcha from "../../../lib/use-recaptcha";
 import MakeFormData from "../../../lib/make-form-data";
 import InlineSearch from "../../../lib/inline-search";
@@ -33,6 +33,8 @@ export interface ItemsListProps {
     resetSelectedItem? (): void;
 
     onItemClick? (index: number): void;
+
+    raw_updateSelectedItem? (index: number): void;
 }
 
 /**
@@ -42,7 +44,12 @@ export interface ItemsListProps {
  * @constructor
  */
 export default function ItemsList (props: ItemsListProps) {
-    const [ searchQuery, _setSearchQuery ] = React.useState<string>();
+    const [ initialIdentifier, setInitialIdentifier ] = React.useState<string | null | undefined>(window.location
+        .pathname.split("/").map(e => e.trim()).filter(e => e.length > 0)[1]);
+
+    const [ searchQuery, _setSearchQuery ] = React.useState<string | undefined>(initialIdentifier
+        ? "#" + initialIdentifier : undefined);
+    
     const [ itemsList, setItemsList ] = React.useState<ItemObject.Unknown[]>();
 
     const setSearchQuery = (value: string) => {
@@ -54,6 +61,14 @@ export default function ItemsList (props: ItemsListProps) {
     React.useEffect(() => {
         // Enable content waiting mode for the parent component
         if (props.setWaitContent) props.setWaitContent(true);
+
+        if (initialIdentifier === undefined) {
+            const location = window.location.pathname.split("/").map(e => e.trim()).filter(e => e.length > 0);
+            if (location.length > 1) {
+                setInitialIdentifier(location[1]);
+                _setSearchQuery(`#` + location[1]);
+            }
+        }
 
         // Get recaptcha client token
         useRecaptcha().then(token => {
@@ -121,9 +136,18 @@ export default function ItemsList (props: ItemsListProps) {
 
                     props.updateItemsList && props.updateItemsList(response.responseContent as ItemObject.Unknown[]);
                     setItemsList(response.responseContent as ItemObject.Unknown[]);
+                    console.log(response.responseContent, response.responseContent?.length, props.raw_updateSelectedItem
+                        , initialIdentifier);
+                    if (response.responseContent && response.responseContent.length > 0 && props.raw_updateSelectedItem
+                        && initialIdentifier) {
+                        window.history.replaceState(null, document.title, appRoutesList.cms);
+
+                        if (response.responseContent[0] && response.responseContent[0].identifier == initialIdentifier)
+                            props.raw_updateSelectedItem(0);
+                    }
                 }).finally(() => props.setWaitContent && props.setWaitContent(false));
         });
-    }, [ searchQuery, props.contentVersion ]);
+    }, [ searchQuery, props.contentVersion, initialIdentifier ]);
 
     return <div className="items-list ui flex column scroll">
         <Input placeholder={ "Поиск " + [ "материалов", "файлов", "переменных" ][props.type] }

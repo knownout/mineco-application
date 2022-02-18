@@ -99,7 +99,7 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
                 <Loading display={ this.state.loading } error={ this.state.error } />
 
                 <ApplicationContext.Provider value={ { variablesData: this.state.variablesData } }>
-                    <ApplicationRouter />
+                    { !this.state.loading && !this.state.error && <ApplicationRouter /> }
                 </ApplicationContext.Provider>
             </React.StrictMode>
         </React.Fragment>;

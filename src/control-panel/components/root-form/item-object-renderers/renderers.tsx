@@ -3,6 +3,7 @@ import convertDate from "../../../../lib/convert-date";
 import classNames from "../../../../lib/class-names";
 import { serverRoutesList } from "../../../../lib/routes-list";
 import { setWordsLimit } from "../../../../lib/words-limit";
+import { DataProp } from "editorjs-blocks-react-renderer";
 
 /**
  * Namespace for the items that renders in the items list
@@ -32,6 +33,11 @@ export namespace ItemObject {
         preview: string;
         pinned: string;
         attachments: string;
+    }
+
+    export interface FullMaterial {
+        data: Material,
+        content: DataProp
     }
 
     export interface ProcessedMaterial extends Omit<Material, "tags" | "pinned" | "attachments"> {

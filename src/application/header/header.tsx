@@ -7,8 +7,11 @@ import Navigation from "../navigation";
 import Icons from "./icons";
 import classNames from "../../lib/class-names";
 import getScrollbarWidth from "../../lib/scrollbar-width";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Condition from "../../common/condition";
+import CacheController, { cacheKeysList } from "../../lib/cache-controller";
+import { Account } from "../../control-panel/cms-types/account";
+import { appRoutesList } from "../../lib/routes-list";
 
 /**
  * Component for rendering social icons (like telegram, email, etc.)
@@ -49,6 +52,39 @@ export function SocialDataRenderer (props: { socialData: { [key: string]: string
     });
 
     return <div className="social-data ui flex column gap-5" children={ socialDataBlocks } />;
+}
+
+/**
+ * Component for rendering control panel bar
+ * @internal
+ * @constructor
+ */
+function ControlPanelBar () {
+    const identifier = useLocation().pathname.split("/").map(e => e.trim())
+        .filter(e => e.length > 0);
+
+    const location = appRoutesList.cms + (identifier.length > 0 ? `/${ identifier[0] }` : "");
+
+    const cacheController = React.useRef(new CacheController(localStorage));
+    const [ accountData, setAccountData ] = React.useState<Account.Response | false>(cacheController.current
+        .getItem<Account.Response>(cacheKeysList.accountData));
+
+    const accountExitHandler = () => {
+        cacheController.current.removeItem(cacheKeysList.accountData);
+        setAccountData(false);
+    };
+
+    if (!accountData) return null;
+    // noinspection HtmlUnknownTarget
+    return <div className="control-panel-bar ui flex row w-100 h-fit fz-14 center">
+        <div className="content-wrapper ui limit-1280 flex row gap no-wrap">
+            <div className="user-name ui padding">{ accountData.fullname }</div>
+            <div className="quick-actions ui margin-left-auto flex row">
+                <a href={ location } target="_blank" className="ui padding clean">Открыть панель управления</a>
+                <span className="ui padding" onClick={ accountExitHandler }>Выйти</span>
+            </div>
+        </div>
+    </div>;
 }
 
 interface HeaderProps {
@@ -162,6 +198,7 @@ export default function Header (props: HeaderProps) {
                         </div> }
                     </Navigation> }
             </div>
+            <ControlPanelBar />
         </> }
     </header>;
 }

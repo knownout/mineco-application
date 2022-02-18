@@ -209,7 +209,7 @@ export function FileViewRenderer (props: FileViewRendererProps) {
 
     // Render all of these things that was before
     return <div className="view files-view ui grid center">
-        <div className="view-content-wrapper ui grid text-center center ">
+        <div className="view-content-wrapper ui grid text-center center w-100">
             { renderFilePreview(props.filename, preview) }
         </div>
     </div>;
@@ -228,7 +228,7 @@ export function VariableViewRenderer (props: VariableViewRendererProps) {
     const [ value, setValue ] = React.useState<string>(String(props.value));
     React.useEffect(() => {
         if (value != String(props.value)) setValue(String(props.value));
-    }, [ props.value ])
+    }, [ props.value ]);
 
     /**
      * Shortcut for the loading state updating

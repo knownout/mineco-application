@@ -1,6 +1,106 @@
-div.material-wrapper {
+div.material-container {
     position: relative;
+    max-width: 980px;
+
+    padding: 40px;
     color: #222;
 
-    //div.top-block
+    div.title-block {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        gap: 10px;
+
+        img.preview-image {
+            max-width: 260px;
+        }
+    }
+
+    div.content-block {
+        p {
+            margin: 0;
+            line-height: 22px;
+        }
+
+        figure {
+            margin: 0;
+            padding: 0;
+
+            img {
+                width: 100%;
+                height: auto;
+
+                border-radius: 10px;
+                box-shadow: 0 0 16px rgba(#000, .1);
+            }
+
+            figcaption {
+                width: 100%;
+                margin-top: 5px;
+
+                font-size: 15px;
+                text-align: center;
+                opacity: .65;
+            }
+        }
+
+        ul {
+            //padding: 10px;
+            overflow: hidden;
+            border-radius: 10px;
+
+            background: linear-gradient(45deg, #EEE, #F3F3F3);
+
+            li {
+                padding: 10px;
+
+                &:first-child { margin-top: 10px; }
+
+                &:last-child { margin-bottom: 10px; }
+            }
+        }
+    }
+
+    @media screen and (max-width: 730px) {
+        padding: 20px;
+
+        div.title-block {
+            flex-direction: column;
+
+            img.preview-image {
+                max-width: 100%;
+            }
+        }
+    }
+
+    div.social-data {
+        //padding: 10px;
+        overflow: hidden;
+
+        justify-content: center;
+        border-radius: 10px;
+        background: linear-gradient(45deg, #EEE, #F3F3F3);
+
+        div.social-data-block {
+            gap: 0 !important;
+
+            a[href] {
+                padding: 20px;
+                color: #3E725B;
+                border-radius: 10px;
+                background: transparent;
+
+                &:hover {
+                    background: rgba(#3E725B, .2);
+                }
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    filter: invert(36%) sepia(6%) saturate(2953%) hue-rotate(101deg) brightness(100%) contrast(75%);
+                }
+            }
+        }
+    }
 }

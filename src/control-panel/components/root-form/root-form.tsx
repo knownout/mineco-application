@@ -131,6 +131,7 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                                    selectedItem: this.state.selectedItem === index ? -1 : index,
                                                    contentVersion: this.state.contentVersion + 1
                                                }) }
+                                               raw_updateSelectedItem={ index => this.setState({ selectedItem: index }) }
                                                updateItemsList={ itemsList => this.setState({ itemsList }) }
                                                resetSelectedItem={ () => this.setState({
                                                    selectedItem: -1,

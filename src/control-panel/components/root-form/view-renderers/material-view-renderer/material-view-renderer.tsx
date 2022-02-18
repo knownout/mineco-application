@@ -17,7 +17,7 @@ import { ItemObject } from "../../item-object-renderers/renderers";
 
 import ImageTool from "../../../../cms-lib/editorjs-tools/image";
 
-import CheckBox from "../../../../../common/checkbox/checkbox";
+import CheckBox from "../../../../../common/checkbox";
 import classNames from "../../../../../lib/class-names";
 import FileSelect from "../file-select";
 import EditorJS from "@editorjs/editorjs";
@@ -144,14 +144,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         fetch(makeRoute(serverRoutesList.getMaterial), formData.fetchObject)
             .then(response => response.json())
             .then((response: Response<MaterialDataResponse>) => {
-                if (response && response.success) {
+                if (response && response.success)
                     setMaterial(response.responseContent as MaterialDataResponse);
-                    //
-                    // setMaterialProps({
-                    //     attachments: (response.responseContent as MaterialDataResponse).data.attachments
-                    //         .split(",").map(e => e.trim()).filter(e => e.length > 0)
-                    // });
-                }
 
                 setLoading(false);
             });
@@ -247,16 +241,6 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
             <span className="ui opacity-75">Полный текст материала</span>
             <div id="editor-js-holder" />
-            {/*<span className="ui opacity-75">Приложения к материалу (файлы)</span>*/ }
-            {/*<div className="ui attachments opacity-85 flex row wrap gap">*/ }
-            {/*    { materialProps.attachments.map((filename, index) => <div*/ }
-            {/*        className="attachment ui padding-20 border-radius-10 bg-white" key={ index }*/ }
-            {/*        onClick={ () => editorAttachmentDeleteHandler(filename) }>{ filename }</div>) }*/ }
-
-            {/*    <div className="add-attachment ui grid center border-radius-10" onClick={ editorAttachmentAddHandler }>*/ }
-            {/*        <i className="bi bi-plus-lg" />*/ }
-            {/*    </div>*/ }
-            {/*</div>*/ }
         </React.Fragment>;
     }
 

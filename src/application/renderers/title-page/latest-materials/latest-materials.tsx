@@ -42,7 +42,7 @@ export default function MaterialsList (props: { materials: ItemObject.Material[]
 
     return <>
         <section className="latest-materials-block ui padding-20">
-            { props.materials.slice(0, limit).map((material, index) =>
+            { props.materials.slice(0, limit).reverse().map((material, index) =>
                 <Material material={ material } key={ index } />) }
         </section>
         <Link to="tag/Новости" className="ui clean color-white materials-archive-link">
@@ -63,7 +63,7 @@ export function Material (props: { material: ItemObject.Material }) {
 
     return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link">
         <article className="material ui">
-            <img src={ previewImage } alt={ props.material.title } className="preview-image ui" />
+            <div className="preview-image" style={ { backgroundImage: `url(${ previewImage })` } } />
             <div className="material-data ui flex column gap-5 lh-22 padding-20">
                 <span className="material-title ui fz-20 fw-700 lh-26">{ props.material.title }</span>
                 <span className="date ui opacity-65">
@@ -71,8 +71,11 @@ export function Material (props: { material: ItemObject.Material }) {
                 </span>
                 <div className="description ui clean">
                     <ReactMarkdown remarkPlugins={ remarkConfig }
-                                   children={ setWordsLimit(props.material.description, 20) } />
+                                   children={ setWordsLimit(props.material.description, 60) } />
                 </div>
+            </div>
+            <div className="extra-controls ui absolute flex row">
+                <Button>Читать далее</Button>
             </div>
         </article>
     </Link>;
