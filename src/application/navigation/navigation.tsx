@@ -77,7 +77,7 @@ export default function Navigation (props: NavigationProps) {
                 <div className="scroll-wrapper">
                     <div className="inner-scroll-wrapper">
                         { (hover || props.mobile) && entries.map(([ title, link ], index) =>
-                            <MenuSubItem key={ index } link={ link } query={ query }
+                            <MenuSubItem key={ index } link={ "/" + link } query={ query }
                                          mobile={ props.mobile }>{ title }</MenuSubItem>) }
                     </div>
                 </div>

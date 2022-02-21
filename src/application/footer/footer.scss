@@ -46,6 +46,10 @@ footer.footer-component {
             gap: 10px;
 
             p { margin: 0 }
+
+            p::selection, strong::selection, u::selection, i::selection {
+                background-color: rgba(#A5CEBB, .4);
+            }
         }
     }
 

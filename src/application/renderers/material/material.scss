@@ -21,6 +21,42 @@ div.material-container {
         p {
             margin: 0;
             line-height: 22px;
+
+            user-select: text;
+
+            &::selection {
+                background-color: rgba(#3E725B, .2);
+            }
+
+            b, i, u, li, ul, ol, s, strike {
+                user-select: text;
+
+                &::selection {
+                    background-color: rgba(#3E725B, .2);
+                }
+            }
+        }
+
+        ul, ol, figcaption, li, ul *, ol *, a {
+            user-select: text;
+
+            &::selection {
+                background-color: rgba(#3E725B, .2);
+            }
+        }
+
+        a[href] {
+            padding: 3px;
+            line-height: 24px;
+            transition: 100ms ease all;
+            color: #2D5041;
+            border-radius: 3px;
+
+            background: rgba(#3E725B, .1);
+
+            &:hover {
+                background: rgba(#3E725B, .2);
+            }
         }
 
         figure {
@@ -32,7 +68,7 @@ div.material-container {
                 height: auto;
 
                 border-radius: 10px;
-                box-shadow: 0 0 16px rgba(#000, .1);
+                box-shadow: 0 0 16px rgba(#000, .05);
             }
 
             figcaption {
@@ -50,7 +86,7 @@ div.material-container {
             overflow: hidden;
             border-radius: 10px;
 
-            background: linear-gradient(45deg, #EEE, #F3F3F3);
+            background: linear-gradient(45deg, rgba(#EEE, .5), rgba(#F3F3F3, .3));
 
             li {
                 padding: 10px;

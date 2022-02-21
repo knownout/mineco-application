@@ -148,7 +148,7 @@ export default function Header (props: HeaderProps) {
 
         return <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
             { itemNames.map((item, key) =>
-                <Link to={ navigationPanel["Контакты"][item] } className="ui clean" key={ key }>
+                <Link to={ "/" + navigationPanel["Контакты"][item] } className="ui clean" key={ key }>
                     <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">{ item }</Button>
                 </Link>
             ) }

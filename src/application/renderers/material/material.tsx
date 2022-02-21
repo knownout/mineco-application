@@ -34,7 +34,7 @@ export default function MaterialRenderer () {
     const [ error, setError ] = React.useState<any>();
 
     // Get material identifier from URL
-    const identifier = useLocation().pathname.replace("/", "");
+    const identifier = useLocation().pathname.split("/").pop();
 
     /**
      * Function for processing material data

@@ -33,7 +33,7 @@ export const serverRoutesList = {
 export const appRoutesList = {
     auth: "/control-panel/auth",
     cms: "/control-panel",
-    material: "/"
+    material: "/view/"
 };
 
 /**

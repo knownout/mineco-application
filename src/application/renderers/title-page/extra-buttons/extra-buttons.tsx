@@ -4,6 +4,7 @@ import { serverRoutesList } from "../../../../lib/routes-list";
 import { VariablesStorage } from "../../../application";
 
 import "./extra-buttons.scss";
+import { Link } from "react-router-dom";
 
 /**
  * Component for rendering title page extra buttons
@@ -22,13 +23,13 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
         const backgroundImage = props.image && `url("${ serverRoutesList.getFile(props.image, false) }")`;
         const icon = props.icon && serverRoutesList.getFile(props.icon, false);
 
-        return <a href={ props.link } className="extra-button ui flex row relative clean color-white">
+        return <Link to={ props.link } className="extra-button ui flex row relative clean color-white">
             { backgroundImage &&
                 <div className="background-image ui absolute block w-100 h-100" style={ { backgroundImage } } /> }
             <span className="button-title relative flex ui fw-700">{ props.title }</span>
             { icon &&
                 <img src={ icon } alt={ props.title } className="button-icon ui flex relative margin-left-auto" /> }
-        </a>;
+        </Link>;
     }
 
     const buttons = Object.entries(props.buttons);
