@@ -49,7 +49,7 @@ export default function ItemsList (props: ItemsListProps) {
 
     const [ searchQuery, _setSearchQuery ] = React.useState<string | undefined>(initialIdentifier
         ? "#" + initialIdentifier : undefined);
-    
+
     const [ itemsList, setItemsList ] = React.useState<ItemObject.Unknown[]>();
 
     const setSearchQuery = (value: string) => {
@@ -136,8 +136,7 @@ export default function ItemsList (props: ItemsListProps) {
 
                     props.updateItemsList && props.updateItemsList(response.responseContent as ItemObject.Unknown[]);
                     setItemsList(response.responseContent as ItemObject.Unknown[]);
-                    console.log(response.responseContent, response.responseContent?.length, props.raw_updateSelectedItem
-                        , initialIdentifier);
+
                     if (response.responseContent && response.responseContent.length > 0 && props.raw_updateSelectedItem
                         && initialIdentifier) {
                         window.history.replaceState(null, document.title, appRoutesList.cms);

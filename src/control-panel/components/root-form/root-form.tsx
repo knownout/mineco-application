@@ -129,7 +129,8 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                     <ItemsList type={ type } { ...itemsListProperties }
                                                onItemClick={ index => this.setState({
                                                    selectedItem: this.state.selectedItem === index ? -1 : index,
-                                                   contentVersion: this.state.contentVersion + 1
+                                                   contentVersion: this.state.contentVersion + 1,
+                                                   mobileMenuOpen: false
                                                }) }
                                                raw_updateSelectedItem={ index => this.setState({ selectedItem: index }) }
                                                updateItemsList={ itemsList => this.setState({ itemsList }) }

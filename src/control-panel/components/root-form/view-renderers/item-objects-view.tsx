@@ -2,6 +2,7 @@ import React from "react";
 import MakeFormData from "../../../../lib/make-form-data";
 
 import { makeRoute, serverRoutesList } from "../../../../lib/routes-list";
+import { Controlled as CodeMirror } from "react-codemirror2";
 
 import { RequestOptions, Response, VariableOptions } from "../../../../lib/types/requests";
 
@@ -12,6 +13,27 @@ import prettyBytes from "pretty-bytes";
 import Notify from "../../../../common/notify";
 import classNames from "../../../../lib/class-names";
 import { useFullAuthentication } from "../../../../lib/use-full-authentication";
+
+const codeMirrorStringsMode = () => ({
+    startState: () => ({ inString: false }),
+    token: (stream: any, state: { [key: string]: any }) => {
+        if (!state.inString && stream.peek() == "\"") {
+            stream.next();
+            state.inString = true;
+        }
+
+        if (state.inString) {
+            if (stream.skipTo("\"")) {
+                stream.next();
+                state.inString = false;
+            } else stream.skipToEnd();
+            return "string";
+        } else {
+            stream.skipTo("\"") || stream.skipToEnd();
+            return null;
+        }
+    }
+});
 
 /**
  * Common view renderers properties list
@@ -267,24 +289,40 @@ export function VariableViewRenderer (props: VariableViewRendererProps) {
         if (props.onContentUpdate) props.onContentUpdate();
     }
 
+    const isJSON = [ "[", "{" ].includes(value.trim().replace(/(\s|\t|\r\n|\r|\n)/g, "")[0]);
+    const isJSONValid = isJSON ? (() => {
+        try {
+            JSON.parse(value);
+            return true;
+        } catch (error: any) {
+            return error.message ? error.message : false;
+        }
+    })() : true;
+
     // Disable button if content not changed
     const updateButtonClassName = classNames({
-        disabled: props.value === value.trim()
+        disabled: props.value === value.trim() || (isJSON && isJSONValid !== true)
     });
 
-    return <div className="view variable-view ui grid center">
-        <div className="view-content-wrapper ui flex column padding-20">
-            <textarea className="ui w-100 interactive clean opacity-65" value={ value }
-                      placeholder={ `Введите значение для переменной "${ props.name }"` }
-                      onInput={ event => {
-                          const target = event.target as HTMLTextAreaElement;
-                          setValue(target.value);
-                      } } />
-            <div className="variable-controls ui center-ai">
-                <span className="save-hint ui fz-14 opacity-65">
-                    Изменения в переменной не сохраняются автоматически, не забывайте обновлять значение переменной
-                    нажатием кнопки "Обновить"
-                </span>
+    return <div className="view variable-view ui grid center h-100">
+        <div className="view-content-wrapper ui flex column h-fit limit-1280">
+            <CodeMirror className="ui w-100 clean opacity-85 bg-white margin-bottom"
+                        value={ value } options={ { lineNumbers: true } }
+                        onBeforeChange={
+                            (editor, data, value) => setValue(value)
+                        } defineMode={ { name: "strings", fn: codeMirrorStringsMode } } />
+
+            { isJSON && <div className="json-validation">
+                Состояние переменной (для JSON): {
+                isJSONValid === true
+                    ? <span className="valid">Проверка пройдена</span>
+                    : <span className="invalid">Ошибка{ isJSONValid === false ? "" : ": " + isJSONValid }</span> }
+            </div> }
+            <div className="variable-controls ui flex row">
+                {/*<span className="save-hint ui fz-14 opacity-65 limit-460">*/ }
+                {/*    Изменения в переменной не сохраняются автоматически, не забывайте обновлять значение переменной*/ }
+                {/*    нажатием кнопки "Обновить"*/ }
+                {/*</span>*/ }
                 <Button icon="bi bi-arrow-clockwise" onClick={ variableUpdateHandler }
                         className={ updateButtonClassName }>Обновить</Button>
             </div>

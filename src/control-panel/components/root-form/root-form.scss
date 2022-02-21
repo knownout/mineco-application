@@ -1,5 +1,7 @@
 @import "item-object-renderers/renderer-styles";
 @import "view-renderers/view-styles";
+@import "~codemirror/lib/codemirror.css";
+@import "~codemirror/theme/xq-light.css";
 
 div.root-form.ui.flex.row {
     position: relative;
