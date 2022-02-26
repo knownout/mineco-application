@@ -68,10 +68,21 @@ interface MaterialProps
  */
 export function Material (props: MaterialProps) {
     const previewImage = serverRoutesList.getFile(props.material.preview, false);
+    const rootElementRef = React.useRef<HTMLElement | null>(null);
+
+    const [ height, setHeight ] = React.useState(0);
+
+    React.useLayoutEffect(() => {
+        setTimeout(() => {
+            if (height > 100) return;
+            if (rootElementRef.current) setHeight(rootElementRef.current.offsetHeight);
+        }, 100);
+    }, [ rootElementRef, rootElementRef.current?.offsetHeight ]);
 
     return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link"
-                 ref={ ref => props.reference && props.reference(ref) }>
-        <article className="material ui">
+                 ref={ ref => props.reference && props.reference(ref) }
+                 style={ height ? { minHeight: height, maxHeight: height } : {} }>
+        <article className="material ui" ref={ ref => rootElementRef.current = ref }>
             <div className="preview-image" style={ { backgroundImage: `url(${ previewImage })` } } />
             <div className="material-data ui flex column gap-5 lh-22 padding-20">
                 <span className="material-title ui fz-20 fw-700 lh-26">{ props.material.title }</span>

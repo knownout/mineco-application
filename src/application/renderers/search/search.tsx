@@ -35,13 +35,21 @@ export default function SearchRenderer () {
 
     const offsetStep = 3 * 4;
 
-    const componentScrollHandler = () => {
+    const componentScrollHandler = React.useCallback((
+        scrollTop: number, event: React.UIEvent<HTMLDivElement, UIEvent>) => {
         if (!lastMaterialRef.current) return;
         const rect = lastMaterialRef.current.getBoundingClientRect();
+        const target = event.target as HTMLDivElement;
+
+        (Array.from(target.querySelectorAll("a.material-link")) as HTMLElement[]).forEach(element => {
+            const y = element.getBoundingClientRect().y + element.clientHeight;
+            if (y < 0 || y > window.innerHeight * 2) element.classList.add("hidden");
+            else element.classList.remove("hidden");
+        });
 
         const atBottom = (window.innerHeight / 2 - (rect.y + lastMaterialRef.current.offsetHeight / 10) + 200) > 0;
         if (atBottom && !materialsLoading && !error) setOffset(offset => offset + 1);
-    };
+    }, [ lastMaterialRef.current ]);
 
     React.useLayoutEffect(() => {
         setMaterialsLoading(true);

@@ -16,9 +16,8 @@ div.materials-search {
     }
 
     /* Style your items */
-    .my-masonry-grid_column article { /* change div to reference your elements you put in <Masonry> */
+    .my-masonry-grid_column a.material-link { /* change div to reference your elements you put in <Masonry> */
         margin-bottom: 30px !important;
-        background: grey;
     }
 
     span.info-label {
@@ -37,6 +36,15 @@ div.materials-search {
         &:hover {
             background: rgba(#3E725B, .2);
         }
+    }
+
+    a.material-link {
+        position: relative;
+        display: block;
+    }
+
+    a.material-link.hidden article.material {
+        display: none !important;
     }
 
     div.materials-list {
