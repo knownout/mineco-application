@@ -1,10 +1,11 @@
 import React from "react";
 
 import { Route, Routes } from "react-router-dom";
-import MaterialRenderer from "./material";
-import NotFoundPage from "./not-found";
-import SearchRenderer from "./search";
-import TitlePage from "./title-page";
+
+const TitlePage = React.lazy(() => import("./title-page"));
+const SearchRenderer = React.lazy(() => import("./search"));
+const NotFoundPage = React.lazy(() => import("./not-found"));
+const MaterialRenderer = React.lazy(() => import("./material"));
 
 export default function ApplicationRouter () {
     return <Routes>

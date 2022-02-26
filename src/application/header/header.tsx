@@ -1,17 +1,17 @@
 import React from "react";
-import "./header.scss";
-import { ApplicationContext, VariablesStorage } from "../application";
+import { Link, useLocation } from "react-router-dom";
 import Button from "../../common/button";
+import Condition from "../../common/condition";
+import { Account } from "../../control-panel/cms-types/account";
+import CacheController, { cacheKeysList } from "../../lib/cache-controller";
+import classNames from "../../lib/class-names";
+import { appRoutesList } from "../../lib/routes-list";
+import getScrollbarWidth from "../../lib/scrollbar-width";
+import { ApplicationContext, VariablesStorage } from "../application";
 import Navigation from "../navigation";
+import "./header.scss";
 
 import Icons from "./icons";
-import classNames from "../../lib/class-names";
-import getScrollbarWidth from "../../lib/scrollbar-width";
-import { Link, useLocation } from "react-router-dom";
-import Condition from "../../common/condition";
-import CacheController, { cacheKeysList } from "../../lib/cache-controller";
-import { Account } from "../../control-panel/cms-types/account";
-import { appRoutesList } from "../../lib/routes-list";
 
 /**
  * Component for rendering social icons (like telegram, email, etc.)
@@ -63,7 +63,8 @@ function ControlPanelBar () {
     const identifier = useLocation().pathname.split("/").map(e => e.trim())
         .filter(e => e.length > 0);
 
-    const location = appRoutesList.cms + (identifier.length > 0 ? `/${ identifier[0] }` : "");
+    const isView = window.location.pathname.includes("/view");
+    const location = appRoutesList.cms + (isView && identifier.length > 0 ? `/${ identifier.pop() }` : "");
 
     const cacheController = React.useRef(new CacheController(localStorage));
     const [ accountData, setAccountData ] = React.useState<Account.Response | false>(cacheController.current
@@ -80,14 +81,17 @@ function ControlPanelBar () {
         <div className="content-wrapper ui limit-1280 flex row gap no-wrap">
             <div className="user-name ui padding">{ accountData.fullname }</div>
             <div className="quick-actions ui margin-left-auto flex row">
-                <a href={ location } target="_blank" className="ui padding clean">Открыть панель управления</a>
+                <a href={ location } target="_blank" className="ui padding clean">
+                    { isView ? "Редактировать материал" : "Открыть панель управления" }
+                </a>
                 <span className="ui padding" onClick={ accountExitHandler }>Выйти</span>
             </div>
         </div>
     </div>;
 }
 
-interface HeaderProps {
+interface HeaderProps
+{
     fixed: boolean;
 
     staticContentRef (ref: HTMLDivElement | null): void;

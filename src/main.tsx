@@ -1,19 +1,20 @@
 import React, { PureComponent } from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Helmet from "react-helmet";
-
-import ControlPanel from "./control-panel";
-
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Loading from "./common/loading";
 import "./main.scss";
-import Application from "./application/application";
+
+const ControlPanel = React.lazy(() => import("./control-panel"));
+const Application = React.lazy(() => import("./application/application"));
 
 /**
  * Root component
  * @inner
  */
-class Main extends PureComponent {
+class Main extends PureComponent
+{
     render (): React.ReactNode {
         return <React.Fragment>
             <Helmet>
@@ -35,12 +36,14 @@ class Main extends PureComponent {
 
                 <title>Министерство СХ и ПР ПМР</title>
             </Helmet>
-            <Router>
-                <Routes>
-                    <Route path="/control-panel/*" element={ <ControlPanel /> } />
-                    <Route path="/*" element={ <Application /> } />
-                </Routes>
-            </Router>
+            <React.Suspense fallback={ <Loading display={ true } /> }>
+                <Router>
+                    <Routes>
+                        <Route path="/control-panel/*" element={ <ControlPanel /> } />
+                        <Route path="/*" element={ <Application /> } />
+                    </Routes>
+                </Router>
+            </React.Suspense>
         </React.Fragment>;
     }
 }

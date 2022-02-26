@@ -1,24 +1,87 @@
 @import "../title-page/latest-materials/latest-materials";
 
-div.child-content-holder.ui.grid.center {
-    background: #EEE;
-}
+div.materials-search {
+    width: 100%;
+    max-width: 1280px;
+    padding: 20px;
 
-div.materials-list {
-    padding: 40px 20px;
-    gap: 20px;
-
-    a {
-        color: #222;
+    span.info-label {
+        margin: 40px 0;
     }
 
-    article.material {
-        max-width: 400px;
-        height: fit-content;
+    a[href].g-link {
+        line-height: 24px;
+        padding: 3px;
+        transition: 100ms ease all;
+        color: #2D5041;
+        border-radius: 3px;
+
+        background: rgba(#3E725B, .1);
 
         &:hover {
-            transform: scale(1.02, 1.02);
-            box-shadow: 0 0 20px rgba(#000, .08);
+            background: rgba(#3E725B, .2);
+        }
+    }
+
+    div.materials-list {
+        width: 100%;
+        max-width: 1280px;
+
+        padding: 20px 0;
+        gap: 20px;
+
+        a {
+            color: #222;
+        }
+
+        article.material {
+            max-width: 400px;
+            height: fit-content;
+
+            border: 1px solid rgba(#000, .1);
+            background: transparent;
+
+            &:hover {
+                transform: scale(1.02, 1.02);
+                box-shadow: 0 0 20px rgba(#000, .08);
+            }
+        }
+    }
+
+    div.materials-loading-spinner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+
+        z-index: 80;
+        padding: 10px;
+
+        div.wrapper {
+            padding: 20px;
+            border: 1px solid rgba(#000, .1);
+            border-radius: 10px;
+
+            background: rgba(#FFF, .6);
+            backdrop-filter: blur(4px);
+        }
+
+        @media screen and (max-width: 560px) {
+            top: 0;
+            bottom: unset;
+        }
+    }
+
+    div.input-component {
+        div.wrapper input.native-input,
+        &:not(.focus) div.placeholder,
+        div.icon-holder {
+            background-color: #EEE;
+        }
+
+        &.focus {
+            div.wrapper, div.icon-holder {
+                box-shadow: 0 0 0 3px rgba(darken(#A5CEBB, 10%), .5);
+            }
         }
     }
 }
