@@ -2,8 +2,24 @@
 
 div.materials-search {
     width: 100%;
-    max-width: 1280px;
     padding: 20px;
+
+    .my-masonry-grid {
+        display: flex;
+        width: auto;
+        margin-left: -30px; /* gutter size offset */
+    }
+
+    .my-masonry-grid_column {
+        padding-left: 30px; /* gutter size */
+        background-clip: padding-box;
+    }
+
+    /* Style your items */
+    .my-masonry-grid_column article { /* change div to reference your elements you put in <Masonry> */
+        margin-bottom: 30px !important;
+        background: grey;
+    }
 
     span.info-label {
         margin: 40px 0;
@@ -25,7 +41,6 @@ div.materials-search {
 
     div.materials-list {
         width: 100%;
-        max-width: 1280px;
 
         padding: 20px 0;
         gap: 20px;
@@ -72,6 +87,8 @@ div.materials-search {
     }
 
     div.input-component {
+        max-width: 820px;
+
         div.wrapper input.native-input,
         &:not(.focus) div.placeholder,
         div.icon-holder {

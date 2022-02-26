@@ -51,6 +51,14 @@ export default function MaterialsList (props: { materials: ItemObject.Material[]
     </>;
 }
 
+interface MaterialProps
+{
+    material: ItemObject.Material;
+    wordsLimit?: number;
+
+    reference? (ref: HTMLAnchorElement | null): void;
+}
+
 /**
  * Material renderer for latest materials
  * list renderer
@@ -58,7 +66,7 @@ export default function MaterialsList (props: { materials: ItemObject.Material[]
  * @constructor
  * @internal
  */
-export function Material (props: { material: ItemObject.Material, reference? (ref: HTMLAnchorElement | null): void }) {
+export function Material (props: MaterialProps) {
     const previewImage = serverRoutesList.getFile(props.material.preview, false);
 
     return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link"
@@ -72,7 +80,8 @@ export function Material (props: { material: ItemObject.Material, reference? (re
                 </span>
                 <div className="description ui clean">
                     <ReactMarkdown remarkPlugins={ remarkConfig }
-                                   children={ setWordsLimit(props.material.description, 60) } />
+                                   children={ setWordsLimit(props.material.description, props.wordsLimit
+                                       ? props.wordsLimit : 60) } />
                 </div>
             </div>
             <div className="extra-controls ui absolute flex row">

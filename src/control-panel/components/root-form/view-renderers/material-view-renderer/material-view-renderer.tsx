@@ -25,7 +25,7 @@ import { CommonViewRendererProps } from "../item-objects-view";
 import { defaultLocalization, defaultToolsList } from "./editor-js-config";
 
 // This renderer may be too complex, so I decided
-// to move it to a separate file
+// to move it to a separate file.
 
 /**
  * Function for formatting date to the next format: dd.mm.YY HH:mm
@@ -81,8 +81,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         preview: props.preview,
         description: props.description,
         title: props.title,
-        datetime: formatDate(new Date(parseInt(props.datetime) * 1000)),
-        attachments: props.attachments.split(",").map(e => e.trim()).filter(e => e.length > 0)
+        datetime: formatDate(new Date(parseInt(props.datetime) * 1000))
     });
 
     const [ materialProps, _setMaterialProps ] = React.useState<ItemObject.ProcessedMaterial>(_getDefaultMaterialObject());
@@ -229,7 +228,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
                     const clean = (str: string) => str.replace(/\s/g, "").trim().toLocaleLowerCase();
 
-                    if (tagSearchQuery && clean(tagSearchQuery).length > 0 && !clean(tag).includes(clean(tagSearchQuery)))
+                    if (tagSearchQuery && clean(tagSearchQuery).length > 0 && !clean(tag)
+                        .includes(clean(tagSearchQuery)))
                         return null;
 
                     return <CheckBox checked={ checked } key={ index } onChange={ onChange }>
@@ -331,13 +331,12 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         }
 
         const materialPropsConverter = (props: ItemObject.ProcessedMaterial): ItemObject.Material => {
-            const { pinned, tags, datetime, attachments, ...pureProps } = props;
+            const { pinned, tags, datetime, ...pureProps } = props;
             return {
                 ...pureProps,
                 pinned: pinned ? "1" : "0",
                 tags: tags.join(","),
-                datetime: (new Date(datetime).getTime() / 1000).toString(),
-                attachments: attachments.join(",")
+                datetime: (new Date(datetime).getTime() / 1000).toString()
             };
         };
 
@@ -345,7 +344,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
         const formData = new MakeFormData({
             ...formDataEntries,
-            [RequestOptions.updateMaterial]: props.identifier === "create-new" ? materialProps.identifier : props.identifier,
+            [RequestOptions.updateMaterial]: props.identifier === "create-new" ? materialProps.identifier
+                : props.identifier,
             [RequestOptions.updateMaterialData]: JSON.stringify(materialPropsConverter(materialProps)),
             [RequestOptions.updateMaterialText]: JSON.stringify(materialText)
         });

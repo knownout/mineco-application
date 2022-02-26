@@ -1,4 +1,5 @@
 import React from "react";
+import Masonry from "react-masonry-css";
 import { Link, useParams } from "react-router-dom";
 import Input from "../../../common/input";
 import Loading from "../../../common/loading";
@@ -38,7 +39,7 @@ export default function SearchRenderer () {
         if (!lastMaterialRef.current) return;
         const rect = lastMaterialRef.current.getBoundingClientRect();
 
-        const atBottom = (window.innerHeight / 2 - (rect.y + lastMaterialRef.current.offsetHeight / 6) - 20) > 0;
+        const atBottom = (window.innerHeight / 2 - (rect.y + lastMaterialRef.current.offsetHeight / 10) + 200) > 0;
         if (atBottom && !materialsLoading && !error) setOffset(offset => offset + 1);
     };
 
@@ -102,7 +103,7 @@ export default function SearchRenderer () {
 
     return <PageFactory onScroll={ componentScrollHandler }
                         loader={ <Loading display={ loading || !loadedMaterials } error={ error } /> }>
-        <div className="materials-search ui flex column w-100">
+        <div className="materials-search ui flex center-ai column w-100">
             <Input icon="bi bi-newspaper" placeholder="Поиск материалов" onInput={ setSearchQuery } />
             { material && <RawMaterialRenderer material={ material } /> }
             { loadedMaterials.length > 0 && (!searchQuery || searchQuery.trim().length < 1) &&
@@ -138,10 +139,20 @@ export default function SearchRenderer () {
 
 function MaterialsListRenderer (props: { materials: ItemObject.Material[], last (ref: HTMLElement | null): void }) {
     return <div className="materials-list ui flex row wrap center-jc">
-        { props.materials.map((material, index) => {
-            return <Material material={ material } key={ index } reference={ ref =>
-                props.materials.length - 1 == index && props.last(ref)
-            } />;
-        }) }
+        <Masonry
+            breakpointCols={ {
+                default: 4,
+                1520: 3,
+                1080: 2,
+                670: 1
+            } }
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column">
+            { props.materials.map((material, index) => {
+                return <Material material={ material } key={ index } reference={ ref =>
+                    props.materials.length - 1 == index && props.last(ref)
+                } wordsLimit={ 40 } />;
+            }) }
+        </Masonry>
     </div>;
 }

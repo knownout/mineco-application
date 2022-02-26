@@ -1,9 +1,9 @@
+import { DataProp } from "editorjs-blocks-react-renderer";
 import React from "react";
-import convertDate from "../../../../lib/convert-date";
 import classNames from "../../../../lib/class-names";
+import convertDate from "../../../../lib/convert-date";
 import { serverRoutesList } from "../../../../lib/routes-list";
 import { setWordsLimit } from "../../../../lib/words-limit";
-import { DataProp } from "editorjs-blocks-react-renderer";
 
 /**
  * Namespace for the items that renders in the items list
@@ -11,11 +11,13 @@ import { DataProp } from "editorjs-blocks-react-renderer";
  *
  * @internal
  */
-export namespace ItemObject {
+export namespace ItemObject
+{
     /**
      * Interface for the file item
      */
-    export interface File {
+    export interface File
+    {
         identifier: string;
         filename: string;
         datetime: string;
@@ -24,7 +26,8 @@ export namespace ItemObject {
     /**
      * Interface for the material item
      */
-    export interface Material {
+    export interface Material
+    {
         identifier: string;
         title: string;
         description: string;
@@ -32,21 +35,22 @@ export namespace ItemObject {
         datetime: string;
         preview: string;
         pinned: string;
-        attachments: string;
     }
 
-    export interface FullMaterial {
+    export interface FullMaterial
+    {
         data: Material,
         content: DataProp
     }
 
-    export interface ProcessedMaterial extends Omit<Material, "tags" | "pinned" | "attachments"> {
+    export interface ProcessedMaterial extends Omit<Material, "tags" | "pinned" | "attachments">
+    {
         tags: string[];
         pinned: boolean;
-        attachments: string[];
     }
 
-    export interface Variable {
+    export interface Variable
+    {
         name: string;
         value: unknown;
     }
@@ -55,14 +59,16 @@ export namespace ItemObject {
     export type Unknown = Partial<Material & File>;
 
     /** Possible item types */
-    export enum Type {
+    export enum Type
+    {
         materials,
         files,
         variables
     }
 }
 
-interface CommonRendererProps {
+interface CommonRendererProps
+{
     selected: boolean;
 
     onClick? (event: React.MouseEvent<HTMLDivElement>): void;
