@@ -1,21 +1,21 @@
 import React from "react";
 
+import ReactMarkdown from "react-markdown";
+import { Link } from "react-router-dom";
+import Button from "../../../../common/button";
+
 import { ItemObject } from "../../../../control-panel/components/root-form/item-object-renderers/renderers";
+import convertDate from "../../../../lib/convert-date";
 
 import { appRoutesList, serverRoutesList } from "../../../../lib/routes-list";
-import convertDate from "../../../../lib/convert-date";
 import { setWordsLimit } from "../../../../lib/words-limit";
 
 import remarkConfig from "../../remark-config";
 
-import ReactMarkdown from "react-markdown";
-import { Link } from "react-router-dom";
-
 import "./latest-materials.scss";
-import Button from "../../../../common/button";
 
 /**
- * Component for rendering latest materials list
+ * Component for rendering the latest materials list
  * @constructor
  * @internal
  */
@@ -58,10 +58,11 @@ export default function MaterialsList (props: { materials: ItemObject.Material[]
  * @constructor
  * @internal
  */
-export function Material (props: { material: ItemObject.Material }) {
+export function Material (props: { material: ItemObject.Material, reference? (ref: HTMLAnchorElement | null): void }) {
     const previewImage = serverRoutesList.getFile(props.material.preview, false);
 
-    return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link">
+    return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link"
+                 ref={ ref => props.reference && props.reference(ref) }>
         <article className="material ui">
             <div className="preview-image" style={ { backgroundImage: `url(${ previewImage })` } } />
             <div className="material-data ui flex column gap-5 lh-22 padding-20">

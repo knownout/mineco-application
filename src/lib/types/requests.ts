@@ -3,7 +3,8 @@ import { ItemObject } from "../../control-panel/components/root-form/item-object
 /**
  * Server response type
  */
-export interface Response<T = any> {
+export interface Response<T = any>
+{
     success: boolean,
     errorCodes?: string[],
     responseContent?: T
@@ -34,7 +35,8 @@ const RequestOptions = {
 
 
     // Other
-    limitSearchResponse: "find:limit"
+    limitSearchResponse: "find:limit",
+    searchOffset: "find:offset"
 };
 
 /**

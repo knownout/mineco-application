@@ -1,0 +1,24 @@
+@import "../title-page/latest-materials/latest-materials";
+
+div.child-content-holder.ui.grid.center {
+    background: #EEE;
+}
+
+div.materials-list {
+    padding: 40px 20px;
+    gap: 20px;
+
+    a {
+        color: #222;
+    }
+
+    article.material {
+        max-width: 400px;
+        height: fit-content;
+
+        &:hover {
+            transform: scale(1.02, 1.02);
+            box-shadow: 0 0 20px rgba(#000, .08);
+        }
+    }
+}

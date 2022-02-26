@@ -28,9 +28,11 @@ interface UseMaterialDataProps
     setMaterial? (material: ItemObject.FullMaterial): void;
 
     setError? (error: any): void;
+
+    setLoading? (state: boolean): void;
 }
 
-export function useMaterialData ({ setMaterial, setError }: UseMaterialDataProps) {
+export function useMaterialData ({ setMaterial, setError, setLoading }: UseMaterialDataProps) {
     // Get material identifier from URL
     const identifier = useLocation().pathname.split("/").pop();
 
@@ -41,7 +43,11 @@ export function useMaterialData ({ setMaterial, setError }: UseMaterialDataProps
     const useMaterialContent = React.useCallback((response?: Response<ItemObject.FullMaterial>) => {
         const content = response?.responseContent;
 
-        if (!content || !content.data) return setError && setError(response ? response.errorCodes : "server-fault");
+        if (!content || !content.data) {
+            setError && setError(response ? response.errorCodes : "server-fault");
+            setLoading && setLoading(false);
+            return;
+        }
 
         // Load all material images before complete loading
         ApplicationBuilder.waitForImages([
@@ -49,11 +55,16 @@ export function useMaterialData ({ setMaterial, setError }: UseMaterialDataProps
                 .map(e => e.data.file.url as string),
 
             serverRoutesList.getFile(content.data.preview, false)
-        ]).then(() => setMaterial && setMaterial(content));
+        ]).then(() => {
+            setMaterial && setMaterial(content);
+            setLoading && setLoading(false);
+        });
     }, []);
 
     // Require material data from server
     React.useLayoutEffect(() => {
+        setLoading && setLoading(true);
+
         fetch(makeRoute(serverRoutesList.getMaterial), new MakeFormData({
             [RequestOptions.getMaterial]: identifier
         }).fetchObject).then(response => response.json()).then(useMaterialContent);
@@ -67,8 +78,6 @@ export function useMaterialData ({ setMaterial, setError }: UseMaterialDataProps
  * @constructor
  */
 export default function MaterialRenderer (props: { strict?: boolean }) {
-    const context = React.useContext(ApplicationContext);
-
     const [ material, setMaterial ] = React.useState<ItemObject.FullMaterial>();
     const [ error, setError ] = React.useState<any>();
 
@@ -78,23 +87,30 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
     if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
 
     return <PageFactory loader={ <Loading display={ !material } error={ error } /> }>
-        <div className="material-container ui flex column gap-20">
-            { material && <TitleBlock material={ material.data } strict={ props.strict } /> }
-            <div className="content-block ui flex gap column">
-                { material && <Blocks data={ material.content } /> }
-            </div>
-
-            { material && <div className="extra-controls ui flex row gap wrap">
-                { !props.strict && <ShareComponent sources={ { vk: true, facebook: true, twitter: true } }
-                                                   title={ material.data.title }
-                                                   current={ window.location.href } /> }
-
-                { context.variablesData?.socialData && !props.strict &&
-                    <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
-                <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link>
-            </div> }
-        </div>
+        { material && <RawMaterialRenderer material={ material } strict={ props.strict } /> }
     </PageFactory>;
+}
+
+export function RawMaterialRenderer (props: { material: ItemObject.FullMaterial, strict?: boolean }) {
+    const context = React.useContext(ApplicationContext);
+    const material = props.material;
+
+    return <div className="material-container ui flex column gap-20">
+        <TitleBlock material={ material.data } strict={ props.strict } />
+        <div className="content-block ui flex gap column">
+            <Blocks data={ material.content } />
+        </div>
+
+        <div className="extra-controls ui flex row gap wrap">
+            { !props.strict && <ShareComponent sources={ { vk: true, facebook: true, twitter: true } }
+                                               title={ material.data.title }
+                                               current={ window.location.href } /> }
+
+            { context.variablesData?.socialData && !props.strict &&
+                <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
+            <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link>
+        </div>
+    </div>;
 }
 
 /**

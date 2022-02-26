@@ -5,7 +5,15 @@ import Header from "../../header";
 
 import "./page-factory.scss";
 
-export default function PageFactory (props: { children?: any; loader?: JSX.Element }) {
+interface PageFactoryProps
+{
+    children?: any;
+    loader?: JSX.Element;
+
+    onScroll? (scrollTop: number, event: React.UIEvent<HTMLDivElement, UIEvent>): void;
+}
+
+export default function PageFactory (props: PageFactoryProps) {
     const [ fixed, setFixed ] = React.useState(false);
     const staticContent = React.useRef<HTMLDivElement | null>();
 
@@ -13,6 +21,8 @@ export default function PageFactory (props: { children?: any; loader?: JSX.Eleme
         if (!staticContent.current) return;
 
         const scrollTop = (event.target as HTMLElement).scrollTop;
+
+        if (props.onScroll) props.onScroll(scrollTop, event);
         setFixed(scrollTop > staticContent.current.offsetHeight);
     };
 

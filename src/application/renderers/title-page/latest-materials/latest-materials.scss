@@ -6,90 +6,89 @@ div.title-page section.latest-materials-block {
     justify-content: center;
     gap: 20px;
 
-    article.material {
-        position: relative;
-        display: flex;
-        max-width: 320px;
-
-        //height: fit-co/ntent;
-        height: 610px;
-        overflow: hidden;
-
-        flex-direction: column;
-        cursor: pointer;
-        transition: 100ms ease all;
-
-        border-radius: 10px;
-        background: #FFF;
-
-        &:hover {
-            transform: scale(1.05, 1.05);
-            box-shadow: 0 0 20px rgba(#000, .08);
-        }
-
-        div.material-data {
-            position: relative;
-            width: calc(100% - 2px);
-            overflow: hidden;
-            transition: 100ms ease all;
-
-            transform-origin: center center;
-
-            span.material-title {
-                word-break: break-word;
-            }
-        }
-
-        div.extra-controls {
-            position: absolute;
-            width: 100%;
-
-            bottom: 0;
-            left: 0;
-
-            padding: 40px 10px 10px;
-
-            z-index: 10;
-            background: linear-gradient(0deg, #FFF 60%, transparent);
-
-            button {
-                width: 100%;
-                padding: 10px !important;
-                border-radius: 5px !important;
-
-                span.text {
-                    font-size: 14px !important;
-                }
-            }
-        }
-
-        div.preview-image {
-            width: 100%;
-            min-height: 210px;
-            overflow: hidden;
-            border-radius: 10px;
-
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-        }
-
-        div.description p {
-            margin: 0;
-            word-break: break-word;
-
-            &:not(:last-child) {
-                margin-top: 10px;
-            }
-        }
-    }
-
     @media screen and (max-width: 720px) {
         flex-direction: column;
 
         article.material {
             width: 100%;
 
+        }
+    }
+}
+
+article.material {
+    position: relative;
+    display: flex;
+    max-width: 320px;
+    
+    height: 610px;
+    overflow: hidden;
+
+    flex-direction: column;
+    cursor: pointer;
+    transition: 100ms ease all;
+
+    border-radius: 10px;
+    background: #FFF;
+
+    &:hover {
+        transform: scale(1.05, 1.05);
+        box-shadow: 0 0 20px rgba(#000, .08);
+    }
+
+    div.material-data {
+        position: relative;
+        width: calc(100% - 2px);
+        overflow: hidden;
+        transition: 100ms ease all;
+
+        transform-origin: center center;
+
+        span.material-title {
+            word-break: break-word;
+        }
+    }
+
+    div.extra-controls {
+        position: absolute;
+        width: 100%;
+
+        bottom: 0;
+        left: 0;
+
+        padding: 40px 10px 10px;
+
+        z-index: 10;
+        background: linear-gradient(0deg, #FFF 60%, transparent);
+
+        button {
+            width: 100%;
+            padding: 10px !important;
+            border-radius: 5px !important;
+
+            span.text {
+                font-size: 14px !important;
+            }
+        }
+    }
+
+    div.preview-image {
+        width: 100%;
+        min-height: 210px;
+        overflow: hidden;
+        border-radius: 10px;
+
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+    }
+
+    div.description p {
+        margin: 0;
+        word-break: break-word;
+
+        &:not(:last-child) {
+            margin-top: 10px;
         }
     }
 }
