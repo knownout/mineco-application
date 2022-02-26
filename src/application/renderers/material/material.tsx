@@ -1,38 +1,36 @@
+import Blocks from "editorjs-blocks-react-renderer";
 import React from "react";
 
 import { Link, useLocation } from "react-router-dom";
-import Blocks from "editorjs-blocks-react-renderer";
-
-import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
-import MakeFormData from "../../../lib/make-form-data";
-import { RequestOptions, Response } from "../../../lib/types/requests";
-import convertDate from "../../../lib/convert-date";
+import Button from "../../../common/button";
+import Loading from "../../../common/loading";
+import ShareComponent from "../../../common/share";
 
 import { ItemObject } from "../../../control-panel/components/root-form/item-object-renderers/renderers";
+import convertDate from "../../../lib/convert-date";
+import MakeFormData from "../../../lib/make-form-data";
+
+import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
+import { RequestOptions, Response } from "../../../lib/types/requests";
+import { ApplicationContext } from "../../application";
 
 import ApplicationBuilder from "../../application-builder";
 
 import { SocialDataRenderer } from "../../header/header";
-import { ApplicationContext } from "../../application";
 
 import NotFoundPage from "../not-found";
-import ShareComponent from "../../../common/share";
 import PageFactory from "../page-factory";
-import Loading from "../../../common/loading";
-import Button from "../../../common/button";
 
 import "./material.scss";
 
-/**
- * Component for rendering materials from its sources
- * @constructor
- */
-export default function MaterialRenderer () {
-    const context = React.useContext(ApplicationContext);
+interface UseMaterialDataProps
+{
+    setMaterial? (material: ItemObject.FullMaterial): void;
 
-    const [ material, setMaterial ] = React.useState<ItemObject.FullMaterial>();
-    const [ error, setError ] = React.useState<any>();
+    setError? (error: any): void;
+}
 
+export function useMaterialData ({ setMaterial, setError }: UseMaterialDataProps) {
     // Get material identifier from URL
     const identifier = useLocation().pathname.split("/").pop();
 
@@ -43,7 +41,7 @@ export default function MaterialRenderer () {
     const useMaterialContent = React.useCallback((response?: Response<ItemObject.FullMaterial>) => {
         const content = response?.responseContent;
 
-        if (!content || !content.data) return setError(response ? response.errorCodes : "server-fault");
+        if (!content || !content.data) return setError && setError(response ? response.errorCodes : "server-fault");
 
         // Load all material images before complete loading
         ApplicationBuilder.waitForImages([
@@ -51,7 +49,7 @@ export default function MaterialRenderer () {
                 .map(e => e.data.file.url as string),
 
             serverRoutesList.getFile(content.data.preview, false)
-        ]).then(() => setMaterial(content));
+        ]).then(() => setMaterial && setMaterial(content));
     }, []);
 
     // Require material data from server
@@ -59,25 +57,41 @@ export default function MaterialRenderer () {
         fetch(makeRoute(serverRoutesList.getMaterial), new MakeFormData({
             [RequestOptions.getMaterial]: identifier
         }).fetchObject).then(response => response.json()).then(useMaterialContent);
-    }, []);
+    }, [ identifier ]);
+
+    return identifier;
+}
+
+/**
+ * Component for rendering materials from its sources
+ * @constructor
+ */
+export default function MaterialRenderer (props: { strict?: boolean }) {
+    const context = React.useContext(ApplicationContext);
+
+    const [ material, setMaterial ] = React.useState<ItemObject.FullMaterial>();
+    const [ error, setError ] = React.useState<any>();
+
+    const identifier = useMaterialData({ setMaterial, setError });
 
     // If material not found or no identifier provided, show 404 page
     if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
 
     return <PageFactory loader={ <Loading display={ !material } error={ error } /> }>
         <div className="material-container ui flex column gap-20">
-            { material && <TitleBlock material={ material.data } /> }
+            { material && <TitleBlock material={ material.data } strict={ props.strict } /> }
             <div className="content-block ui flex gap column">
                 { material && <Blocks data={ material.content } /> }
             </div>
 
             { material && <div className="extra-controls ui flex row gap wrap">
-                <ShareComponent sources={ { vk: true, facebook: true, twitter: true } } title={ material.data.title }
-                                current={ window.location.href } />
+                { !props.strict && <ShareComponent sources={ { vk: true, facebook: true, twitter: true } }
+                                                   title={ material.data.title }
+                                                   current={ window.location.href } /> }
 
-                { context.variablesData?.socialData &&
+                { context.variablesData?.socialData && !props.strict &&
                     <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
-                <Link to="/" className="ui clean"><Button>На главную</Button></Link>
+                <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link>
             </div> }
         </div>
     </PageFactory>;
@@ -88,19 +102,20 @@ export default function MaterialRenderer () {
  * @internal
  * @constructor
  */
-function TitleBlock (props: { material: ItemObject.Material }) {
+function TitleBlock (props: { material: ItemObject.Material, strict?: boolean }) {
     return <div
         className="title-block ui">
-        <img src={ serverRoutesList.getFile(props.material.preview, false) }
-             alt={ props.material.title } className="preview-image ui border-radius-10" />
+        { !props.strict && <img src={ serverRoutesList.getFile(props.material.preview, false) }
+                                alt={ props.material.title } className="preview-image ui border-radius-10" /> }
 
         <div className="title-block-content ui flex column gap">
             <span className="material-title ui fz-28 fw-700">{ props.material.title }</span>
             <span className="material-date ui opacity-65">
                 { convertDate(new Date(parseInt(props.material.datetime) * 1000)) }
             </span>
-            <ShareComponent sources={ { vk: true, facebook: true, twitter: true } } title={ props.material.title }
-                            current={ window.location.href } />
+            { !props.strict &&
+                <ShareComponent sources={ { vk: true, facebook: true, twitter: true } } title={ props.material.title }
+                                current={ window.location.href } /> }
         </div>
     </div>;
 }

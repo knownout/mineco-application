@@ -1,28 +1,28 @@
+import EditorJS from "@editorjs/editorjs";
 import React from "react";
+import Button from "../../../../../common/button";
 
-import { MaterialDataResponse, RequestOptions, Response } from "../../../../../lib/types/requests";
+import CheckBox from "../../../../../common/checkbox";
+
+import Input from "../../../../../common/input";
+import Notify from "../../../../../common/notify";
+import classNames from "../../../../../lib/class-names";
 
 import MakeFormData from "../../../../../lib/make-form-data";
 
 import { appRoutesList, makeRoute, serverRoutesList } from "../../../../../lib/routes-list";
-import { useFullAuthentication } from "../../../../../lib/use-full-authentication";
 
-import Input from "../../../../../common/input";
-import Button from "../../../../../common/button";
-import Notify from "../../../../../common/notify";
+import { MaterialDataResponse, RequestOptions, Response } from "../../../../../lib/types/requests";
+import { useFullAuthentication } from "../../../../../lib/use-full-authentication";
+import AttachesTool from "../../../../cms-lib/editorjs-tools/attaches";
+
+import ImageTool from "../../../../cms-lib/editorjs-tools/image";
+import makeIdentifier from "../../../../cms-lib/make-identifier";
+import { ItemObject } from "../../item-object-renderers/renderers";
+import FileSelect from "../file-select";
 
 import { CommonViewRendererProps } from "../item-objects-view";
 import { defaultLocalization, defaultToolsList } from "./editor-js-config";
-import { ItemObject } from "../../item-object-renderers/renderers";
-
-import ImageTool from "../../../../cms-lib/editorjs-tools/image";
-
-import CheckBox from "../../../../../common/checkbox";
-import classNames from "../../../../../lib/class-names";
-import FileSelect from "../file-select";
-import EditorJS from "@editorjs/editorjs";
-import makeIdentifier from "../../../../cms-lib/make-identifier";
-import AttachesTool from "../../../../cms-lib/editorjs-tools/attaches";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file
@@ -43,7 +43,8 @@ function formatDate (date: Date) {
 /**
  * Properties list for the material view renderer
  */
-interface MaterialViewRendererProps extends ItemObject.Material, CommonViewRendererProps {
+interface MaterialViewRendererProps extends ItemObject.Material, CommonViewRendererProps
+{
     notify?: Notify;
 
     // Fires when material successfully deleted
@@ -69,6 +70,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     const [ fileSelectDisplay, setFileSelectDisplay ] = React.useState(false);
 
     const [ loading, _setLoading ] = React.useState(true);
+
+    const [ tagSearchQuery, setTagSearchQuery ] = React.useState<string>();
 
     // Material local properties (will rewrite original props in the database after update)
     const _getDefaultMaterialObject = () => ({
@@ -212,6 +215,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             {/* Material tags list */ }
 
             <span className="ui opacity-75">Теги материала</span>
+            <Input placeholder="Поиск по тегам" icon="bi bi-search" className="ui w-fit"
+                   onInput={ setTagSearchQuery } />
             <div className="material-tags ui flex row wrap margin optimize gap">
                 { materialData.tags.map((tag, index) => {
                     const checked = materialData.data.tags.toLocaleLowerCase().includes(tag.toLocaleLowerCase());
@@ -221,6 +226,11 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
                         setMaterialProps({ tags: localTagsList });
                     };
+
+                    const clean = (str: string) => str.replace(/\s/g, "").trim().toLocaleLowerCase();
+
+                    if (tagSearchQuery && clean(tagSearchQuery).length > 0 && !clean(tag).includes(clean(tagSearchQuery)))
+                        return null;
 
                     return <CheckBox checked={ checked } key={ index } onChange={ onChange }>
                         { tag }
