@@ -1,23 +1,23 @@
 import React from "react";
 
+import Loading from "../../../common/loading";
+
 import { ItemObject } from "../../../control-panel/components/root-form/item-object-renderers/renderers";
+import MakeFormData from "../../../lib/make-form-data";
 
 import { serverRoutesList } from "../../../lib/routes-list";
-import MakeFormData from "../../../lib/make-form-data";
 import { MaterialSearchOptions, RequestOptions } from "../../../lib/types/requests";
 
 import Application, { ApplicationContext, ApplicationContextStorage, VariablesStorage } from "../../application";
 import ApplicationBuilder from "../../application-builder";
-
-import Loading from "../../../common/loading";
-
-import TopContentBlock from "./top-block";
+import PageFactory from "../page-factory";
+import ExtraButtons from "./extra-buttons";
 import MaterialsList from "./latest-materials";
 
 import "./title-page.scss";
-import ExtraButtons from "./extra-buttons";
+
+import TopContentBlock from "./top-block";
 import UsefulLinks from "./useful-links";
-import PageFactory from "../page-factory";
 
 /**
  * Component for rendering website title page
@@ -63,7 +63,7 @@ export default function TitlePage () {
         new Promise<void>(async resolve => {
             try {
                 const { materialsList, pinnedMaterial } = builder.allocateMaterials(
-                    ((await fetchMaterials(formData.fetchObject)).responseContent as ItemObject.Material[]).reverse(),
+                    ((await fetchMaterials(formData.fetchObject)).responseContent as ItemObject.Material[]),
 
                     (await fetchMaterials(formData.add({ [MaterialSearchOptions.pinned]: "1" }).fetchObject))
                         .responseContent as ItemObject.Material[]

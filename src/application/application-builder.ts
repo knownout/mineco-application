@@ -5,7 +5,8 @@ import { VariablesStorage } from "./application";
 /**
  * Class for processing application data
  */
-export default class ApplicationBuilder {
+export default class ApplicationBuilder
+{
     /**
      * Get variables from array of variable objects
      * @param list array of variable objects
@@ -95,7 +96,7 @@ export default class ApplicationBuilder {
         if (materialsList.length < 1) throw new Error("Not enough materials to process");
 
         // Move first (latest) material from materials list to the pinned material
-        const slicedPinnedMaterial = materialsList.pop() as ItemObject.Material;
+        const slicedPinnedMaterial = materialsList.shift() as ItemObject.Material;
         return {
             materialsList: materialsList,
             pinnedMaterial: slicedPinnedMaterial

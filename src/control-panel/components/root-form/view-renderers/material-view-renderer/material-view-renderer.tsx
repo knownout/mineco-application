@@ -358,7 +358,10 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         if (response && response.success) {
             if (props.notify) props.notify.add("Материал успешно обновлен");
             if (props.onMaterialUpdate) props.onMaterialUpdate();
-        } else props.notify && props.notify.add("Ошибка обновления материала");
+        } else {
+            props.notify && props.notify.add("Ошибка обновления материала");
+            console.log(response.errorCodes);
+        }
     }
 
     /**

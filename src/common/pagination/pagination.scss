@@ -1,0 +1,53 @@
+div.pagination-component {
+    div.pagination-switch-buttons {
+        padding: 3px;
+        border: 3px solid rgba(#5CB68C, .1);
+        border-radius: 10px;
+
+        background: rgba(#5CB68C, .05);
+
+        &:first-child:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+        div.page-switch, span.page-switch-placeholder {
+            overflow: hidden;
+            width: 58px;
+
+            height: 58px;
+
+            padding: 20px;
+            text-align: center;
+
+            opacity: .7;
+
+            color: #2D5041;
+
+            //border-radius: 10px;
+        }
+
+        div.page-switch {
+            cursor: pointer;
+            transition: 100ms ease all;
+
+            &:hover {
+                opacity: 1;
+                background: rgba(#3E725B, .1);
+            }
+
+            &.select {
+                pointer-events: none;
+                opacity: .85;
+                background: rgba(#3E725B, .2);
+            }
+
+            &:first-child {
+                border-radius: 10px 0 0 10px;
+            }
+
+            &:last-child {
+                border-radius: 0 10px 10px 0;
+            }
+        }
+    }
+}

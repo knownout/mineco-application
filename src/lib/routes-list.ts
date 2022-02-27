@@ -13,6 +13,8 @@ export const serverRoutesList = {
     searchFiles: "/app/files/search",
     searchVariables: "/app/variables/search",
 
+    getTotalMaterials: "/app/materials/get-total",
+
     uploadFile: "/app/files/upload",
     getFilePreview: "/app/files/preview",
     deleteFile: "/app/files/delete",

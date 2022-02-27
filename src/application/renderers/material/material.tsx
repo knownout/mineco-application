@@ -1,12 +1,14 @@
-import Blocks from "editorjs-blocks-react-renderer";
-import React from "react";
+import Blocks, { RenderFn } from "editorjs-blocks-react-renderer";
 
+import Table from "editorjs-blocks-react-renderer/dist/renderers/table";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../../../common/button";
 import Loading from "../../../common/loading";
 import ShareComponent from "../../../common/share";
 
 import { ItemObject } from "../../../control-panel/components/root-form/item-object-renderers/renderers";
+import classNames from "../../../lib/class-names";
 import convertDate from "../../../lib/convert-date";
 import MakeFormData from "../../../lib/make-form-data";
 
@@ -81,24 +83,57 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
     const [ material, setMaterial ] = React.useState<ItemObject.FullMaterial>();
     const [ error, setError ] = React.useState<any>();
 
+    const [ width, setWidth ] = React.useState<number>();
+
+    const normalWidth = React.useRef<number>();
+
+    React.useLayoutEffect(() => {
+        const resizeHandler = () => normalWidth.current && setWidth(normalWidth.current);
+
+        resizeHandler();
+        window.addEventListener("resize", resizeHandler);
+        return () => window.removeEventListener("resize", resizeHandler);
+    }, []);
+
     const identifier = useMaterialData({ setMaterial, setError });
 
     // If material not found or no identifier provided, show 404 page
     if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
 
-    return <PageFactory loader={ <Loading display={ !material } error={ error } /> }>
-        { material && <RawMaterialRenderer material={ material } strict={ props.strict } /> }
+    return <PageFactory loader={ <Loading display={ !material } error={ error } /> } normalWidth={ normalWidth }>
+        { material && <RawMaterialRenderer material={ material } strict={ props.strict }
+                                           width={ width } /> }
     </PageFactory>;
 }
 
-export function RawMaterialRenderer (props: { material: ItemObject.FullMaterial, strict?: boolean }) {
+const RawHTMLRenderer: RenderFn<{ html: string }> = (props) => {
+    return <>
+        <div className="unsafe_rawhtml-box ui grid center w-100 margin clean"
+             dangerouslySetInnerHTML={ { __html: props.data.html } } />
+    </>;
+};
+
+const TableRenderer: RenderFn = (props) => {
+    return <div className="table-wrapper">
+        { Table(props as any) }
+    </div>;
+};
+
+export function RawMaterialRenderer (props: { material: ItemObject.FullMaterial, strict?: boolean; width?: number }) {
     const context = React.useContext(ApplicationContext);
     const material = props.material;
 
-    return <div className="material-container ui flex column gap-20">
+    const contentBlockRef = React.useRef<HTMLDivElement | null>();
+
+    return <div className="material-container ui flex column gap-20"
+                style={ props.width ? { width: props.width } : {} }>
         <TitleBlock material={ material.data } strict={ props.strict } />
-        <div className="content-block ui flex gap column">
-            <Blocks data={ material.content } />
+        <div className={ classNames("content-block ui flex gap column", { strict: props.strict }) }
+             ref={ ref => contentBlockRef.current = ref }>
+            <Blocks data={ material.content } renderers={ {
+                raw: RawHTMLRenderer,
+                table: TableRenderer
+            } } />
         </div>
 
         <div className="extra-controls ui flex row gap wrap">
@@ -126,9 +161,9 @@ function TitleBlock (props: { material: ItemObject.Material, strict?: boolean })
 
         <div className="title-block-content ui flex column gap">
             <span className="material-title ui fz-28 fw-700">{ props.material.title }</span>
-            <span className="material-date ui opacity-65">
+            { !props.strict && <span className="material-date ui opacity-65">
                 { convertDate(new Date(parseInt(props.material.datetime) * 1000)) }
-            </span>
+            </span> }
             { !props.strict &&
                 <ShareComponent sources={ { vk: true, facebook: true, twitter: true } } title={ props.material.title }
                                 current={ window.location.href } /> }

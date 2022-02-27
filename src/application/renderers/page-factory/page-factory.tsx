@@ -9,13 +9,16 @@ interface PageFactoryProps
 {
     children?: any;
     loader?: JSX.Element;
+    normalWidth?: React.MutableRefObject<number | undefined>;
 
     onScroll? (scrollTop: number, event: React.UIEvent<HTMLDivElement, UIEvent>): void;
 }
 
-export default function PageFactory (props: PageFactoryProps) {
+const PageFactory = React.forwardRef<HTMLDivElement, PageFactoryProps>((props, ref) => {
     const [ fixed, setFixed ] = React.useState(false);
     const staticContent = React.useRef<HTMLDivElement | null>();
+
+    const childContentHolder = React.useRef<HTMLDivElement | null>();
 
     const componentScrollHandler = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
         if (!staticContent.current) return;
@@ -26,12 +29,24 @@ export default function PageFactory (props: PageFactoryProps) {
         setFixed(scrollTop > staticContent.current.offsetHeight);
     };
 
+    React.useLayoutEffect(() => {
+        const resizeHandler = () => {
+            if (childContentHolder.current && props.normalWidth)
+                props.normalWidth.current = childContentHolder.current.offsetWidth;
+        };
+
+        resizeHandler();
+        window.addEventListener("resize", resizeHandler);
+
+        return () => window.removeEventListener("resize", resizeHandler);
+    }, [ childContentHolder.current ]);
+
     return <>
         { props.loader }
-        <div className="page-factory ui container scroll-y h-100" onScroll={ componentScrollHandler }>
+        <div className="page-factory ui container scroll-y h-100" onScroll={ componentScrollHandler } ref={ ref }>
             <div className="content-holder ui flex center">
                 <Header fixed={ fixed } staticContentRef={ ref => staticContent.current = ref } />
-                <div className="child-content-holder ui grid center">
+                <div className="child-content-holder ui grid center" ref={ ref => childContentHolder.current = ref }>
                     { props.children }
                 </div>
             </div>
@@ -40,4 +55,6 @@ export default function PageFactory (props: PageFactoryProps) {
             </div>
         </div>
     </>;
-}
+});
+
+export default PageFactory;

@@ -42,10 +42,10 @@ export default function MaterialsList (props: { materials: ItemObject.Material[]
 
     return <>
         <section className="latest-materials-block ui padding-20">
-            { props.materials.slice(0, limit).reverse().map((material, index) =>
+            { props.materials.slice(0, limit).map((material, index) =>
                 <Material material={ material } key={ index } />) }
         </section>
-        <Link to="tag/Новости" className="ui clean color-white materials-archive-link">
+        <Link to="search/Новости" className="ui clean color-white materials-archive-link">
             <Button className="materials-archive-button">Перейти в архив новостей</Button>
         </Link>
     </>;
@@ -68,21 +68,11 @@ interface MaterialProps
  */
 export function Material (props: MaterialProps) {
     const previewImage = serverRoutesList.getFile(props.material.preview, false);
-    const rootElementRef = React.useRef<HTMLElement | null>(null);
 
-    const [ height, setHeight ] = React.useState(0);
-
-    React.useLayoutEffect(() => {
-        setTimeout(() => {
-            if (height > 100) return;
-            if (rootElementRef.current) setHeight(rootElementRef.current.offsetHeight);
-        }, 100);
-    }, [ rootElementRef, rootElementRef.current?.offsetHeight ]);
-
-    return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link"
-                 ref={ ref => props.reference && props.reference(ref) }
-                 style={ height ? { minHeight: height, maxHeight: height } : {} }>
-        <article className="material ui" ref={ ref => rootElementRef.current = ref }>
+    const description = props.material.description.replace(/<[^>/]+>(.*)<\/[^>]>/g, "$1");
+    return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link w-fit"
+                 ref={ ref => props.reference && props.reference(ref) }>
+        <article className="material ui">
             <div className="preview-image" style={ { backgroundImage: `url(${ previewImage })` } } />
             <div className="material-data ui flex column gap-5 lh-22 padding-20">
                 <span className="material-title ui fz-20 fw-700 lh-26">{ props.material.title }</span>
@@ -91,7 +81,7 @@ export function Material (props: MaterialProps) {
                 </span>
                 <div className="description ui clean">
                     <ReactMarkdown remarkPlugins={ remarkConfig }
-                                   children={ setWordsLimit(props.material.description, props.wordsLimit
+                                   children={ setWordsLimit(description, props.wordsLimit
                                        ? props.wordsLimit : 60) } />
                 </div>
             </div>

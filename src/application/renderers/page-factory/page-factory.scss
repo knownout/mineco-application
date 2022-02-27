@@ -1,15 +1,20 @@
 div.page-factory {
     position: relative;
     display: flex !important;
-    width: 100vw;
-
     flex-direction: column;
 
-    div.content-holder {
-        min-width: 100%;
-        z-index: 3;
+    width: 100vw;
 
+    div.content-holder {
+        position: relative;
+        display: block;
+
+
+        z-index: 3;
         flex: 1 1 auto;
+        width: 100%;
+
+        min-width: 100%;
 
         header {
             flex: 0 1 auto;
@@ -17,11 +22,13 @@ div.page-factory {
 
         div.child-content-holder {
             position: relative;
-
-            width: 100%;
-
+            display: block;
 
             flex: 1 1 auto;
+
+
+            width: 100%;
+            max-width: 100%;
         }
     }
 

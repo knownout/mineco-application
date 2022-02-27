@@ -3,6 +3,7 @@ import Masonry from "react-masonry-css";
 import { Link, useParams } from "react-router-dom";
 import Input from "../../../common/input";
 import Loading from "../../../common/loading";
+import Pagination from "../../../common/pagination";
 import { ItemObject } from "../../../control-panel/components/root-form/item-object-renderers/renderers";
 import MakeFormData from "../../../lib/make-form-data";
 import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
@@ -24,36 +25,22 @@ export default function SearchRenderer () {
     const [ materialsLoading, setMaterialsLoading ] = React.useState(true);
     const [ loadedMaterials, setLoadedMaterials ] = React.useState<ItemObject.Material[]>([]);
 
-    const [ offset, setOffset ] = React.useState(0);
-
     const [ foundMaterials, setFoundMaterials ] = React.useState<ItemObject.Material[]>([]);
     const [ searchQuery, setSearchQuery ] = React.useState<string>();
 
+    const [ offset, setOffset ] = React.useState(0);
+
     const lastMaterialRef = React.useRef<HTMLElement | null>(null);
+    const totalMaterials = React.useRef<number>(0);
+
+    const pageFactoryElement = React.useRef<HTMLDivElement | null>(null);
 
     useMaterialData({ setMaterial, setLoading });
 
-    const offsetStep = 3 * 4;
-
-    const componentScrollHandler = React.useCallback((
-        scrollTop: number, event: React.UIEvent<HTMLDivElement, UIEvent>) => {
-        if (!lastMaterialRef.current) return;
-        const rect = lastMaterialRef.current.getBoundingClientRect();
-        const target = event.target as HTMLDivElement;
-
-        (Array.from(target.querySelectorAll("a.material-link")) as HTMLElement[]).forEach(element => {
-            const y = element.getBoundingClientRect().y + element.clientHeight;
-            if (y < 0 || y > window.innerHeight * 2) element.classList.add("hidden");
-            else element.classList.remove("hidden");
-        });
-
-        const atBottom = (window.innerHeight / 2 - (rect.y + lastMaterialRef.current.offsetHeight / 10) + 200) > 0;
-        if (atBottom && !materialsLoading && !error) setOffset(offset => offset + 1);
-    }, [ lastMaterialRef.current ]);
+    const offsetStep = 10;
 
     React.useLayoutEffect(() => {
         setMaterialsLoading(true);
-        if (offset == 0) setLoadedMaterials([]);
 
         const formData = new MakeFormData({
             [RequestOptions.limitSearchResponse]: offsetStep,
@@ -66,8 +53,10 @@ export default function SearchRenderer () {
             .then(response => response.json())
             .then((response: Response<ItemObject.Material[]>) => {
                 if (response.errorCodes) {
-                    if (loadedMaterials.length > 0 || tagSearch) setMaterialsLoading(false);
-                    else !tagSearch && setLoading(true);
+                    if (loadedMaterials.length > 0 || tagSearch) {
+                        setLoadedMaterials([]);
+                        setMaterialsLoading(false);
+                    } else !tagSearch && setLoading(true);
 
                     !tagSearch && setError([ "next-materials-fetch-fault", ...response.errorCodes ].join(", "));
                     return;
@@ -78,13 +67,16 @@ export default function SearchRenderer () {
                 ApplicationBuilder
                     .waitForImages(materials.map(material => serverRoutesList.getFile(material.preview, false)))
                     .then(() => {
-                        setLoadedMaterials(loadedMaterials => [ ...loadedMaterials, ...materials ]);
+                        setLoadedMaterials(materials);
+
+                        if (pageFactoryElement.current)
+                            pageFactoryElement.current.scrollTo({ top: 20, behavior: "smooth" });
                         setMaterialsLoading(false);
                     });
             });
     }, [ offset, tagSearch ]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (!searchQuery) return;
 
         setMaterialsLoading(true);
@@ -109,16 +101,32 @@ export default function SearchRenderer () {
         return () => clearTimeout(searchTimeout);
     }, [ searchQuery, tagSearch ]);
 
-    return <PageFactory onScroll={ componentScrollHandler }
-                        loader={ <Loading display={ loading || !loadedMaterials } error={ error } /> }>
+    React.useLayoutEffect(() => {
+        fetch(makeRoute(serverRoutesList.getTotalMaterials)).then(response => response.json())
+            .then((response: Response<number>) => {
+                if (response.responseContent) totalMaterials.current = response.responseContent;
+                else {
+                    setLoading(true);
+                    setError("no-total-count");
+                }
+            });
+    }, []);
+
+    const materialsObject = loadedMaterials.length > 0 && (!searchQuery || searchQuery.trim().length < 1) ?
+        loadedMaterials : foundMaterials.length > 0 && searchQuery ? foundMaterials : null;
+
+    return <PageFactory loader={ <Loading display={ loading || !loadedMaterials || (offset == 0 && materialsLoading) }
+                                          error={ error } /> }
+                        ref={ pageFactoryElement }>
         <div className="materials-search ui flex center-ai column w-100">
             <Input icon="bi bi-newspaper" placeholder="Поиск материалов" onInput={ setSearchQuery } />
             { material && <RawMaterialRenderer material={ material } /> }
-            { loadedMaterials.length > 0 && (!searchQuery || searchQuery.trim().length < 1) &&
-                <MaterialsListRenderer materials={ loadedMaterials } last={ ref => lastMaterialRef.current = ref } /> }
 
-            { foundMaterials.length > 0 && searchQuery &&
-                <MaterialsListRenderer materials={ foundMaterials } last={ ref => lastMaterialRef.current = ref } /> }
+            { materialsObject && totalMaterials.current &&
+                <MaterialsListRenderer materials={ materialsObject }
+                                       totalPages={ Math.ceil(totalMaterials.current / offsetStep) }
+                                       last={ ref => lastMaterialRef.current = ref }
+                                       onPageChange={ page => setOffset(page - 1) } /> }
 
             { searchQuery && foundMaterials.length < 1 &&
                 <span className="ui opacity-65 w-100 text-center padding-20 info-label">
@@ -145,22 +153,34 @@ export default function SearchRenderer () {
     </PageFactory>;
 }
 
-function MaterialsListRenderer (props: { materials: ItemObject.Material[], last (ref: HTMLElement | null): void }) {
+interface MaterialsListRendererProps
+{
+    materials: ItemObject.Material[];
+    totalPages: number;
+
+    last (ref: HTMLElement | null): void;
+
+    onPageChange? (page: number): void;
+}
+
+function MaterialsListRenderer (props: MaterialsListRendererProps) {
     return <div className="materials-list ui flex row wrap center-jc">
-        <Masonry
-            breakpointCols={ {
-                default: 4,
-                1520: 3,
-                1080: 2,
-                670: 1
-            } }
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column">
-            { props.materials.map((material, index) => {
-                return <Material material={ material } key={ index } reference={ ref =>
-                    props.materials.length - 1 == index && props.last(ref)
-                } wordsLimit={ 40 } />;
-            }) }
-        </Masonry>
+        <Pagination total={ props.totalPages } splitBy={ 4 } onPageChange={ props.onPageChange } topSwitches={ true }>
+            <Masonry
+                breakpointCols={ {
+                    default: 4,
+                    1520: 3,
+                    1080: 2,
+                    670: 1
+                } }
+                className="my-masonry-grid"
+                columnClassName="my-masonry-grid_column">
+                { props.materials.map((material, index) => {
+                    return <Material material={ material } key={ index } reference={ ref =>
+                        props.materials.length - 1 == index && props.last(ref)
+                    } wordsLimit={ 40 } />;
+                }) }
+            </Masonry>
+        </Pagination>
     </div>;
 }

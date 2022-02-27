@@ -21,7 +21,8 @@ export const defaultToolsList = {
             levels: [ 1, 2, 3 ],
             defaultLevel: 1
         },
-        shortcut: "CMD+SHIFT+H"
+        shortcut: "CMD+SHIFT+H",
+        inlineToolbar: true
     },
     delimiter: {
         class: delimiter,

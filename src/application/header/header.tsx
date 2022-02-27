@@ -63,7 +63,7 @@ function ControlPanelBar () {
     const identifier = useLocation().pathname.split("/").map(e => e.trim())
         .filter(e => e.length > 0);
 
-    const isView = window.location.pathname.includes("/view");
+    const isView = !window.location.pathname.includes("/search") && window.location.pathname != "/";
     const location = appRoutesList.cms + (isView && identifier.length > 0 ? `/${ identifier.pop() }` : "");
 
     const cacheController = React.useRef(new CacheController(localStorage));

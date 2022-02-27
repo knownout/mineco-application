@@ -11,6 +11,11 @@ div.materials-search {
     }
 
     .my-masonry-grid_column {
+        display: flex;
+        align-items: center;
+
+        flex-direction: column;
+
         padding-left: 30px; /* gutter size */
         background-clip: padding-box;
     }
@@ -81,11 +86,16 @@ div.materials-search {
 
         div.wrapper {
             padding: 20px;
+            color: #FFF;
             border: 1px solid rgba(#000, .1);
-            border-radius: 10px;
 
-            background: rgba(#FFF, .6);
+            border-radius: 10px;
+            background: rgba(#222, .75);
             backdrop-filter: blur(4px);
+        }
+
+        i.ui.loading-spinner {
+            filter: invert(100%);
         }
 
         @media screen and (max-width: 560px) {
