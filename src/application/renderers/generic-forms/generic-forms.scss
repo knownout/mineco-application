@@ -1,0 +1,50 @@
+div.generic-form {
+    width: 100%;
+    max-width: 480px;
+
+    margin: 40px 0;
+    padding: 10px;
+
+    gap: 10px;
+
+    div.input-component {
+        width: 100%;
+    }
+
+    div.form-data-wrapper {
+        padding: 20px;
+        border-radius: 10px;
+
+        background: linear-gradient(45deg, #DDD, #EEE);
+        box-shadow: 0 0 20px rgba(#000, .05);
+
+        gap: 10px;
+    }
+
+    span.form-sub-title {
+        margin-top: 10px;
+    }
+
+    div.input-component {
+        &.focus {
+            div.wrapper, div.icon-holder {
+                box-shadow: 0 0 0 3px rgba(darken(#A5CEBB, 10%), .5);
+            }
+        }
+    }
+
+    textarea {
+        min-height: 180px;
+        max-height: 420px;
+        resize: vertical;
+
+        color: #222;
+        border: none;
+
+        box-shadow: 0 0 0 3px rgba(darken(#A5CEBB, 10%), .5);
+
+        &::selection {
+            background-color: rgba(darken(#A5CEBB, 10%), .5)
+        }
+    }
+}

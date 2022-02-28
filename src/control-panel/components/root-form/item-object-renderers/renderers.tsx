@@ -49,10 +49,11 @@ export namespace ItemObject
         pinned: boolean;
     }
 
-    export interface Variable
+    export interface Variable<T = unknown>
     {
+        identifier: string,
         name: string;
-        value: unknown;
+        value: T;
     }
 
     /** United type of the Material and File interfaces */

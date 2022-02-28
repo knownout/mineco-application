@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Route, Routes } from "react-router-dom";
+import GenericForms from "./generic-forms";
 
 const TitlePage = React.lazy(() => import("./title-page"));
 const SearchRenderer = React.lazy(() => import("./search"));
@@ -13,6 +14,7 @@ export default function ApplicationRouter () {
         <Route path="/view/:id" element={ <MaterialRenderer /> } />
         <Route path="/:id" element={ <MaterialRenderer strict={ true } /> } />
         <Route path="/search/*" element={ <SearchRenderer /> } />
+        <Route path="/forms/*" element={ <GenericForms /> } />
         <Route path="*" element={ <NotFoundPage /> } />
     </Routes>;
 }

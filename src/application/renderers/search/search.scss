@@ -4,34 +4,13 @@ div.materials-search {
     width: 100%;
     padding: 20px;
 
-    .my-masonry-grid {
-        display: flex;
-        width: auto;
-        margin-left: -30px; /* gutter size offset */
-    }
-
-    .my-masonry-grid_column {
-        display: flex;
-        align-items: center;
-
-        flex-direction: column;
-
-        padding-left: 30px; /* gutter size */
-        background-clip: padding-box;
-    }
-
-    /* Style your items */
-    .my-masonry-grid_column a.material-link { /* change div to reference your elements you put in <Masonry> */
-        margin-bottom: 30px !important;
-    }
-
     span.info-label {
         margin: 40px 0;
     }
 
     a[href].g-link {
-        line-height: 24px;
         padding: 3px;
+        line-height: 24px;
         transition: 100ms ease all;
         color: #2D5041;
         border-radius: 3px;
@@ -62,6 +41,10 @@ div.materials-search {
             color: #222;
         }
 
+        div.materials-container {
+            margin-bottom: 40px;
+        }
+
         article.material {
             max-width: 400px;
             height: fit-content;
@@ -81,8 +64,8 @@ div.materials-search {
         bottom: 0;
         left: 0;
 
-        z-index: 80;
         padding: 10px;
+        z-index: 89;
 
         div.wrapper {
             padding: 20px;
@@ -105,7 +88,7 @@ div.materials-search {
     }
 
     div.input-component {
-        max-width: 820px;
+        //max-width: 820px;
 
         div.wrapper input.native-input,
         &:not(.focus) div.placeholder,

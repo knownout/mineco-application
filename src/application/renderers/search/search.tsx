@@ -1,5 +1,4 @@
 import React from "react";
-import Masonry from "react-masonry-css";
 import { Link, useParams } from "react-router-dom";
 import Input from "../../../common/input";
 import Loading from "../../../common/loading";
@@ -37,7 +36,7 @@ export default function SearchRenderer () {
 
     useMaterialData({ setMaterial, setLoading });
 
-    const offsetStep = 10;
+    const offsetStep = 12;
 
     React.useLayoutEffect(() => {
         setMaterialsLoading(true);
@@ -80,7 +79,7 @@ export default function SearchRenderer () {
         if (!searchQuery) return;
 
         setMaterialsLoading(true);
-        setFoundMaterials([]);
+        // setFoundMaterials([]);
 
         const searchTimeout = setTimeout(() => {
             if (!searchQuery) return;
@@ -92,13 +91,17 @@ export default function SearchRenderer () {
                 ApplicationBuilder.waitForImages(response.responseContent.map(material => serverRoutesList
                     .getFile(material.preview, false)))
                     .then(() => {
+                        setOffset(0);
                         setFoundMaterials(response.responseContent as ItemObject.Material[]);
                         setMaterialsLoading(false);
                     });
             });
-        }, 500) as any;
+        }, 1000) as any;
 
-        return () => clearTimeout(searchTimeout);
+        return () => {
+            clearTimeout(searchTimeout);
+            setMaterialsLoading(false);
+        };
     }, [ searchQuery, tagSearch ]);
 
     React.useLayoutEffect(() => {
@@ -113,18 +116,26 @@ export default function SearchRenderer () {
     }, []);
 
     const materialsObject = loadedMaterials.length > 0 && (!searchQuery || searchQuery.trim().length < 1) ?
-        loadedMaterials : foundMaterials.length > 0 && searchQuery ? foundMaterials : null;
+        loadedMaterials : foundMaterials.length > 0 && searchQuery ? foundMaterials.slice(0, offsetStep) : null;
 
-    return <PageFactory loader={ <Loading display={ loading || !loadedMaterials || (offset == 0 && materialsLoading) }
-                                          error={ error } /> }
-                        ref={ pageFactoryElement }>
-        <div className="materials-search ui flex center-ai column w-100">
-            <Input icon="bi bi-newspaper" placeholder="Поиск материалов" onInput={ setSearchQuery } />
+    return <PageFactory
+        loader={ <Loading
+            display={ loading || !loadedMaterials || (offset == 0 && materialsLoading && !searchQuery && !loadedMaterials.length) }
+            error={ error } /> }
+        ref={ pageFactoryElement }>
+        <div className="materials-search ui flex center-ai column w-100 limit-1280">
             { material && <RawMaterialRenderer material={ material } /> }
+
+            <Input icon="bi bi-newspaper" placeholder="Поиск материалов" onInput={ setSearchQuery } />
+            { searchQuery && loadedMaterials.length > 0 && foundMaterials.length > loadedMaterials.length &&
+                <span className="ui w-100 text-center padding-20 margin opacity-65">
+                    По запросу <b>«{ searchQuery }»</b> найдено { foundMaterials.length } материалов, отображено - { loadedMaterials.length },
+                    уточните запрос, чтобы уменьшить количество результатов
+                </span> }
 
             { materialsObject && totalMaterials.current &&
                 <MaterialsListRenderer materials={ materialsObject }
-                                       totalPages={ Math.ceil(totalMaterials.current / offsetStep) }
+                                       totalPages={ Math.ceil(searchQuery ? 1 : totalMaterials.current / offsetStep) }
                                        last={ ref => lastMaterialRef.current = ref }
                                        onPageChange={ page => setOffset(page - 1) } /> }
 
@@ -164,23 +175,20 @@ interface MaterialsListRendererProps
 }
 
 function MaterialsListRenderer (props: MaterialsListRendererProps) {
+    console.log(props);
+    const MaterialsListContainer: React.FC = () => <div className="ui materials-container flex row wrap gap-20 center">
+        { props.materials.map((material, index) => {
+            return <Material material={ material } key={ index } reference={ ref =>
+                props.materials.length - 1 == index && props.last(ref)
+            } wordsLimit={ 40 } />;
+        }) }
+    </div>;
+
     return <div className="materials-list ui flex row wrap center-jc">
-        <Pagination total={ props.totalPages } splitBy={ 4 } onPageChange={ props.onPageChange } topSwitches={ true }>
-            <Masonry
-                breakpointCols={ {
-                    default: 4,
-                    1520: 3,
-                    1080: 2,
-                    670: 1
-                } }
-                className="my-masonry-grid"
-                columnClassName="my-masonry-grid_column">
-                { props.materials.map((material, index) => {
-                    return <Material material={ material } key={ index } reference={ ref =>
-                        props.materials.length - 1 == index && props.last(ref)
-                    } wordsLimit={ 40 } />;
-                }) }
-            </Masonry>
-        </Pagination>
+        { props.totalPages > 1 ?
+            <Pagination total={ props.totalPages } splitBy={ 4 } onPageChange={ props.onPageChange }
+                        topSwitches={ true }>
+                <MaterialsListContainer />
+            </Pagination> : <MaterialsListContainer /> }
     </div>;
 }

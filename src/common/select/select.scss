@@ -1,0 +1,71 @@
+div.select-component {
+    width: 100%;
+
+    div.selected-item {
+        cursor: pointer;
+        transition: 100ms ease all;
+
+        opacity: .85;
+        color: #FFF;
+        border-radius: 10px;
+
+        background: linear-gradient(45deg, rgba(#3E725B, .8), rgba(#549477, .8));
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    &.open div.selected-item {
+        opacity: 1;
+        box-shadow: 0 0 0 3px rgba(darken(#A5CEBB, 10%), .5);
+    }
+
+    div.items-list {
+        width: calc(100% - 20px);
+        overflow: hidden;
+
+        transition: 100ms ease all;
+        transform: translateX(10px);
+
+        border-radius: 10px;
+        background: linear-gradient(45deg, rgba(#EEE, .5), rgba(#DDD, .5));
+
+        div.select-item {
+            cursor: pointer;
+            transition: 100ms ease all;
+            opacity: .75;
+
+            color: #2D5041;
+
+            &:hover {
+                opacity: 1;
+                background: rgba(#000, .05);
+            }
+
+            &.selected {
+                pointer-events: none;
+                color: #FFF;
+                background: linear-gradient(45deg, rgba(#3E725B, .8), rgba(#549477, .8));
+            }
+        }
+    }
+
+    &.open div.items-list {
+        margin-top: 10px;
+        opacity: 1;
+    }
+
+    &:not(.open) div.items-list {
+        margin-top: 0;
+        opacity: 0;
+    }
+
+    i.bi {
+        transition: 100ms ease all;
+    }
+
+    &.open i.bi {
+        transform: rotate(180deg);
+    }
+}
