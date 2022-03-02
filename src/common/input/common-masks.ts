@@ -24,7 +24,8 @@ const commonMasks = {
         [ /\s{2,}/, " " ],
         [ /([,.]){2,}/g, "$1" ],
         [ /([,.])([^\s])/g, "$1 $2" ],
-        [ /\.\s([a-zа-яё])/g, (f: string) => f.toLocaleUpperCase() ]
+        [ /\.\s([a-zа-яё])/g, (f: string) => f.toLocaleUpperCase() ],
+        [ /(\s+)([А-Я])\.\s+([А-Я])\.(\s*)/g, "$1$2.$3.$4" ]
     ] as InputMask[]
 };
 

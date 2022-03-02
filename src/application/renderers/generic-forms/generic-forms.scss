@@ -33,6 +33,16 @@ div.generic-form {
         }
     }
 
+    button.button-component {
+        i.loading-spinner {
+            filter: invert(100%);
+        }
+    }
+
+    span.form-error {
+        color: #C25050;
+    }
+
     textarea {
         min-height: 180px;
         max-height: 420px;

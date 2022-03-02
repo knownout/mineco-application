@@ -27,7 +27,8 @@ export default function Select (props: SelectProps) {
 
     const itemClassName = "select-item ui flex padding-20 border-radius-10";
     return <div className={ classNames("select-component ui flex column", { open: itemsList }) }>
-        <div className="selected-item ui flex row padding-20" onClick={ () => setItemsList(itemsList => !itemsList) }>
+        <div className="selected-item ui flex row padding-20 center-ai"
+             onClick={ () => setItemsList(itemsList => !itemsList) }>
             <span className="item-name no-text-wrap-ellipsis">{ props.items[index] }</span>
             <i className="bi bi-caret-down-square ui margin-left-auto" />
         </div>
@@ -38,6 +39,7 @@ export default function Select (props: SelectProps) {
                      key={ item + key }
                      onClick={ () => {
                          setIndex(key);
+                         props.onItemSelect && props.onItemSelect(key, item);
                          setItemsList(false);
                      } } />) }
         </div>

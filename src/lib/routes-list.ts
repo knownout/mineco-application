@@ -24,6 +24,8 @@ export const serverRoutesList = {
     getMaterial: "/app/materials/get",
     deleteMaterial: "/app/materials/delete",
     updateMaterial: "/app/materials/update",
+    
+    sendMail: "/app/send-mail.php",
 
     getFile: (file: string, download: boolean) => makeRoute("/app/files/get/?file=" + file + (download
         ? "&download=true" : ""))
