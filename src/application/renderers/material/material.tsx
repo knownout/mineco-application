@@ -119,7 +119,42 @@ const TableRenderer: RenderFn = (props) => {
     </div>;
 };
 
-export function RawMaterialRenderer (props: { material: ItemObject.FullMaterial, strict?: boolean; width?: number }) {
+const FileRenderer: RenderFn<{ title: string, file: any }> = (props) => {
+    const getFiletypeIcon = (extension: string) => {
+        switch (extension) {
+            case "zip":
+            case "rar":
+                return "file-earmark-zip";
+
+            default:
+                return "filetype-" + extension;
+        }
+    };
+
+    return <a className="file-object ui flex row center-ai w-100 clean border-radius-10 padding-20"
+              href={ props.data.file.url }
+              target="_blank">
+        <i className={ classNames("filetype-icon padding-20 ui bi", "bi-" + getFiletypeIcon(props.data.file.extension)) } />
+        <div className="file-name-data ui flex column">
+            <span className="file-title">{ props.data.title }</span>
+            <span className="file-real-name ui fz-14 opacity-65">{ props.data.file.name }</span>
+        </div>
+        <i className="bi bi-download ui margin-left-auto padding-20" />
+    </a>;
+};
+
+interface RawMaterialRendererProps
+{
+    material: ItemObject.FullMaterial;
+
+    homeButton?: false;
+    titleBlock?: false;
+    strict?: boolean;
+
+    width?: number;
+}
+
+export function RawMaterialRenderer (props: RawMaterialRendererProps) {
     const context = React.useContext(ApplicationContext);
     const material = props.material;
 
@@ -127,12 +162,13 @@ export function RawMaterialRenderer (props: { material: ItemObject.FullMaterial,
 
     return <div className="material-container ui flex column gap-20"
                 style={ props.width ? { width: props.width } : {} }>
-        <TitleBlock material={ material.data } strict={ props.strict } />
+        { props.titleBlock !== false && <TitleBlock material={ material.data } strict={ props.strict } /> }
         <div className={ classNames("content-block ui flex gap column", { strict: props.strict }) }
              ref={ ref => contentBlockRef.current = ref }>
             <Blocks data={ material.content } renderers={ {
                 raw: RawHTMLRenderer,
-                table: TableRenderer
+                table: TableRenderer,
+                attaches: FileRenderer
             } } />
         </div>
 
@@ -143,7 +179,8 @@ export function RawMaterialRenderer (props: { material: ItemObject.FullMaterial,
 
             { context.variablesData?.socialData && !props.strict &&
                 <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
-            <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link>
+            { props.homeButton !== false &&
+                <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link> }
         </div>
     </div>;
 }

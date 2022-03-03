@@ -196,44 +196,45 @@ export default React.memo(() => {
 
     return <PageFactory loader={ <Loading display={ !configuration || materialLoading } /> }>
         { configuration && <div className={ classNames("generic-form ui flex column", { disabled: formDone }) }>
-            <span className="form-title ui fz-20 fw-700 opacity-75 upper">{ configuration.name }</span>
-            { material && <RawMaterialRenderer material={ material } /> }
-            <div className="form-data-wrapper ui flex column">
-                { configuration.fields.map(field => {
-                    return <Input placeholder={ (field.require ? "*" : "") + field.name }
-                                  mask={ getGenericFieldMask(field.mask) } maxLength={ field.limit }
-                                  key={ field.name + Math.random() } icon={ field.icon }
-                                  onInput={ value => inputValuesData[field.association] = value }>
-                        { inputValuesData[field.association] }
-                    </Input>;
-                }) }
+            { material && <RawMaterialRenderer material={ material } strict={ true } /> }
+            <div className="generic-form-data-wrapper ui flex column limit-460">
+                <div className="form-data-wrapper ui flex column">
+                    { configuration.fields.map(field => {
+                        return <Input placeholder={ (field.require ? "*" : "") + field.name }
+                                      mask={ getGenericFieldMask(field.mask) } maxLength={ field.limit }
+                                      key={ field.name + Math.random() } icon={ field.icon }
+                                      onInput={ value => inputValuesData[field.association] = value }>
+                            { inputValuesData[field.association] }
+                        </Input>;
+                    }) }
 
-                <span className="ui opacity-50 margin-5">* - обязательные для заполнения поля</span>
-            </div>
+                    <span className="ui opacity-50 margin-5">* - обязательные для заполнения поля</span>
+                </div>
 
-            <span className="ui opacity-50 form-sub-title fw-700 fz-14">Выберите получателя</span>
-            { configuration.addresses.length > 1 &&
-                <Select items={ configuration.addresses }
-                        onItemSelect={ (index, name) => inputValuesData["sendTo"] = name } /> }
+                <span className="ui opacity-50 form-sub-title fw-700 fz-14">Выберите получателя</span>
+                { configuration.addresses.length > 1 &&
+                    <Select items={ configuration.addresses }
+                            onItemSelect={ (index, name) => inputValuesData["sendTo"] = name } /> }
 
-            { configuration.textfield.use && <>
-                <span className="ui opacity-50 form-sub-title fw-700 fz-14">Текст сообщения</span>
-                <span className="textarea-hint-label ui fz-14 opacity-50">
+                { configuration.textfield.use && <>
+                    <span className="ui opacity-50 form-sub-title fw-700 fz-14">Текст сообщения</span>
+                    <span className="textarea-hint-label ui fz-14 opacity-50">
                     Введено { textareaWords } слов из { configuration.textfield.limit }
                 </span>
-                <textarea className="ui textarea" placeholder={ configuration.textfield.placeholder }
-                          onKeyPress={ preventWordsExceed } onPaste={ preventWordsExceed }
-                          onInput={ textareaWordsLimiter } maxLength={ configuration.textfield.limit * 15 } />
-            </> }
-            { formError && <span className="form-error ui opacity-65">Форма не отправлена: { formError }</span> }
-            { formDone &&
-                <span className="form-done ui opacity-65">
+                    <textarea className="ui textarea" placeholder={ configuration.textfield.placeholder }
+                              onKeyPress={ preventWordsExceed } onPaste={ preventWordsExceed }
+                              onInput={ textareaWordsLimiter } maxLength={ configuration.textfield.limit * 15 } />
+                </> }
+                { formError && <span className="form-error ui opacity-65">Форма не отправлена: { formError }</span> }
+                { formDone &&
+                    <span className="form-done ui opacity-65">
                     Форма успешно отправлена, можно закрыть эту страницу.
                     Через 3 секунды вы будете перенаправлены на главную страницу
                 </span> }
-            <Button className="ui margin-5 optimize w-fit" onAsyncClick={ sendMail }
-                    onAsyncException={ () => setFormError("Форма заполнена неверно, проверьте " +
-                        "обязательные для ввода поля и повторите попытку") }>Отправить</Button>
+                <Button className="ui margin-5 optimize w-fit" onAsyncClick={ sendMail }
+                        onAsyncException={ () => setFormError("Форма заполнена неверно, проверьте " +
+                            "обязательные для ввода поля и повторите попытку") }>Отправить</Button>
+            </div>
         </div> }
     </PageFactory>;
 });

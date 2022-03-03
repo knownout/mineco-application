@@ -92,7 +92,7 @@ export default function SearchRenderer () {
                     .getFile(material.preview, false)))
                     .then(() => {
                         setOffset(0);
-                        setFoundMaterials(response.responseContent as ItemObject.Material[]);
+                        setFoundMaterials((response.responseContent as ItemObject.Material[]).filter(e => e.tags.length > 0));
                         setMaterialsLoading(false);
                     });
             });

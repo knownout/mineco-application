@@ -268,7 +268,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 const filename = file.filename.split("/").slice(1).join("/");
                 return resolve({
                     "success": 1, "file": {
-                        "url": "/" + serverRoutesList.getFile(file.filename, false)
+                        "url": "/" + serverRoutesList.getFile(file.filename, true)
                             .split("/").filter(e => e.length > 0).slice(2).join("/"),
                         "name": filename,
                         "title": filename

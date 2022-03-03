@@ -7,27 +7,27 @@ export const serverRoot = window.location.protocol + "//" + window.location.host
  * Server routes list
  */
 export const serverRoutesList = {
-    auth: "/app/auth",
+    auth: "/app/auth/index.php",
 
-    searchMaterials: "/app/materials/search",
-    searchFiles: "/app/files/search",
-    searchVariables: "/app/variables/search",
+    searchMaterials: "/app/materials/search/index.php",
+    searchFiles: "/app/files/search/index.php",
+    searchVariables: "/app/variables/search/index.php",
 
-    getTotalMaterials: "/app/materials/get-total",
+    getTotalMaterials: "/app/materials/get-total/index.php",
 
-    uploadFile: "/app/files/upload",
-    getFilePreview: "/app/files/preview",
-    deleteFile: "/app/files/delete",
+    uploadFile: "/app/files/upload/index.php",
+    getFilePreview: "/app/files/preview/index.php",
+    deleteFile: "/app/files/delete/index.php",
 
-    updateVariable: "/app/variables/update",
+    updateVariable: "/app/variables/update/index.php",
 
-    getMaterial: "/app/materials/get",
-    deleteMaterial: "/app/materials/delete",
-    updateMaterial: "/app/materials/update",
-    
+    getMaterial: "/app/materials/get/index.php",
+    deleteMaterial: "/app/materials/delete/index.php",
+    updateMaterial: "/app/materials/update/index.php",
+
     sendMail: "/app/send-mail.php",
 
-    getFile: (file: string, download: boolean) => makeRoute("/app/files/get/?file=" + file + (download
+    getFile: (file: string, download: boolean) => makeRoute("/app/files/get/index.php?file=" + file + (download
         ? "&download=true" : ""))
 };
 
