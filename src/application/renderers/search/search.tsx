@@ -61,7 +61,7 @@ export default function SearchRenderer () {
                     return;
                 }
 
-                const materials = response.responseContent as ItemObject.Material[];
+                const materials = (response.responseContent as ItemObject.Material[]).filter(e => e.tags.length > 0);
 
                 ApplicationBuilder
                     .waitForImages(materials.map(material => serverRoutesList.getFile(material.preview, false)))
@@ -105,7 +105,9 @@ export default function SearchRenderer () {
     }, [ searchQuery, tagSearch ]);
 
     React.useLayoutEffect(() => {
-        fetch(makeRoute(serverRoutesList.getTotalMaterials)).then(response => response.json())
+        fetch(makeRoute(serverRoutesList.getTotalMaterials), tagSearch ? (new MakeFormData({
+            [MaterialSearchOptions.tags]: tagSearch
+        }).fetchObject) : undefined).then(response => response.json())
             .then((response: Response<number>) => {
                 if (response.responseContent) totalMaterials.current = response.responseContent;
                 else {
@@ -113,7 +115,7 @@ export default function SearchRenderer () {
                     setError("no-total-count");
                 }
             });
-    }, []);
+    }, [ "get-total" ]);
 
     const materialsObject = loadedMaterials.length > 0 && (!searchQuery || searchQuery.trim().length < 1) ?
         loadedMaterials : foundMaterials.length > 0 && searchQuery ? foundMaterials.slice(0, offsetStep) : null;
@@ -126,8 +128,9 @@ export default function SearchRenderer () {
         <div className="materials-search ui flex center-ai column w-100 limit-1280">
             { material && <RawMaterialRenderer material={ material } /> }
 
-            <Input icon="bi bi-newspaper" placeholder="Поиск материалов" onInput={ setSearchQuery } />
-            { searchQuery && loadedMaterials.length > 0 && foundMaterials.length > loadedMaterials.length &&
+            <Input icon="bi bi-newspaper" placeholder="Поиск материалов (больше 3 символов)"
+                   onInput={ value => value.replace(/\s/g, "").trim().length > 3 && setSearchQuery(value) } />
+            { !materialsLoading && searchQuery && loadedMaterials.length > 0 && foundMaterials.length > loadedMaterials.length &&
                 <span className="ui w-100 text-center padding-20 margin opacity-65">
                     По запросу <b>«{ searchQuery }»</b> найдено { foundMaterials.length } материалов, отображено - { loadedMaterials.length },
                     уточните запрос, чтобы уменьшить количество результатов
@@ -175,8 +178,8 @@ interface MaterialsListRendererProps
 }
 
 function MaterialsListRenderer (props: MaterialsListRendererProps) {
-    console.log(props);
-    const MaterialsListContainer: React.FC = () => <div className="ui materials-container flex row wrap gap-20 center">
+    const MaterialsListContainer: React.FC = () => <div
+        className="ui materials-container flex row wrap gap-20 center-jc">
         { props.materials.map((material, index) => {
             return <Material material={ material } key={ index } reference={ ref =>
                 props.materials.length - 1 == index && props.last(ref)

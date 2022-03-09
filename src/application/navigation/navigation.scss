@@ -35,7 +35,7 @@ nav.navigation-menu {
         border: 1px solid rgba(#3E725B, .1);
         border-top: none;
         border-radius: 10px;
-        background: rgba(lighten(#A5CEBB, 22%), .9);
+        background: rgba(lighten(#A5CEBB, 22%), .96);
 
 
         box-shadow: 0 0 10px rgba(#000, .1);
@@ -53,7 +53,7 @@ nav.navigation-menu {
 
                 height: 100%;
 
-                max-height: calc(100vh - 300px) !important;
+                max-height: calc(100vh - 340px) !important;
                 padding: 10px 0;
 
                 overflow: hidden;
@@ -155,7 +155,7 @@ nav.navigation-menu {
 
             &:not(.right) { left: 0; }
 
-            backdrop-filter: blur(4px);
+            //backdrop-filter: blur(4px);
 
             &::before {
                 position: absolute;

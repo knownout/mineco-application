@@ -6,7 +6,6 @@ import { Account } from "../../control-panel/cms-types/account";
 import CacheController, { cacheKeysList } from "../../lib/cache-controller";
 import classNames from "../../lib/class-names";
 import { appRoutesList } from "../../lib/routes-list";
-import getScrollbarWidth from "../../lib/scrollbar-width";
 import { ApplicationContext, VariablesStorage } from "../application";
 import Navigation from "../navigation";
 import "./header.scss";
@@ -90,18 +89,11 @@ function ControlPanelBar () {
     </div>;
 }
 
-interface HeaderProps
-{
-    fixed: boolean;
-
-    staticContentRef (ref: HTMLDivElement | null): void;
-}
-
 /**
  * Component for creating application header
  * @constructor
  */
-export default function Header (props: HeaderProps) {
+export default function Header () {
     const context = React.useContext(ApplicationContext);
 
     // Application mobile state
@@ -115,7 +107,6 @@ export default function Header (props: HeaderProps) {
 
     // References to navigation menu and dynamic-content div
     const navigationMenu = React.useRef<HTMLElement | null>();
-    const dynamicContent = React.useRef<HTMLDivElement | null>();
 
     /**
      * Function for handling window resize
@@ -159,50 +150,47 @@ export default function Header (props: HeaderProps) {
         </div>;
     }
 
-    return <header className={ classNames("header-component ui flex column center w-100", { mobile }) }>
-        { variablesData && <>
-            <Condition condition={ mobile }>
-                <Button className={ classNames("mobile-menu", { open }) } children="Меню"
-                        icon="bi bi-three-dots" onClick={ () => setOpen(!open) } />
-            </Condition>
+    return <>
+        <header className={ classNames("header-component ui flex column center w-100", { mobile }) }>
+            { variablesData && <>
+                {/* Static content */ }
 
-            {/* Static content */ }
+                <div className="static-top-container ui flex row center gap-20">
+                    <div className="data-container ui flex column gap-20">
+                        <Link className="website-title ui flex row center gap clean" to="/">
+                            <div className="mineco-logo-holder">
+                                <img src="/public/mineco-logo-transparent.png" alt="Логотип Министерства" />
+                            </div>
+                            <h1 className="mineco-title-text">{ variablesData.websiteTitle }</h1>
+                        </Link>
+                        { !mobile && <SocialDataRenderer socialData={ variablesData.socialData } /> }
+                    </div>
 
-            <div className="static-top-container ui flex row center gap-20"
-                 ref={ ref => props.staticContentRef(ref) } style={ (!mobile && props.fixed && dynamicContent.current)
-                ? { marginBottom: dynamicContent.current.offsetHeight } : {} }>
-
-                <div className="data-container ui flex column gap-20">
-                    <Link className="website-title ui flex row center gap clean" to="/">
-                        <div className="mineco-logo-holder">
-                            <img src="/public/mineco-logo-transparent.png" alt="Логотип Министерства" />
-                        </div>
-                        <h1 className="mineco-title-text">{ variablesData.websiteTitle }</h1>
-                    </Link>
-                    { !mobile && <SocialDataRenderer socialData={ variablesData.socialData } /> }
+                    { !mobile && <ExtraButtons /> }
                 </div>
 
-                { !mobile && <ExtraButtons /> }
-            </div>
+                {/* Dynamic content (navigation menu) */ }
+                <ControlPanelBar />
+            </> }
+        </header>
 
-            {/* Dynamic content (navigation menu) */ }
+        <Condition condition={ mobile }>
+            <Button className={ classNames("mobile-menu", { open }) } children="Меню"
+                    icon="bi bi-three-dots" onClick={ () => setOpen(!open) } />
+        </Condition>
 
-            <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100", {
-                fixed: !mobile && props.fixed, open
-            }) } style={ (open || !props.fixed) ? {} : { width: `calc(100vw - ${ getScrollbarWidth() }px)` } }
-                 ref={ ref => dynamicContent.current = ref }>
+        <div className={ classNames("dynamic-container nav-menu-container ui flex center-ai w-100",
+            { mobile, open }) }>
 
-                {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
+            {/* If navigation menu always rendered, application become ve-e-ery slow on phones */ }
 
-                { (!mobile || (mobile && open)) &&
-                    <Navigation navigationMenu={ variablesData.navigationPanel } mobile={ mobile }
-                                element={ ref => navigationMenu.current = ref }>
-                        { mobile && <div className="social-data-holder ui margin-bottom">
-                            <SocialDataRenderer socialData={ variablesData.socialData } />
-                        </div> }
-                    </Navigation> }
-            </div>
-            <ControlPanelBar />
-        </> }
-    </header>;
+            { (!mobile || (mobile && open)) &&
+                <Navigation navigationMenu={ variablesData.navigationPanel } mobile={ mobile }
+                            element={ ref => navigationMenu.current = ref }>
+                    { mobile && <div className="social-data-holder ui margin-bottom">
+                        <SocialDataRenderer socialData={ variablesData.socialData } />
+                    </div> }
+                </Navigation> }
+        </div>
+    </>;
 }

@@ -8,7 +8,7 @@ import MakeFormData from "../../../lib/make-form-data";
 import { serverRoutesList } from "../../../lib/routes-list";
 import { MaterialSearchOptions, RequestOptions } from "../../../lib/types/requests";
 
-import Application, { ApplicationContext, ApplicationContextStorage, VariablesStorage } from "../../application";
+import Application, { ApplicationContext, ApplicationContextStorage } from "../../application";
 import ApplicationBuilder from "../../application-builder";
 import PageFactory from "../page-factory";
 import ExtraButtons from "./extra-buttons";
@@ -37,21 +37,20 @@ export default function TitlePage () {
     });
 
     // Extract images from special resources
-    const extractResources = {
-        extraButtons: (buttons: VariablesStorage["extraButtons"]) => (Object.entries(buttons).map(item =>
-            item[1].slice(0, 2)).flat().filter(e => Boolean(e)) as string[])
-            .map(e => serverRoutesList.getFile(e, false)),
-
-        usefulLinks: (links: VariablesStorage["usefulLinks"]) => Object.entries(links).map(item =>
-            `/public/link-icons/${ new URL(item[1]).hostname }.png`)
-    };
+    // const extractResources = {
+    //     extraButtons: (buttons: VariablesStorage["extraButtons"]) => (Object.entries(buttons).map(item =>
+    //         item[1].slice(0, 2)).flat().filter(e => Boolean(e)) as string[])
+    //         .map(e => serverRoutesList.getFile(e, false)),
+    //
+    //     usefulLinks: (links: VariablesStorage["usefulLinks"]) => Object.entries(links).map(item =>
+    //         `/public/link-icons/${ new URL(item[1]).hostname }.png`)
+    // };
 
     React.useLayoutEffect(() => {
         // Function for fetching material(s) data from server
         const fetchMaterials = Application.genericFetchFunction.bind(null, serverRoutesList.searchMaterials);
         const builder = new ApplicationBuilder();
 
-        const variables = context.variablesData;
         const formData = new MakeFormData({
             [MaterialSearchOptions.tags]: "Новости",
             [MaterialSearchOptions.pinned]: "0",
@@ -71,10 +70,10 @@ export default function TitlePage () {
 
                 setMaterialsData({ pinnedMaterial, materialsList });
                 await ApplicationBuilder.waitForImages([
-                    ...builder.extractImages(pinnedMaterial, ...materialsList),
-                    ...(variables?.extraButtons ? extractResources.extraButtons(variables.extraButtons) : []),
-                    ...(variables?.usefulLinks ? extractResources.usefulLinks(variables.usefulLinks) : []),
-                    "/public/qr-code-contact.jpg"
+                    ...builder.extractImages(pinnedMaterial)
+                    // ...(variables?.extraButtons ? extractResources.extraButtons(variables.extraButtons) : []),
+                    // ...(variables?.usefulLinks ? extractResources.usefulLinks(variables.usefulLinks) : []),
+                    // "/public/qr-code-contact.jpg"
                 ]);
 
                 setLoading(false);
