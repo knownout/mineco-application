@@ -2,6 +2,7 @@ import Blocks, { RenderFn } from "editorjs-blocks-react-renderer";
 
 import Table from "editorjs-blocks-react-renderer/dist/renderers/table";
 import React from "react";
+import { Helmet } from "react-helmet";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../../../common/button";
 import Loading from "../../../common/loading";
@@ -27,7 +28,7 @@ import "./material.scss";
 
 interface UseMaterialDataProps
 {
-    setMaterial? (material: ItemObject.FullMaterial): void;
+    setMaterial? (material: ItemObject.FullMaterial | undefined): void;
 
     setError? (error: any): void;
 
@@ -61,15 +62,18 @@ export function useMaterialData ({ setMaterial, setError, setLoading }: UseMater
             setMaterial && setMaterial(content);
             setLoading && setLoading(false);
         });
-    }, []);
+    }, [ setMaterial, setLoading, setError ]);
 
     // Require material data from server
     React.useLayoutEffect(() => {
         setLoading && setLoading(true);
+        const procedureStart = Date.now();
 
         fetch(makeRoute(serverRoutesList.getMaterial), new MakeFormData({
             [RequestOptions.getMaterial]: identifier
-        }).fetchObject).then(response => response.json()).then(useMaterialContent);
+        }).fetchObject).then(response => response.json()).then(response =>
+            setTimeout(() => useMaterialContent(response), Date.now() - procedureStart > 200
+                ? 0 : 200 - (Date.now() - procedureStart)));
     }, [ identifier ]);
 
     return identifier;
@@ -82,6 +86,7 @@ export function useMaterialData ({ setMaterial, setError, setLoading }: UseMater
 export default function MaterialRenderer (props: { strict?: boolean }) {
     const [ material, setMaterial ] = React.useState<ItemObject.FullMaterial>();
     const [ error, setError ] = React.useState<any>();
+    const [ loading, setLoading ] = React.useState(true);
 
     const [ width, setWidth ] = React.useState<number>();
 
@@ -95,12 +100,13 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
         return () => window.removeEventListener("resize", resizeHandler);
     }, []);
 
-    const identifier = useMaterialData({ setMaterial, setError });
+    const identifier = useMaterialData({ setMaterial, setError, setLoading });
 
     // If material not found or no identifier provided, show 404 page
     if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
 
-    return <PageFactory loader={ <Loading display={ !material } error={ error } /> } normalWidth={ normalWidth }>
+    return <PageFactory loader={ <Loading display={ !material || loading } error={ error } /> }
+                        normalWidth={ normalWidth }>
         { material && <RawMaterialRenderer material={ material } strict={ props.strict }
                                            width={ width } /> }
     </PageFactory>;
@@ -132,7 +138,7 @@ const FileRenderer: RenderFn<{ title: string, file: any }> = (props) => {
     };
 
     return <a className="file-object ui flex row center-ai w-100 clean border-radius-10 padding-20"
-              href={ props.data.file.url }
+              href={ props.data.file.url.replace("&amp;", "\&") }
               target="_blank">
         <i className={ classNames("filetype-icon padding-20 ui bi", "bi-" + getFiletypeIcon(props.data.file.extension)) } />
         <div className="file-name-data ui flex column">
@@ -160,29 +166,48 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
 
     const contentBlockRef = React.useRef<HTMLDivElement | null>();
 
-    return <div className="material-container ui flex column gap-20"
-                style={ props.width ? { width: props.width } : {} }>
-        { props.titleBlock !== false && <TitleBlock material={ material.data } strict={ props.strict } /> }
-        <div className={ classNames("content-block ui flex gap column", { strict: props.strict }) }
-             ref={ ref => contentBlockRef.current = ref }>
-            <Blocks data={ material.content } renderers={ {
-                raw: RawHTMLRenderer,
-                table: TableRenderer,
-                attaches: FileRenderer
-            } } />
-        </div>
+    return <>
+        { material && <Helmet>
+            <meta content={ material.data.description } name="description" />
 
-        <div className="extra-controls ui flex row gap wrap">
-            { !props.strict && <ShareComponent sources={ { vk: true, facebook: true, twitter: true } }
-                                               title={ material.data.title }
-                                               current={ window.location.href } /> }
+            <meta content="material" name="og:type" />
+            <meta content={ material.data.title } name="og:title" />
+            <meta content={ material.data.description } name="og:description" />
 
-            { context.variablesData?.socialData && !props.strict &&
-                <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
-            { props.homeButton !== false &&
-                <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link> }
+            <meta content={ material.data.preview } name="og:image" />
+            <meta content={ material.data.title } name="og:image:alt" />
+
+            <meta content={ material.data.title } name="twitter:title" />
+            <meta content={ material.data.preview } name="twitter:image" />
+
+            <meta content={ material.data.description } name="twitter:description" />
+
+            <title>{ material.data.title }</title>
+        </Helmet> }
+        <div className="material-container ui flex column gap-20"
+             style={ props.width ? { width: props.width } : {} }>
+            { props.titleBlock !== false && <TitleBlock material={ material.data } strict={ props.strict } /> }
+            <div className={ classNames("content-block ui flex gap column", { strict: props.strict }) }
+                 ref={ ref => contentBlockRef.current = ref }>
+                <Blocks data={ material.content } renderers={ {
+                    raw: RawHTMLRenderer,
+                    table: TableRenderer,
+                    attaches: FileRenderer
+                } } />
+            </div>
+
+            <div className="extra-controls ui flex row gap wrap">
+                { !props.strict && <ShareComponent sources={ { vk: true, facebook: true, twitter: true } }
+                                                   title={ material.data.title }
+                                                   current={ window.location.href } /> }
+
+                { context.variablesData?.socialData && !props.strict &&
+                    <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
+                { props.homeButton !== false &&
+                    <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link> }
+            </div>
         </div>
-    </div>;
+    </>;
 }
 
 /**

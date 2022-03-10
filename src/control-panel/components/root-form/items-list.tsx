@@ -2,13 +2,10 @@ import React from "react";
 
 import Input from "../../../common/input";
 import commonMasks from "../../../common/input/common-masks";
+import InlineSearch from "../../../lib/inline-search";
+import MakeFormData from "../../../lib/make-form-data";
 
 import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
-import useRecaptcha from "../../../lib/use-recaptcha";
-import MakeFormData from "../../../lib/make-form-data";
-import InlineSearch from "../../../lib/inline-search";
-
-import { FileRenderer, ItemObject, MaterialRenderer, VariableRenderer } from "./item-object-renderers/renderers";
 
 import {
     FileSearchOptions,
@@ -17,8 +14,12 @@ import {
     Response,
     VariableOptions
 } from "../../../lib/types/requests";
+import useRecaptcha from "../../../lib/use-recaptcha";
 
-export interface ItemsListProps {
+import { FileRenderer, ItemObject, MaterialRenderer, VariableRenderer } from "./item-object-renderers/renderers";
+
+export interface ItemsListProps
+{
     type: ItemObject.Type;
     waitContent: boolean;
     selectedItem?: number;
@@ -82,7 +83,7 @@ export default function ItemsList (props: ItemsListProps) {
                 {
                     datetimeFrom: [ />\d{2}\.\d{2}\.\d{4}/, ">" ],
                     datetimeTo: [ /<\d{2}\.\d{2}\.\d{4}/, "<" ],
-                    identifier: [ /#[a-z0-9]+/, "#" ],
+                    identifier: [ /#[a-z0-9\-]+/, "#" ],
                     tags: [ /\+[A-Za-z0-9А-Яа-яЁё]+/g, "+" ],
                     excludeTags: [ /-[A-Za-z0-9А-Яа-яЁё]+/g, "-" ],
                     title: [ /!.+/, "!" ]
@@ -90,7 +91,7 @@ export default function ItemsList (props: ItemsListProps) {
                 {
                     datetimeFrom: [ />\d{2}\.\d{2}\.\d{4}/, ">" ],
                     datetimeTo: [ /<\d{2}\.\d{2}\.\d{4}/, "<" ],
-                    identifier: [ /#[a-z0-9]+/, "#" ],
+                    identifier: [ /#[a-z0-9\-]+/, "#" ],
                     extension: [ /\+[a-z0-9A-Z]+/, "+" ]
                 },
                 {}

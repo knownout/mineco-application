@@ -28,7 +28,7 @@ export const serverRoutesList = {
     sendMail: "/app/send-mail.php",
 
     getFile: (file: string, download: boolean) => makeRoute("/app/files/get/index.php?file=" + file + (download
-        ? "&download=true" : ""))
+        ? "&amp;download=true" : ""))
 };
 
 /**

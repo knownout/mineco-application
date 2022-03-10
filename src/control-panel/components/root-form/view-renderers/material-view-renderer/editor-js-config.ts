@@ -8,7 +8,6 @@ const table = require("@editorjs/table");
 const raw = require("@editorjs/raw");
 const paragraph = require("@editorjs/paragraph");
 
-const checklist = require("@editorjs/checklist");
 const warning = require("@editorjs/warning");
 const quote = require("@editorjs/quote");
 const embed = require("@editorjs/embed");
@@ -27,11 +26,6 @@ export const defaultToolsList = {
     delimiter: {
         class: delimiter,
         shortcut: "CMD+SHIFT+D"
-    },
-
-    checklist: {
-        class: checklist,
-        inlineToolbar: true
     },
 
     quote: {

@@ -24,7 +24,7 @@ div.material-container {
 
         &.strict figure {
             border-radius: 10px;
-            background: linear-gradient(45deg, rgba(#EEE, .6), rgba(#EEE, .3));
+            background: linear-gradient(45deg, rgba(#EEE, .4), rgba(#EEE, .2));
 
             img {
                 max-width: 600px;
@@ -50,7 +50,7 @@ div.material-container {
             }
         }
 
-        ul, ol, figcaption, li, ul *, ol *, a {
+        ul, ol, figcaption, li, ul *, ol *, a, h1, h2, h3, h4, h5, h6 {
             user-select: text;
 
             &::selection {
@@ -77,13 +77,16 @@ div.material-container {
             display: grid;
 
             width: 100%;
+            max-width: 100% !important;
+
             margin: 0;
 
             padding: 0;
             place-items: center;
 
             img {
-                width: 100%;
+                width: auto;
+                max-width: 100% !important;
                 height: auto;
 
                 border-radius: 10px;
@@ -94,8 +97,10 @@ div.material-container {
                 width: 100%;
                 margin-top: 5px;
 
+                padding: 10px;
                 font-size: 15px;
                 text-align: center;
+
                 opacity: .65;
             }
         }
