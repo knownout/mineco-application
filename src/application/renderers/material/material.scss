@@ -1,11 +1,23 @@
 div.material-container {
     position: relative;
 
-    width: 100%;
+    width: calc(100vw - 20px);
+
     max-width: 980px;
 
     padding: 40px;
     color: #222;
+
+    span.material-title {
+        line-height: 36px;
+        user-select: text;
+
+        word-break: break-word;
+
+        &::selection {
+            background-color: rgba(#3E725B, .2);
+        }
+    }
 
     div.title-block {
         display: flex;
@@ -50,7 +62,7 @@ div.material-container {
             }
         }
 
-        ul, ol, figcaption, li, ul *, ol *, a, h1, h2, h3, h4, h5, h6 {
+        ul, ol, figcaption, li, ul *, ol *, a, h1, h2, h3, h4, h5, h6, table, tr, td, tbody, thead {
             user-select: text;
 
             &::selection {
@@ -122,14 +134,22 @@ div.material-container {
         }
 
         div.table-wrapper {
+            position: relative;
+
+            width: 100%;
+            max-width: 100%;
             overflow-x: auto;
 
+            * { user-select: text }
+
             table {
+                width: 100%;
+                min-width: fit-content;
+
                 overflow: hidden;
-
                 border-collapse: collapse;
-                border: 3px solid rgba(#000, .1);
 
+                border: 3px solid rgba(#000, .1);
                 background: rgba(#000, .01);
 
                 td {
