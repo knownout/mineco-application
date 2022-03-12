@@ -81,7 +81,9 @@ export function Material (props: MaterialProps) {
                 </span>
                 <div className="description ui clean">
                     <ReactMarkdown remarkPlugins={ remarkConfig }
-                                   children={ setWordsLimit(description, props.wordsLimit
+                                   children={ setWordsLimit(description.replace(/<[^>]+>/g, "")
+                                       .replace(/s{2,}/g, " ")
+                                       .trim(), props.wordsLimit
                                        ? props.wordsLimit : 60) } />
                 </div>
             </div>

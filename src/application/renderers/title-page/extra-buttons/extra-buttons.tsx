@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import classNames from "../../../../lib/class-names";
 
 import { serverRoutesList } from "../../../../lib/routes-list";
 import { VariablesStorage } from "../../../application";
 
 import "./extra-buttons.scss";
-import { Link } from "react-router-dom";
 
 /**
  * Component for rendering title page extra buttons
@@ -19,14 +20,19 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
      * @internal
      * @constructor
      */
-    function ExtraButton (props: { title: string; image: string | null; link: string; icon: string | null }) {
+    function ExtraButton (props: { title: string; image: string | null; link: string; icon: string | null, d?: boolean }) {
         const backgroundImage = props.image && `url("${ serverRoutesList.getFile(props.image, false) }")`;
         const icon = props.icon && serverRoutesList.getFile(props.icon, false);
 
-        return <Link to={ props.link } className="extra-button ui flex row relative clean color-white">
+        return <Link to={ props.link }
+                     className={ classNames("extra-button ui flex row relative clean color-white",
+                         { disabled: props.d }) }>
             { backgroundImage &&
                 <div className="background-image ui absolute block w-100 h-100" style={ { backgroundImage } } /> }
-            <span className="button-title relative flex ui fw-700">{ props.title }</span>
+            <span className="button-title relative flex column gap ui fw-700">
+                <span className="ui fw-700">{ props.title }</span>
+                { props.d && <span className="ui fw-700 opacity-65 fz-18">Недоступно в данный момент</span> }
+            </span>
             { icon &&
                 <img src={ icon } alt={ props.title } className="button-icon ui flex relative margin-left-auto" /> }
         </Link>;
@@ -41,9 +47,9 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
 
     const renderButton = (button: typeof buttons[0], index: number = Math.random()) =>
         <ExtraButton title={ button[0] } image={ button[1][1] } link={ button[1][2] } icon={ button[1][0] }
-                     key={ index } />;
+                     key={ index } d={ button[1][3] } />;
 
-    // Render buttons relative to its count
+    // Render buttons about its count
     return <div className="extra-buttons-container ui flex column w-100 relative padding-20 gap-20">
         <div className="extra-buttons-block ui limit-1280">
             <div className="long-buttons-holder ui flex column gap-20" style={ { width: defaultWidth + "%" } }>

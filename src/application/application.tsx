@@ -23,7 +23,7 @@ export interface VariablesStorage<Obj = { [key: string]: string }>
     socialData: Obj[];
     usefulLinks: Obj;
 
-    extraButtons: { [key: string]: [ string | null, string, string ] };
+    extraButtons: { [key: string]: [ string | null, string, string, boolean | undefined ] };
     contactData: string;
 
     navigationPanel: { [key: string]: Obj };
@@ -56,8 +56,6 @@ export const ApplicationContext = React.createContext<ApplicationContextStorage>
  */
 export default class Application extends React.PureComponent<{}, ApplicationState>
 {
-    public readonly state: ApplicationState = { loading: true };
-
     /**
      * Shortcut for fetching data from server
      * @param path data processor path
@@ -73,6 +71,8 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
                 }
             }) as Promise<Response<T>>;
     }
+
+    public readonly state: ApplicationState = { loading: true };
 
     async componentDidMount () {
         const genericFetchFunction = Application.genericFetchFunction.bind(this);
