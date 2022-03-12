@@ -202,7 +202,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 <Input placeholder="Идентификатор" className="identifier-input" maxLength={ 156 }
                        mask={ [ [ /[^A-Za-z0-9\-_]/g, "" ] ] }
                        onInput={ value => setMaterialProps({ identifier: value }) }>
-                    { props.identifier === "create-new" ? makeIdentifier() : props.identifier }
+                    { materialProps.identifier }
                 </Input>
 
                 <CheckBox checked={ materialProps.pinned }

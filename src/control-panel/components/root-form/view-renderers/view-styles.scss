@@ -183,6 +183,10 @@ div.view.material-view {
         }
     }
 
+    div.tc-table, div.tc-row, div.tc-cell {
+        border-color: rgba(#000, .4);
+    }
+
     div.view-content-wrapper {
         padding: 20px 20px 100px;
 

@@ -2,7 +2,7 @@ import Blocks, { RenderFn } from "editorjs-blocks-react-renderer";
 
 import Table from "editorjs-blocks-react-renderer/dist/renderers/table";
 import React from "react";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../../../common/button";
 import Loading from "../../../common/loading";
@@ -67,6 +67,7 @@ export function useMaterialData ({ setMaterial, setError, setLoading }: UseMater
     // Require material data from server
     React.useLayoutEffect(() => {
         setLoading && setLoading(true);
+        setError && setError(undefined);
         const procedureStart = Date.now();
 
         fetch(makeRoute(serverRoutesList.getMaterial), new MakeFormData({
@@ -112,20 +113,20 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
     </PageFactory>;
 }
 
-const RawHTMLRenderer: RenderFn<{ html: string }> = (props) => {
+const RawHTMLRenderer: RenderFn<{ html: string }> = props => {
     return <>
         <div className="unsafe_rawhtml-box ui grid center w-100 margin clean"
              dangerouslySetInnerHTML={ { __html: props.data.html } } />
     </>;
 };
 
-const TableRenderer: RenderFn = (props) => {
+const TableRenderer: RenderFn = props => {
     return <div className="table-wrapper">
         { Table(props as any) }
     </div>;
 };
 
-const FileRenderer: RenderFn<{ title: string, file: any }> = (props) => {
+const FileRenderer: RenderFn<{ title: string, file: any }> = props => {
     const getFiletypeIcon = (extension: string) => {
         switch (extension) {
             case "zip":
@@ -149,6 +150,18 @@ const FileRenderer: RenderFn<{ title: string, file: any }> = (props) => {
     </a>;
 };
 
+const WarningRenderer: RenderFn<{ title: string, message: string }> = props => {
+    return <div className="warning ui flex column padding-20 border-radius-10">
+        <div className="warning-title ui flex row gap">
+            <i className="bi bi-exclamation-triangle-fill" />
+            <span className="warning-title-text ui fw-700">{ props.data.title }</span>
+        </div>
+        <div className="message ui flex column">
+            { props.data.message }
+        </div>
+    </div>;
+};
+
 interface RawMaterialRendererProps
 {
     material: ItemObject.FullMaterial;
@@ -167,23 +180,25 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
     const contentBlockRef = React.useRef<HTMLDivElement | null>();
 
     return <>
-        { material && <Helmet>
-            <meta content={ material.data.description } name="description" />
+        { material && <HelmetProvider>
+            <Helmet>
+                <meta content={ material.data.description } name="description" />
 
-            <meta content="material" name="og:type" />
-            <meta content={ material.data.title } name="og:title" />
-            <meta content={ material.data.description } name="og:description" />
+                <meta content="material" name="og:type" />
+                <meta content={ material.data.title } name="og:title" />
+                <meta content={ material.data.description } name="og:description" />
 
-            <meta content={ material.data.preview } name="og:image" />
-            <meta content={ material.data.title } name="og:image:alt" />
+                <meta content={ material.data.preview } name="og:image" />
+                <meta content={ material.data.title } name="og:image:alt" />
 
-            <meta content={ material.data.title } name="twitter:title" />
-            <meta content={ material.data.preview } name="twitter:image" />
+                <meta content={ material.data.title } name="twitter:title" />
+                <meta content={ material.data.preview } name="twitter:image" />
 
-            <meta content={ material.data.description } name="twitter:description" />
+                <meta content={ material.data.description } name="twitter:description" />
 
-            <title>{ material.data.title }</title>
-        </Helmet> }
+                <title>{ material.data.title }</title>
+            </Helmet>
+        </HelmetProvider> }
         <div className="material-container ui flex column gap-20"
              style={ props.width ? { width: props.width } : {} }>
             { props.titleBlock !== false && <TitleBlock material={ material.data } strict={ props.strict } /> }
@@ -192,7 +207,8 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
                 <Blocks data={ material.content } renderers={ {
                     raw: RawHTMLRenderer,
                     table: TableRenderer,
-                    attaches: FileRenderer
+                    attaches: FileRenderer,
+                    warning: WarningRenderer
                 } } />
             </div>
 

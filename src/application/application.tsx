@@ -1,21 +1,22 @@
 import React from "react";
-import ApplicationBuilder from "./application-builder";
-
-import { ItemObject } from "../control-panel/components/root-form/item-object-renderers/renderers";
 
 import { Helmet } from "react-helmet";
 
 import Loading from "../common/loading";
 
+import { ItemObject } from "../control-panel/components/root-form/item-object-renderers/renderers";
+
 import { makeRoute, serverRoutesList } from "../lib/routes-list";
 import { Response, VariableOptions } from "../lib/types/requests";
+import ApplicationBuilder from "./application-builder";
 import ApplicationRouter from "./renderers/application-router";
 
 /**
  * Interface for application variables storage
  * Can contain only values fetched from /app/variables/
  */
-export interface VariablesStorage<Obj = { [key: string]: string }> {
+export interface VariablesStorage<Obj = { [key: string]: string }>
+{
     importantData: string[];
     websiteTitle: string;
 
@@ -31,14 +32,16 @@ export interface VariablesStorage<Obj = { [key: string]: string }> {
 /**
  * Container for both of variables and material storages
  */
-export interface ApplicationContextStorage {
+export interface ApplicationContextStorage
+{
     variablesData?: Partial<VariablesStorage>;
 
     pinnedMaterial?: ItemObject.Material,
     materialsList?: ItemObject.Material[]
 }
 
-interface ApplicationState {
+interface ApplicationState
+{
     loading: boolean;
     error?: any;
 
@@ -51,7 +54,8 @@ export const ApplicationContext = React.createContext<ApplicationContextStorage>
 /**
  * Root component of the application (through Main)
  */
-export default class Application extends React.PureComponent<{}, ApplicationState> {
+export default class Application extends React.PureComponent<{}, ApplicationState>
+{
     public readonly state: ApplicationState = { loading: true };
 
     /**
@@ -62,13 +66,19 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
      */
     public static genericFetchFunction<T = ItemObject.Variable[]> (path: string, formData: any): Promise<Response<T>> {
         return fetch(makeRoute(path), formData)
-            .then(response => response.json()) as Promise<Response<T>>;
+            .then(response => response.json()).catch(() => {
+                try {
+                    (this as any).setState({ error: "fetch-error" });
+                } catch {
+                }
+            }) as Promise<Response<T>>;
     }
 
     async componentDidMount () {
+        const genericFetchFunction = Application.genericFetchFunction.bind(this);
 
         // List of all available variables
-        const variables = await Application.genericFetchFunction(serverRoutesList.searchVariables,
+        const variables = await genericFetchFunction(serverRoutesList.searchVariables,
             { [VariableOptions.variableName]: "" });
 
         // If no variables data, return error

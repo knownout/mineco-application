@@ -1,14 +1,17 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classNames from "../../lib/class-names";
+import Button from "../button";
 import "./loading.scss";
 
-interface LoadingProps {
+interface LoadingProps
+{
     children?: string;
     error?: any;
 
     display: boolean;
 
-    errorHandlerProxy? (error: any, defaultErrorForm: JSX.Element): JSX.Element
+    errorHandlerProxy? (error: any, defaultErrorForm: JSX.Element): JSX.Element;
 }
 
 /**
@@ -34,6 +37,9 @@ export default function Loading (props: LoadingProps) {
                 ? props.error.message
                 : String(props.error) }
             </span>
+            <Link to="/" className="ui clean margin optimize">
+                <Button icon="bi bi-house-fill" className="w-fit">На главную</Button>
+            </Link>
         </div>;
 
     const errorForm = props.errorHandlerProxy ? props.errorHandlerProxy(props.error, defaultErrorForm)
