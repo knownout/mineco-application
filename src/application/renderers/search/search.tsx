@@ -61,7 +61,8 @@ export default function SearchRenderer () {
                     return;
                 }
 
-                const materials = (response.responseContent as ItemObject.Material[]).filter(e => e.tags.length > 0);
+                const materials = (response.responseContent as ItemObject.Material[]).filter(e => e.tags.trim().length
+                    > 0);
 
                 ApplicationBuilder
                     .waitForImages(materials.map(material => serverRoutesList.getFile(material.preview, false)))
@@ -92,7 +93,8 @@ export default function SearchRenderer () {
                     .getFile(material.preview, false)))
                     .then(() => {
                         setOffset(0);
-                        setFoundMaterials((response.responseContent as ItemObject.Material[]).filter(e => e.tags.length > 0));
+                        setFoundMaterials((response.responseContent as ItemObject.Material[]).filter(e => e.tags.trim()
+                            .length > 0));
                         setMaterialsLoading(false);
                     });
             });
@@ -105,9 +107,9 @@ export default function SearchRenderer () {
     }, [ searchQuery, tagSearch ]);
 
     React.useLayoutEffect(() => {
-        fetch(makeRoute(serverRoutesList.getTotalMaterials), tagSearch ? (new MakeFormData({
-            [MaterialSearchOptions.tags]: tagSearch
-        }).fetchObject) : undefined).then(response => response.json())
+        fetch(makeRoute(serverRoutesList.getTotalMaterials), new MakeFormData({
+            [MaterialSearchOptions.tags]: tagSearch ? tagSearch : "NOT_EMPTY"
+        }).fetchObject).then(response => response.json())
             .then((response: Response<number>) => {
                 if (response.responseContent) totalMaterials.current = response.responseContent;
                 else {
@@ -122,7 +124,8 @@ export default function SearchRenderer () {
 
     return <PageFactory
         loader={ <Loading
-            display={ loading || !loadedMaterials || (offset == 0 && materialsLoading && !searchQuery && !loadedMaterials.length) }
+            display={ loading || !loadedMaterials || (offset == 0 && materialsLoading && !searchQuery
+                && !loadedMaterials.length) }
             error={ error } /> }
         ref={ pageFactoryElement }>
         <div className="materials-search ui flex center-ai column w-100 limit-1280">
@@ -130,7 +133,8 @@ export default function SearchRenderer () {
 
             <Input icon="bi bi-newspaper" placeholder="Поиск материалов (больше 3 символов)"
                    onInput={ value => value.replace(/\s/g, "").trim().length > 3 && setSearchQuery(value) } />
-            { !materialsLoading && searchQuery && loadedMaterials.length > 0 && foundMaterials.length > loadedMaterials.length &&
+            { !materialsLoading && searchQuery && loadedMaterials.length > 0 && foundMaterials.length
+                > loadedMaterials.length &&
                 <span className="ui w-100 text-center padding-20 margin opacity-65">
                     По запросу <b>«{ searchQuery }»</b> найдено { foundMaterials.length } материалов, отображено - { loadedMaterials.length },
                     уточните запрос, чтобы уменьшить количество результатов

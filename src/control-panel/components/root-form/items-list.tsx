@@ -8,11 +8,7 @@ import MakeFormData from "../../../lib/make-form-data";
 import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
 
 import {
-    FileSearchOptions,
-    MaterialSearchOptions,
-    RequestOptions,
-    Response,
-    VariableOptions
+    FileSearchOptions, MaterialSearchOptions, RequestOptions, Response, VariableOptions
 } from "../../../lib/types/requests";
 import useRecaptcha from "../../../lib/use-recaptcha";
 
@@ -45,8 +41,8 @@ export interface ItemsListProps
  * @constructor
  */
 export default function ItemsList (props: ItemsListProps) {
-    const [ initialIdentifier, setInitialIdentifier ] = React.useState<string | null | undefined>(window.location
-        .pathname.split("/").map(e => e.trim()).filter(e => e.length > 0)[1]);
+    let initialIdentifier = window.location.pathname.split("/")
+        .map(e => e.trim()).filter(e => e.length > 0)[1];
 
     const [ searchQuery, _setSearchQuery ] = React.useState<string | undefined>(initialIdentifier
         ? "#" + initialIdentifier : undefined);
@@ -66,7 +62,6 @@ export default function ItemsList (props: ItemsListProps) {
         if (initialIdentifier === undefined) {
             const location = window.location.pathname.split("/").map(e => e.trim()).filter(e => e.length > 0);
             if (location.length > 1) {
-                setInitialIdentifier(location[1]);
                 _setSearchQuery(`#` + location[1]);
             }
         }

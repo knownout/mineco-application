@@ -1,32 +1,32 @@
-import React from "react";
-
 import { Tab } from "@headlessui/react";
-
-import classNames from "../../../lib/class-names";
-import CacheController, { cacheKeysList } from "../../../lib/cache-controller";
-import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
-import useRecaptcha from "../../../lib/use-recaptcha";
-import MakeFormData from "../../../lib/make-form-data";
+import React from "react";
+import Loading from "../../../common/loading";
 
 import { LoadingWrapper } from "../../../common/loading/loading";
-import Loading from "../../../common/loading";
 import Notify from "../../../common/notify";
+import CacheController, { cacheKeysList } from "../../../lib/cache-controller";
+
+import classNames from "../../../lib/class-names";
+import MakeFormData from "../../../lib/make-form-data";
+import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
+import { RequestOptions, Response } from "../../../lib/types/requests";
+import useRecaptcha from "../../../lib/use-recaptcha";
+import verifyAuthentication from "../../cms-lib/verify-authentication";
+
+import { Account } from "../../cms-types/account";
 
 import { ItemObject } from "./item-object-renderers/renderers";
 import ItemsList from "./items-list";
 
-import { Account } from "../../cms-types/account";
-import { RequestOptions, Response } from "../../../lib/types/requests";
-import verifyAuthentication from "../../cms-lib/verify-authentication";
+import "./root-form.scss";
 
 import InitialView from "./view-renderers/initital-view";
 import { FileViewRenderer, VariableViewRenderer } from "./view-renderers/item-objects-view";
-
-import "./root-form.scss";
 import MaterialViewRenderer from "./view-renderers/material-view-renderer";
 import Type = ItemObject.Type;
 
-interface RootFormState {
+interface RootFormState
+{
     formLoaded: boolean;
     formLoadingError?: unknown;
 
@@ -47,7 +47,8 @@ interface RootFormState {
  * Root control panel component (controls)
  * @inner
  */
-export default class RootForm extends React.PureComponent<{}, RootFormState> {
+export default class RootForm extends React.PureComponent<{}, RootFormState>
+{
     public readonly state: RootFormState = {
         formLoaded: false,
 
@@ -132,7 +133,8 @@ export default class RootForm extends React.PureComponent<{}, RootFormState> {
                                                    contentVersion: this.state.contentVersion + 1,
                                                    mobileMenuOpen: false
                                                }) }
-                                               raw_updateSelectedItem={ index => this.setState({ selectedItem: index }) }
+                                               raw_updateSelectedItem={ index =>
+                                                   this.setState({ selectedItem: index }) }
                                                updateItemsList={ itemsList => this.setState({ itemsList }) }
                                                resetSelectedItem={ () => this.setState({
                                                    selectedItem: -1,
