@@ -27,6 +27,8 @@ import { FileRenderer, HeaderRenderer, TableRenderer, WarningRenderer } from "./
 
 interface UseMaterialDataProps
 {
+    identifier?: string;
+
     setMaterial? (material: ItemObject.FullMaterial | undefined): void;
 
     setError? (error: any): void;
@@ -34,9 +36,9 @@ interface UseMaterialDataProps
     setLoading? (state: boolean): void;
 }
 
-export function useMaterialData ({ setMaterial, setError, setLoading }: UseMaterialDataProps) {
+export function useMaterialData ({ setMaterial, setError, setLoading, identifier }: UseMaterialDataProps) {
     // Get material identifier from URL
-    const identifier = useLocation().pathname.split("/").pop();
+    const idx = identifier ? identifier : useLocation().pathname.split("/").pop();
 
     /**
      * Function for processing material data
@@ -70,13 +72,13 @@ export function useMaterialData ({ setMaterial, setError, setLoading }: UseMater
         const procedureStart = Date.now();
 
         fetch(makeRoute(serverRoutesList.getMaterial), new MakeFormData({
-            [RequestOptions.getMaterial]: identifier
+            [RequestOptions.getMaterial]: idx
         }).fetchObject).then(response => response.json()).then(response =>
             setTimeout(() => useMaterialContent(response), Date.now() - procedureStart > 200
                 ? 0 : 200 - (Date.now() - procedureStart)));
-    }, [ identifier ]);
+    }, [ idx ]);
 
-    return identifier;
+    return idx;
 }
 
 /**

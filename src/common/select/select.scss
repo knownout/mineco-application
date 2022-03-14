@@ -29,12 +29,12 @@ div.select-component {
         transform: translateX(10px);
 
         border-radius: 10px;
-        background: linear-gradient(45deg, rgba(#EEE, .5), rgba(#DDD, .5));
+        background: linear-gradient(45deg, rgba(#EEE, .75), rgba(#DDD, .75));
 
         div.select-item {
             cursor: pointer;
             transition: 100ms ease all;
-            opacity: .75;
+            opacity: .85;
 
             color: #2D5041;
 

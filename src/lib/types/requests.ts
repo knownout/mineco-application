@@ -52,7 +52,8 @@ export const MaterialSearchOptions = {
     identifier: "find:materialIdentifier",
     content: "find:materialContent",
     excludeTags: "find:materialExcludeTags",
-    pinned: "find:materialPinned"
+    pinned: "find:materialPinned",
+    excludeEmpty: "material:excludeEmpty"
 };
 
 /**

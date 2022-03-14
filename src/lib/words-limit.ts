@@ -22,5 +22,8 @@ export function setWordsLimit (text: string, limit: number = 10) {
     if (descriptionString.slice(-4) == ",...") descriptionString = descriptionString
         .slice(0, descriptionString.length - 4) + "...";
 
+    if ([ ":", ",", ";", "№" ].includes(descriptionString.slice(-1)))
+        descriptionString = descriptionString.slice(0, descriptionString.length - 1);
+
     return descriptionString;
 }

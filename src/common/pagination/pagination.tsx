@@ -12,6 +12,7 @@ interface PaginationProps
     children: any;
 
     topSwitches?: boolean;
+    setPageRef: React.MutableRefObject<((page: number) => void) | undefined>;
 
     onPageChange? (page: number): void;
 }
@@ -20,6 +21,7 @@ export default function Pagination (props: PaginationProps) {
     const [ page, setPage ] = React.useState(props.defaultPage ? props.defaultPage : 1);
 
     const total = Array(props.total).fill(0).map((e, i) => String(i + 1));
+    if (props.setPageRef) props.setPageRef.current = setPage;
 
     let before = total.slice(0, props.splitBy);
     let after = total.slice(-props.splitBy + 1);
