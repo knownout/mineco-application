@@ -42,6 +42,13 @@ const FileRenderer: RenderFn<{ title: string, file: any }> = props => {
     </a>;
 };
 
+const RawHTMLRenderer: RenderFn<{ html: string }> = props => {
+    return <>
+        <div className="unsafe_rawhtml-box ui grid center w-100 margin clean"
+             dangerouslySetInnerHTML={ { __html: props.data.html } } />
+    </>;
+};
+
 const WarningRenderer: RenderFn<{ title: string, message: string }> = props => {
     return <div className="warning ui flex column padding-20 border-radius-10">
         <div className="warning-title ui flex row gap">
@@ -63,4 +70,35 @@ const HeaderRenderer: RenderFn<{ text: string, level: number }> = props => {
     return React.createElement(`h${ props.data.level }`, { name: plain }, HTMLReactParser(props.data.text));
 };
 
-export { TableRenderer, FileRenderer, WarningRenderer, HeaderRenderer };
+const CarouselRenderer: RenderFn<{ files: string[] }> = props => {
+    const [ current, setCurrent ] = React.useState(0);
+
+    const onButtonClick = (reverse: boolean) => {
+        if (reverse) setCurrent(current => current == 0 ? props.data.files.length - 1 : current - 1);
+        else setCurrent(current => current == props.data.files.length - 1 ? 0 : current + 1);
+    };
+
+    return <div className="carousel editor-block ui flex row no-wrap">
+        <div className="arrow left ui grid center" onClick={ () => onButtonClick(true) }>
+            <i className="bi bi-arrow-left-square-fill" />
+        </div>
+        <div className="display-layer ui flex row">
+            <div className="wrapper ui flex row w-100" style={ { transform: `translateX(-${ 100 * current }%)` } }>
+                { props.data.files.map((file, index) =>
+                    <img src={ file } alt="" key={ index } />) }
+            </div>
+        </div>
+        <div className="arrow right ui grid center margin-left-auto" onClick={ () => onButtonClick(false) }>
+            <i className="bi bi-arrow-right-square-fill" />
+        </div>
+    </div>;
+};
+
+export {
+    TableRenderer,
+    FileRenderer,
+    WarningRenderer,
+    HeaderRenderer,
+    CarouselRenderer,
+    RawHTMLRenderer
+};

@@ -12,10 +12,8 @@ interface MaterialsSearchBlockProps
 }
 
 export default function MaterialsSearchBlock (props: MaterialsSearchBlockProps) {
-    const disabled = !props.query || props.query.length < 3;
-
     return <div className="materials-search-block ui flex row w-100 gap">
         <Input placeholder="Поиск по текущему разделу" onInput={ props.setQuery } onReturn={ props.onSearch } />
-        <Button onClick={ props.onSearch } icon="bi bi-search" disabled={ disabled }>Поиск</Button>
+        <Button onClick={ props.onSearch } icon="bi bi-search">Поиск</Button>
     </div>;
 }

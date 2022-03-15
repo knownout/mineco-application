@@ -1,7 +1,7 @@
 import React from "react";
-import "./input.scss";
 import classNames from "../../lib/class-names";
 import { ExtendedInputProps, useMask } from "./index";
+import "./input.scss";
 
 /**
  * Custom input component with ability of applying input masks and
@@ -76,6 +76,14 @@ export default function Input (props: ExtendedInputProps) {
         if (props.onKeyPress) props.onKeyPress(event.key, target, event);
     }
 
+    function changeHandler (event: React.ChangeEvent<HTMLInputElement>) {
+        const target = event.target as HTMLInputElement;
+
+        if (props.mask) props.mask.forEach(mask => {
+            target.value = target.value.replace(mask[0], mask[1] as any);
+        });
+    }
+
     return <div className={ rootClassName }>
         { icon && <div className="icon-holder ui grid center fz-24 border-radius-10"
                        children={ <i className={ icon } /> } /> }
@@ -83,7 +91,7 @@ export default function Input (props: ExtendedInputProps) {
         <div className="wrapper ui border-radius-10">
             { placeholder && <div className="placeholder ui padding-20 border-radius-10">{ placeholder }</div> }
             <input type="text" className="native-input ui padding-20 border-radius-10 clean" { ...nativeProps }
-                   onFocus={ focusChangeHandler } onBlur={ focusChangeHandler }
+                   onFocus={ focusChangeHandler } onBlur={ focusChangeHandler } onChange={ changeHandler }
                    onInput={ inputHandler } onKeyPress={ keyPressHandler }
                    defaultValue={ children } ref={ element }
             />

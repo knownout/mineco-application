@@ -1,0 +1,51 @@
+div.carousel.editor-block {
+    position: relative;
+
+    width: 100%;
+    height: fit-content;
+
+    overflow: hidden;
+
+    div.arrow {
+        width: 30px;
+
+        font-size: 20px;
+        cursor: pointer;
+        transition: 100ms ease all;
+
+        color: rgba(#2D5041, .7);
+
+        border-radius: 10px 0 0 10px;
+        background: rgba(#3E725B, .12);
+
+        &:hover {
+            background: rgba(#3E725B, .2);
+        }
+
+        &:active {
+            i { transform: scale(0.9, 0.9) }
+        }
+
+        &.right {
+            border-radius: 0 10px 10px 0;
+        }
+    }
+
+    div.display-layer {
+        position: relative;
+        width: calc(100% - 60px);
+        height: fit-content;
+
+        overflow: hidden;
+
+        div.wrapper {
+            transition: 300ms ease all;
+        }
+
+        img {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+    }
+}

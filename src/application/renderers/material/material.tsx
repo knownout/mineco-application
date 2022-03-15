@@ -1,4 +1,4 @@
-import Blocks, { RenderFn } from "editorjs-blocks-react-renderer";
+import Blocks from "editorjs-blocks-react-renderer";
 import React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Link, useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ import { ItemObject } from "../../../control-panel/components/root-form/item-obj
 import classNames from "../../../lib/class-names";
 import convertDate from "../../../lib/convert-date";
 import MakeFormData from "../../../lib/make-form-data";
+import mergeImages from "../../../lib/merge-images";
 
 import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
 import { RequestOptions, Response } from "../../../lib/types/requests";
@@ -23,7 +24,14 @@ import NotFoundPage from "../not-found";
 import PageFactory from "../page-factory";
 
 import "./material.scss";
-import { FileRenderer, HeaderRenderer, TableRenderer, WarningRenderer } from "./renderers";
+import {
+    CarouselRenderer,
+    FileRenderer,
+    HeaderRenderer,
+    RawHTMLRenderer,
+    TableRenderer,
+    WarningRenderer
+} from "./renderers";
 
 interface UseMaterialDataProps
 {
@@ -52,6 +60,17 @@ export function useMaterialData ({ setMaterial, setError, setLoading, identifier
             setLoading && setLoading(false);
             return;
         }
+
+        // Transform blocks
+        const clean = (s: any) => String(s).replace(/([^A-zА-я0-9])/g, "").trim();
+        if (content.content.blocks[0]) {
+            const { type, data } = content.content.blocks[0];
+            if (type == "header" && clean(data.text) == clean(content.data.title))
+                content.content.blocks = content.content.blocks.slice(1);
+        }
+
+        // Merge images (if can)
+        mergeImages(content.content.blocks);
 
         // Load all material images before complete loading
         ApplicationBuilder.waitForImages([
@@ -114,13 +133,6 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
     </PageFactory>;
 }
 
-const RawHTMLRenderer: RenderFn<{ html: string }> = props => {
-    return <>
-        <div className="unsafe_rawhtml-box ui grid center w-100 margin clean"
-             dangerouslySetInnerHTML={ { __html: props.data.html } } />
-    </>;
-};
-
 interface RawMaterialRendererProps
 {
     material: ItemObject.FullMaterial;
@@ -168,7 +180,8 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
                     table: TableRenderer,
                     attaches: FileRenderer,
                     warning: WarningRenderer,
-                    header: HeaderRenderer
+                    header: HeaderRenderer,
+                    carousel: CarouselRenderer
                 } } />
             </div>
 

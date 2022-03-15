@@ -184,7 +184,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                 </Button>
             </div>
             <div className="title-and-date ui flex row margin optimize gap">
-                <Input placeholder="Заголовок материала" className="title-input" maxLength={ 128 }
+                <Input placeholder="Заголовок материала" className="title-input"
                        onInput={ value => setMaterialProps({ title: value }) }>
                     { materialData.data.title }
                 </Input>
@@ -200,7 +200,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             <span className="ui opacity-75">Параметры материала</span>
             <div className="material-options ui flex row wrap margin optimize gap">
                 <Input placeholder="Идентификатор" className="identifier-input" maxLength={ 156 }
-                       mask={ [ [ /[^A-Za-z0-9\-_]/g, "" ] ] }
+                       mask={ [ [ /\s+/g, "-" ], [ /[^A-Za-z0-9\-_]/g, "" ],
+                           [ /[A-Z]/g, (f: string) => f.toLocaleLowerCase() ] ] }
                        onInput={ value => setMaterialProps({ identifier: value }) }>
                     { materialProps.identifier }
                 </Input>

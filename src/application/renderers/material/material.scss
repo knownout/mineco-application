@@ -1,3 +1,5 @@
+@import "./carousel.scss";
+
 div.material-container {
     position: relative;
 
@@ -46,8 +48,8 @@ div.material-container {
         p { min-height: 10px; margin: 0; }
 
         a[href] {
-            line-height: 25px;
             padding: 3px;
+            line-height: 25px;
             transition: 100ms ease all;
             color: #2D5041;
             border-radius: 3px;
@@ -67,10 +69,10 @@ div.material-container {
         blockquote {
             position: relative;
             display: flex;
-            flex-direction: column;
             margin: 0 0 0 16px;
-
             padding: 20px;
+
+            flex-direction: column;
             border-radius: 10px;
 
             background: linear-gradient(-45deg, #F9F9F9, #EEE);
@@ -78,12 +80,12 @@ div.material-container {
             &::before {
                 position: absolute;
                 display: block;
-                top: 5px;
-
-                left: -16px;
                 width: 6px;
 
                 height: calc(100% - 10px);
+                top: 5px;
+
+                left: -16px;
                 content: "";
 
                 border-radius: 6px;
@@ -94,10 +96,10 @@ div.material-container {
                 position: relative;
                 display: block;
 
-                font-style: italic;
                 width: 100%;
-
                 margin-top: 10px;
+
+                font-style: italic;
                 text-align: right;
                 opacity: .85;
             }
@@ -124,11 +126,11 @@ div.material-container {
             }
 
             figcaption {
-                font-size: 15px;
                 width: 100%;
-
                 margin-top: 5px;
+
                 padding: 10px;
+                font-size: 15px;
 
                 text-align: center;
                 opacity: .65;
@@ -146,8 +148,8 @@ div.material-container {
 
         ul, ol {
             //padding: 10px;
-            overflow: hidden;
             margin: 0;
+            overflow: hidden;
 
             border-radius: 10px;
             background: linear-gradient(45deg, rgba(#EEE, .5), rgba(#F3F3F3, .3));
@@ -164,17 +166,17 @@ div.material-container {
         div.table-wrapper {
             position: relative;
 
-            overflow-x: auto;
             width: 100%;
             max-width: 100%;
+            overflow-x: auto;
 
             * { user-select: text }
 
             table {
-                overflow: hidden;
                 width: 100%;
-
                 min-width: fit-content;
+
+                overflow: hidden;
                 border-collapse: collapse;
 
                 border: 3px solid rgba(#000, .1);
@@ -201,11 +203,11 @@ div.material-container {
             background: rgba(#000, .16);
         }
 
-        h1 { line-height: 45px; margin: 10px 0 }
+        h1 { margin: 10px 0; line-height: 45px; }
 
-        h2 { line-height: 35px; margin: 5px 0 }
+        h2 { margin: 5px 0; line-height: 35px; }
 
-        h3 { line-height: 29px; margin: 0 }
+        h3 { margin: 0; line-height: 29px; }
     }
 
     @media screen and (max-width: 730px) {

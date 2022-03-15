@@ -32,7 +32,7 @@ export default async function useMaterialsSearch (props: MaterialSearchProps) {
     });
 
     if (props.query) formData.add({ [MaterialSearchOptions.content]: props.query });
-    else formData.add({ [RequestOptions.searchOffset]: props.materialsPerPage * params.page });
+    else formData.add({ [RequestOptions.searchOffset]: props.materialsPerPage * (params.page - 1) });
 
     if (params.tag) formData.add({ [MaterialSearchOptions.tags]: params.tag });
 

@@ -5,12 +5,13 @@ export { default } from "./input";
 /**
  * Type for the input component masks
  */
-export type InputMask = [ RegExp, string ];
+export type InputMask = [ RegExp, string | ((substring: string, ...args: any[]) => string) ];
 
 /**
  * Custom props for the input component
  */
-export interface InputProps<T = HTMLInputElement> {
+export interface InputProps<T = HTMLInputElement>
+{
     // Inline render icon to the side of the input component
     icon?: string;
 
@@ -57,7 +58,7 @@ export function useMask (mask: InputMask, input: HTMLInputElement) {
     let caret = input.selectionStart || 0;
 
     // Virtually apply masks to the input value
-    const nextValue = input.value.trimLeft().replace(mask[0], mask[1]);
+    const nextValue = input.value.trimLeft().replace(mask[0], mask[1] as any);
 
     // Calculate new caret position
     caret += nextValue.length - input.value.length;
