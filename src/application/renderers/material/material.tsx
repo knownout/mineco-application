@@ -32,6 +32,7 @@ import {
     TableRenderer,
     WarningRenderer
 } from "./renderers";
+import ScrollController from "../../../lib/scroll-controller";
 
 interface UseMaterialDataProps
 {
@@ -46,7 +47,7 @@ interface UseMaterialDataProps
 
 export function useMaterialData ({ setMaterial, setError, setLoading, identifier }: UseMaterialDataProps) {
     // Get material identifier from URL
-    const idx = identifier ? identifier : useLocation().pathname.split("/").pop();
+    const idx = identifier ? identifier : useLocation().pathname.split("/").filter(e => e.length > 0).pop();
 
     /**
      * Function for processing material data
@@ -108,15 +109,32 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
     const [ material, setMaterial ] = React.useState<ItemObject.FullMaterial>();
     const [ error, setError ] = React.useState<any>();
     const [ loading, setLoading ] = React.useState(true);
-
     const [ width, setWidth ] = React.useState<number>();
 
+    const path = useLocation().pathname;
+
     const normalWidth = React.useRef<number>();
+    const pageFactory = React.useRef<HTMLDivElement>(null);
+
+    const scrollController = React.useMemo(() => new ScrollController(), [ path ]);
+
+    // React.useLayoutEffect(() => {
+    //     if (loading) return;
+    //     !scrollController.scrollState && onComponentScroll(0);
+    //
+    //     setTimeout(() => {
+    //         const prevScrollTop = scrollController.scrollState;
+    //         if (prevScrollTop !== false)
+    //             pageFactory.current && pageFactory.current.scrollTo({ top: prevScrollTop });
+    //         // else pageFactory.current && pageFactory.current.scrollTo({ top: 0 });
+    //     }, 10);
+    // }, [ loading, path ]);
 
     React.useLayoutEffect(() => {
         const resizeHandler = () => normalWidth.current && setWidth(normalWidth.current);
 
         resizeHandler();
+
         window.addEventListener("resize", resizeHandler);
         return () => window.removeEventListener("resize", resizeHandler);
     }, []);
@@ -124,12 +142,20 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
     const identifier = useMaterialData({ setMaterial, setError, setLoading });
 
     // If material not found or no identifier provided, show 404 page
-    if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
+    if (!identifier || (error && error == "no-material-file")) return <NotFoundPage/>;
 
-    return <PageFactory loader={ <Loading display={ !material || loading } error={ error } /> }
-                        normalWidth={ normalWidth }>
-        { material && <RawMaterialRenderer material={ material } strict={ props.strict }
-                                           width={ width } /> }
+    const onComponentScroll = React.useCallback((scrollTop: number) => {
+        if (loading) return;
+
+        if (scrollTop > 150)
+            scrollTop != scrollController.scrollState && scrollController.saveScrollState(scrollTop);
+        else scrollController.scrollState != 0 && scrollController.saveScrollState(0);
+    }, [ path, loading ]);
+
+    return <PageFactory loader={<Loading display={!material || loading} error={error}/>}
+                        normalWidth={normalWidth} ref={pageFactory} onScroll={onComponentScroll}>
+        {material && <RawMaterialRenderer material={material} strict={props.strict}
+                                          width={width}/>}
     </PageFactory>;
 }
 
@@ -151,49 +177,49 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
     const contentBlockRef = React.useRef<HTMLDivElement | null>();
 
     return <>
-        { material && <HelmetProvider>
+        {material && <HelmetProvider>
             <Helmet>
-                <meta content={ material.data.description } name="description" />
+                <meta content={material.data.description} name="description"/>
 
-                <meta content="material" name="og:type" />
-                <meta content={ material.data.title } name="og:title" />
-                <meta content={ material.data.description } name="og:description" />
+                <meta content="material" name="og:type"/>
+                <meta content={material.data.title} name="og:title"/>
+                <meta content={material.data.description} name="og:description"/>
 
-                <meta content={ material.data.preview } name="og:image" />
-                <meta content={ material.data.title } name="og:image:alt" />
+                <meta content={material.data.preview} name="og:image"/>
+                <meta content={material.data.title} name="og:image:alt"/>
 
-                <meta content={ material.data.title } name="twitter:title" />
-                <meta content={ material.data.preview } name="twitter:image" />
+                <meta content={material.data.title} name="twitter:title"/>
+                <meta content={material.data.preview} name="twitter:image"/>
 
-                <meta content={ material.data.description } name="twitter:description" />
+                <meta content={material.data.description} name="twitter:description"/>
 
-                <title>{ material.data.title }</title>
+                <title>{material.data.title}</title>
             </Helmet>
-        </HelmetProvider> }
+        </HelmetProvider>}
         <div className="material-container ui flex column gap-20"
-             style={ props.width ? { width: props.width } : {} }>
-            { props.titleBlock !== false && <TitleBlock material={ material.data } strict={ props.strict } /> }
-            <div className={ classNames("content-block ui flex gap column", { strict: props.strict }) }
-                 ref={ ref => contentBlockRef.current = ref }>
-                <Blocks data={ material.content } renderers={ {
+             style={props.width ? { width: props.width } : {}}>
+            {props.titleBlock !== false && <TitleBlock material={material.data} strict={props.strict}/>}
+            <div className={classNames("content-block ui flex gap column", { strict: props.strict })}
+                 ref={ref => contentBlockRef.current = ref}>
+                <Blocks data={material.content} renderers={{
                     raw: RawHTMLRenderer,
                     table: TableRenderer,
                     attaches: FileRenderer,
                     warning: WarningRenderer,
                     header: HeaderRenderer,
                     carousel: CarouselRenderer
-                } } />
+                }}/>
             </div>
 
             <div className="extra-controls ui flex row gap wrap">
-                { !props.strict && <ShareComponent sources={ { vk: true, facebook: true, twitter: true } }
-                                                   title={ material.data.title }
-                                                   current={ window.location.href } /> }
+                {!props.strict && <ShareComponent sources={{ vk: true, facebook: true, twitter: true }}
+                                                  title={material.data.title}
+                                                  current={window.location.href}/>}
 
-                { context.variablesData?.socialData && !props.strict &&
-                    <SocialDataRenderer socialData={ context.variablesData.socialData.slice(1) } /> }
-                { props.homeButton !== false &&
-                    <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link> }
+                {context.variablesData?.socialData && !props.strict &&
+                    <SocialDataRenderer socialData={context.variablesData.socialData.slice(1)}/>}
+                {props.homeButton !== false &&
+                    <Link to="/" className="ui clean"><Button icon="bi bi-house-fill">На главную</Button></Link>}
             </div>
         </div>
     </>;
@@ -207,17 +233,17 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
 function TitleBlock (props: { material: ItemObject.Material, strict?: boolean }) {
     return <div
         className="title-block ui">
-        { !props.strict && <img src={ serverRoutesList.getFile(props.material.preview, false) }
-                                alt={ props.material.title } className="preview-image ui border-radius-10" /> }
+        {!props.strict && <img src={serverRoutesList.getFile(props.material.preview, false)}
+                               alt={props.material.title} className="preview-image ui border-radius-10"/>}
 
         <div className="title-block-content ui flex column gap">
-            <span className="material-title ui fz-28 fw-700">{ props.material.title }</span>
-            { !props.strict && <span className="material-date ui opacity-65">
-                { convertDate(new Date(parseInt(props.material.datetime) * 1000)) }
-            </span> }
-            { !props.strict &&
-                <ShareComponent sources={ { vk: true, facebook: true, twitter: true } } title={ props.material.title }
-                                current={ window.location.href } /> }
+            <span className="material-title ui fz-28 fw-700">{props.material.title}</span>
+            {!props.strict && <span className="material-date ui opacity-65">
+                {convertDate(new Date(parseInt(props.material.datetime) * 1000))}
+            </span>}
+            {!props.strict &&
+                <ShareComponent sources={{ vk: true, facebook: true, twitter: true }} title={props.material.title}
+                                current={window.location.href}/>}
         </div>
     </div>;
 }

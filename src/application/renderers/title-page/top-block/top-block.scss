@@ -40,10 +40,15 @@ div.title-page div.pinned-data-block {
     section.important-data, section.pinned-material {
         z-index: 3;
 
+        p, a, h1, h2, h3, h4, p a {
+            word-break: break-word !important;
+            white-space: normal;
+        }
+
         p {
             margin: 0;
 
-            line-height: 22px;
+            line-height: 26px;
             opacity: .8;
 
             &:not(:last-child) {
@@ -139,7 +144,10 @@ div.title-page div.pinned-data-block {
             }
         }
 
-        div.carousel-component div.carousel-content { height: 100%; overflow: hidden; }
+        div.carousel-component div.carousel-content {
+            height: 100%;
+            overflow: hidden;
+        }
 
         div.carousel-component div.carousel-item-wrapper {
             height: 100%;
@@ -150,7 +158,10 @@ div.title-page div.pinned-data-block {
                 width: 100%;
                 padding: 5px 20px 20px;
 
-                p, a { word-break: break-word !important; }
+                p, a, p a {
+                    word-break: break-word !important;
+                    white-space: normal;
+                }
             }
         }
     }

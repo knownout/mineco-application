@@ -15,17 +15,23 @@ interface PageFactoryProps
 }
 
 const PageFactory = React.forwardRef<HTMLDivElement, PageFactoryProps>((props, ref) => {
+    const onComponentScroll = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const target = event.target as HTMLDivElement;
+
+        if (props.onScroll) props.onScroll(target.scrollTop, event);
+    };
+
     return <>
-        { props.loader }
-        <div className="page-factory ui container scroll-y h-100" ref={ ref }>
+        {props.loader}
+        <div className="page-factory ui container scroll-y h-100" ref={ref} onScroll={onComponentScroll}>
             <div className="content-holder ui flex center">
-                <Header />
+                <Header/>
                 <div className="child-content-holder ui grid center">
-                    { props.children }
+                    {props.children}
                 </div>
             </div>
             <div className="footer-holder">
-                <Footer />
+                <Footer/>
             </div>
         </div>
     </>;
