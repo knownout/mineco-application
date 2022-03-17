@@ -9,10 +9,10 @@ export default function SearchPageMaterial (props: { tag?: string }) {
 
     useMaterialData({
         setMaterial,
-        identifier: transliterate(tag)
+        identifier: transliterate(tag).toLowerCase()
     });
 
     return <>
-        { material && "Material loaded" }
+        {material && "Material loaded"}
     </>;
 }
