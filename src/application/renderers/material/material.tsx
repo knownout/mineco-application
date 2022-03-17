@@ -94,8 +94,8 @@ export function useMaterialData ({ setMaterial, setError, setLoading, identifier
         fetch(makeRoute(serverRoutesList.getMaterial), new MakeFormData({
             [RequestOptions.getMaterial]: idx
         }).fetchObject).then(response => response.json()).then(response =>
-            setTimeout(() => useMaterialContent(response), Date.now() - procedureStart > 200
-                ? 0 : 200 - (Date.now() - procedureStart)));
+            setTimeout(() => useMaterialContent(response), Date.now() - procedureStart > 400
+                ? 0 : 400 - (Date.now() - procedureStart)));
     }, [ idx ]);
 
     return idx;
@@ -118,17 +118,17 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
 
     const scrollController = React.useMemo(() => new ScrollController(), [ path ]);
 
-    // React.useLayoutEffect(() => {
-    //     if (loading) return;
-    //     !scrollController.scrollState && onComponentScroll(0);
-    //
-    //     setTimeout(() => {
-    //         const prevScrollTop = scrollController.scrollState;
-    //         if (prevScrollTop !== false)
-    //             pageFactory.current && pageFactory.current.scrollTo({ top: prevScrollTop });
-    //         // else pageFactory.current && pageFactory.current.scrollTo({ top: 0 });
-    //     }, 10);
-    // }, [ loading, path ]);
+    React.useLayoutEffect(() => {
+        if (!loading) setTimeout(() => !scrollController.scrollState && pageFactory.current &&
+            pageFactory.current.scrollTo({ top: 0 }), 200);
+        if (loading) return;
+
+        setTimeout(() => {
+            const prevScrollTop = scrollController.scrollState;
+            if (prevScrollTop !== false)
+                pageFactory.current && pageFactory.current.scrollTo({ top: prevScrollTop, behavior: "smooth" });
+        }, 210);
+    }, [ loading, path ]);
 
     React.useLayoutEffect(() => {
         const resizeHandler = () => normalWidth.current && setWidth(normalWidth.current);
