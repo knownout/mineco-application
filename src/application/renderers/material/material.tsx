@@ -55,6 +55,7 @@ export function useMaterialData ({ setMaterial, setError, setLoading, identifier
      */
     const useMaterialContent = React.useCallback((response?: Response<ItemObject.FullMaterial>) => {
         const content = response?.responseContent;
+        setMaterial && setMaterial(undefined);
 
         if (!content || !content.data) {
             setError && setError(response ? response.errorCodes : "server-fault");

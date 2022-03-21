@@ -1,6 +1,9 @@
 div.loading-component {
     position: fixed;
-    z-index: 100;
+    z-index: 220 !important;
+
+    top: 0;
+    left: 0;
 
     transition: 300ms ease all;
     pointer-events: none;

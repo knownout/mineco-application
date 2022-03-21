@@ -108,25 +108,25 @@ export default function Header () {
     // References to navigation menu and dynamic-content div
     const navigationMenu = React.useRef<HTMLElement | null>();
 
+    const path = useLocation().pathname;
+
     /**
      * Function for handling window resize
      * @param width navigation menu width (bound)
      */
-    const windowResizeHandler = (width: number) => setMobile(window.innerWidth < width);
 
     React.useLayoutEffect(() => {
         const current = navigationMenu.current;
         if (!current) return;
 
         // Bind navigation menu width to resize handler
-        const handler = windowResizeHandler.bind(null, current.offsetWidth);
-
-        window.addEventListener("resize", handler);
-        handler();
-
-        // componentWillUnmount, I think...
-        return () => window.removeEventListener("resize", handler);
+        if(window.innerWidth < current.offsetWidth)
+            setMobile(true);
     }, [ navigationMenu.current ]);
+
+    React.useLayoutEffect(() => {
+        setTimeout(() => setOpen(false), 150);
+    }, [ path ]);
 
     /**
      * Component for rendering header extra buttons

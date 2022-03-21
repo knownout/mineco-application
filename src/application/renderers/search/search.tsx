@@ -25,7 +25,7 @@ export default function SearchRenderer () {
     const pageFactory = useRef<HTMLDivElement | null>(null);
 
     const params = searchLinkParameters(pathname);
-    const materialsPerPage = 10;
+    const materialsPerPage = 12;
 
     useLayoutEffect(() => {
         mounted.current = true;
