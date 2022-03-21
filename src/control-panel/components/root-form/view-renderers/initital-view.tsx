@@ -50,11 +50,11 @@ export default function InitialView (props: InitialViewProps) {
     const materialSearchHint = <table>
         <tbody>
             <tr>
-                <td><code>{ ">" }01.16.2022</code></td>
+                <td><code>{ ">" }01/16/2022</code></td>
                 <td><code>найти материалы, созданные после определенной даты (месяц.день.год)</code></td>
             </tr>
             <tr>
-                <td><code>{ "<" }01.16.2022</code></td>
+                <td><code>{ "<" }01/16/2022</code></td>
                 <td><code>найти материалы, созданные до определенной даты</code></td>
             </tr>
             <tr>
@@ -76,11 +76,11 @@ export default function InitialView (props: InitialViewProps) {
     const fileSearchHint = <table>
         <tbody>
             <tr>
-                <td><code>{ ">" }01.16.2022</code></td>
+                <td><code>{ ">" }01/16/2022</code></td>
                 <td><code>найти файлы, загруженные после определенной даты (месяц.день.год)</code></td>
             </tr>
             <tr>
-                <td><code>{ "<" }01.16.2022</code></td>
+                <td><code>{ "<" }01/16/2022</code></td>
                 <td><code>найти файлы, загруженные до определенной даты</code></td>
             </tr>
             <tr>
