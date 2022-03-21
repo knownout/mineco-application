@@ -1,4 +1,4 @@
-div.file-selector.ui.container.grid.center.scroll {
+div.file-selector.ui.container.scroll {
     position: fixed;
     top: 0;
     left: 0;
@@ -7,10 +7,20 @@ div.file-selector.ui.container.grid.center.scroll {
     transition: 100ms ease all;
     transform: scale(0.9, 0.9);
 
+    display: block !important;
+
     pointer-events: none;
 
     opacity: 0;
     background: rgba(#ccc, .95);
+
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+
+    button {
+        min-height: 58px !important;
+    }
 
     &.display {
         transform: scale(1, 1);
@@ -18,13 +28,15 @@ div.file-selector.ui.container.grid.center.scroll {
         opacity: 1;
     }
 
-    div.content-wrapper.content-wrapper.ui.flex.column.limit-380.h-fit {
-        height: fit-content;
-        min-height: fit-content;
-        max-height: fit-content;
+    div.content-wrapper.ui.flex.column.limit-380.h-fit.padding.gap {
+        position: relative;
+        height: fit-content !important;
+
+        margin: 0 auto;
 
         div.items-list {
-            overflow: visible;
+            position: relative;
+            height: fit-content !important;
         }
 
         button {

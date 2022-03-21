@@ -37,7 +37,7 @@ function formatDate (date: Date) {
     ].map(e => String(e));
 
     [ month, day, hours, minutes ] = [ month, day, hours, minutes ].map(e => e.padStart(2, "0"));
-    return `${month}.${day}.${year} ${hours}:${minutes}`;
+    return `${month}/${day}/${year} ${hours}:${minutes}`;
 }
 
 /**
