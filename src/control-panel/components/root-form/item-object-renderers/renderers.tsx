@@ -35,6 +35,7 @@ export namespace ItemObject
         datetime: string;
         preview: string;
         pinned: string;
+        background?: string;
     }
 
     export interface FullMaterial

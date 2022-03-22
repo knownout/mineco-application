@@ -43,6 +43,9 @@ export default function TopContentBlock (props: { pinnedMaterial: ItemObject.Mat
 
     // Pinned material preview image link
     const previewImage = serverRoutesList.getFile(props.pinnedMaterial.preview, false);
+    const backgroundImage = props.pinnedMaterial.background && props.pinnedMaterial.background != "none"
+        ? serverRoutesList.getFile(props.pinnedMaterial.background, false)
+        : previewImage;
 
     // Convert importantData items to JSX elements (for carousel)
     const carouselItems = importantData.map(item =>
@@ -53,7 +56,7 @@ export default function TopContentBlock (props: { pinnedMaterial: ItemObject.Mat
     return <div className="pinned-data-block ui w-100">
         {/* Full-width bg image */ }
         <div className="background-image ui absolute"
-             style={ { backgroundImage: `url(${ previewImage })` } } />
+             style={ { backgroundImage: `url(${ backgroundImage })` } } />
 
         <Link to={ appRoutesList.material + props.pinnedMaterial.identifier } className="ui clean pinned-material-link">
 

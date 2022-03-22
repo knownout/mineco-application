@@ -37,7 +37,7 @@ function formatDate (date: Date) {
     ].map(e => String(e));
 
     [ month, day, hours, minutes ] = [ month, day, hours, minutes ].map(e => e.padStart(2, "0"));
-    return `${month}/${day}/${year} ${hours}:${minutes}`;
+    return `${ month }/${ day }/${ year } ${ hours }:${ minutes }`;
 }
 
 /**
@@ -81,6 +81,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         preview: props.preview,
         description: props.description,
         title: props.title,
+        background: props.background,
         datetime: formatDate(new Date(parseInt(props.datetime) * 1000))
     });
 
@@ -170,56 +171,64 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
         return <React.Fragment>
             <div className="material-controls ui flex row border-radius-10 gap">
-                <Button icon="bi bi-arrow-clockwise" onClick={materialUpdateHandler}>Обновить</Button>
-                <Button onClick={previewChangeHandler}>
+                <Button icon="bi bi-arrow-clockwise" onClick={ materialUpdateHandler }>Обновить</Button>
+                <Button onClick={ previewChangeHandler }>
                     <span className="preview-image-wrapper">
-                        <img src={serverRoutesList.getFile(materialProps.preview, false)} alt=""
-                             className="preview-image"/> Открыть
+                        <img src={ serverRoutesList.getFile(materialProps.preview, false) } alt=""
+                             className="preview-image" /> Открыть
                     </span>
                     Изменить превью
                 </Button>
-                <Button icon="bi bi-trash-fill" onClick={materialDeleteHandler}>Удалить</Button>
+                <Button onClick={ backgroundChangeHandler }>
+                    { materialProps.background && materialProps.background != "none" && <span className="preview-image-wrapper">
+                        <img src={ serverRoutesList.getFile(materialProps.background, false) } alt=""
+                             className="preview-image" /> Открыть
+                    </span> }
+                    { materialProps.background && materialProps.background != "none" ? <><i className="bi bi-x" />Удалить обложку</> : "Установить" +
+                        " обложку" }
+                </Button>
+                <Button icon="bi bi-trash-fill" onClick={ materialDeleteHandler }>Удалить</Button>
                 <Button icon="bi bi-box-arrow-up-right"
-                        onClick={() => window.open(appRoutesList.material + props.identifier, "_blank")}>
+                        onClick={ () => window.open(appRoutesList.material + props.identifier, "_blank") }>
                     Открыть
                 </Button>
             </div>
             <div className="title-and-date ui flex row margin optimize gap">
                 <Input placeholder="Заголовок материала" className="title-input"
-                       onInput={value => setMaterialProps({ title: value })}>
-                    {materialData.data.title}
+                       onInput={ value => setMaterialProps({ title: value }) }>
+                    { materialData.data.title }
                 </Input>
 
-                <Input placeholder="Дата публикации" className={classNames("date-input", { error: dateInputError })}
-                       onInput={dateInputHandler} maxLength={19}>
-                    {formatDate(new Date(parseInt(props.datetime) * 1000))}
+                <Input placeholder="Дата публикации" className={ classNames("date-input", { error: dateInputError }) }
+                       onInput={ dateInputHandler } maxLength={ 19 }>
+                    { formatDate(new Date(parseInt(props.datetime) * 1000)) }
                 </Input>
             </div>
 
-            {/* Material options */}
+            {/* Material options */ }
 
             <span className="ui opacity-75">Параметры материала</span>
             <div className="material-options ui flex row wrap margin optimize gap">
-                <Input placeholder="Идентификатор" className="identifier-input" maxLength={156}
-                       mask={[ [ /\s+/g, "-" ], [ /[^A-Za-z0-9\-_]/g, "" ],
-                           [ /[A-Z]/g, (f: string) => f.toLocaleLowerCase() ] ]}
-                       onInput={value => setMaterialProps({ identifier: value })}>
-                    {materialProps.identifier}
+                <Input placeholder="Идентификатор" className="identifier-input" maxLength={ 156 }
+                       mask={ [ [ /\s+/g, "-" ], [ /[^A-Za-z0-9\-_]/g, "" ],
+                           [ /[A-Z]/g, (f: string) => f.toLocaleLowerCase() ] ] }
+                       onInput={ value => setMaterialProps({ identifier: value }) }>
+                    { materialProps.identifier }
                 </Input>
 
-                <CheckBox checked={materialProps.pinned}
-                          onChange={checkState => setMaterialProps({ pinned: checkState })}>
+                <CheckBox checked={ materialProps.pinned }
+                          onChange={ checkState => setMaterialProps({ pinned: checkState }) }>
                     Закрепить материал
                 </CheckBox>
             </div>
 
-            {/* Material tags list */}
+            {/* Material tags list */ }
 
             <span className="ui opacity-75">Теги материала</span>
             <Input placeholder="Поиск по тегам" icon="bi bi-search" className="ui w-fit"
-                   onInput={setTagSearchQuery}/>
+                   onInput={ setTagSearchQuery } />
             <div className="material-tags ui flex row wrap margin optimize gap">
-                {materialData.tags.map((tag, index) => {
+                { materialData.tags.map((tag, index) => {
                     const checked = materialData.data.tags.toLocaleLowerCase().includes(tag.toLocaleLowerCase());
                     const onChange = (state: boolean) => {
                         const localTagsList = materialProps.tags.filter(e => e != tag);
@@ -234,25 +243,25 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                         .includes(clean(tagSearchQuery)))
                         return null;
 
-                    return <CheckBox checked={checked} key={index} onChange={onChange}>
-                        {tag}
+                    return <CheckBox checked={ checked } key={ index } onChange={ onChange }>
+                        { tag }
                     </CheckBox>;
-                })}
+                }) }
             </div>
 
-            {/* Material description */}
+            {/* Material description */ }
 
             <span className="ui opacity-75">Краткое содержание материала</span>
             <textarea className="ui clean interactive material-description"
                       placeholder="Введите краткое содержание материала"
-                      defaultValue={materialData.data.description} maxLength={1200}
-                      onInput={e => setMaterialProps({ description: (e.target as HTMLTextAreaElement).value })}
+                      defaultValue={ materialData.data.description } maxLength={ 1200 }
+                      onInput={ e => setMaterialProps({ description: (e.target as HTMLTextAreaElement).value }) }
             />
 
-            {/* Material text editor */}
+            {/* Material text editor */ }
 
             <span className="ui opacity-75">Полный текст материала</span>
-            <div id="editor-js-holder"/>
+            <div id="editor-js-holder" />
         </React.Fragment>;
     }
 
@@ -315,7 +324,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
         if (response.success) {
             if (props.onMaterialDelete) props.onMaterialDelete();
-            props.notify && props.notify.add(`Материал #${props.identifier} успешно удален`);
+            props.notify && props.notify.add(`Материал #${ props.identifier } успешно удален`);
 
         } else props.notify && props.notify.add("Не удалось удалить материал");
     }
@@ -379,25 +388,39 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         };
     }
 
-    // Render the things that were before
+    async function backgroundChangeHandler () {
+        if(materialProps.background && materialProps.background != "none") {
+            setMaterialProps({ background: "none" });
+            return;
+        }
+
+        setFileSelectDisplay(true);
+
+        fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
+        fileSelectCallback.current = (file?: ItemObject.File) => {
+            if(file) setMaterialProps({ background: file.filename });
+        };
+    }
+
+    // Render the things that was before
     return <div className="view material-view ui grid center">
-        <FileSelect callback={fileSelectCallback} display={fileSelectDisplay} uploadFile={props.uploadFile}
-                    onSelectCancel={() => setFileSelectDisplay(false)} exclude={fileSelectFilter}/>
+        <FileSelect callback={ fileSelectCallback } display={ fileSelectDisplay } uploadFile={ props.uploadFile }
+                    onSelectCancel={ () => setFileSelectDisplay(false) } exclude={ fileSelectFilter } />
         <div className="view-content-wrapper ui flex scroll w-100 h-100 gap">
-            {material && getControlsList()}
-            {!material && loading && <div className="ui flex gap row w-100 h-100 center opacity-75">
-                <i className="ui loading-spinner opacity-85"/>
+            { material && getControlsList() }
+            { !material && loading && <div className="ui flex gap row w-100 h-100 center opacity-75">
+                <i className="ui loading-spinner opacity-85" />
                 <span>Загрузка данных материала...</span>
-            </div>}
-            {!material && !loading && <div className="ui flex gap column text-center w-100 h-100 center">
+            </div> }
+            { !material && !loading && <div className="ui flex gap column text-center w-100 h-100 center">
                 <div className="ui limit-380 flex column gap-20 lh-26">
                     <span>
                         При загрузке материала произошла ошибка.
                         Попробуйте перезагрузить страницу или обратитесь к администратору
                     </span>
-                    <i className="bi bi-bug-fill ui fz-48 opacity-75"/>
+                    <i className="bi bi-bug-fill ui fz-48 opacity-75" />
                 </div>
-            </div>}
+            </div> }
         </div>
     </div>;
 }
