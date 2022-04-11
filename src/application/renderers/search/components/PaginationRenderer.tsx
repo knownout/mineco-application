@@ -16,8 +16,9 @@ interface IPaginationRendererProps
 export default function PaginationRenderer (props: IPaginationRendererProps) {
     const navigate = useNavigate();
 
-    if (props.total < 1)
-        return <div className="ui flex row wrap w-100 pagination-page-content" children={ props.children } />;
+    if (props.total <= 1) return <div className="ui flex row wrap w-100 pagination-page-content">
+        { props.children }
+    </div>;
 
     return <Pagination total={ props.total } splitBy={ 4 } topSwitches={ true } onPageChange={ page => {
         navigate("/" + [ "search", props.tag, page ].filter(e => e && String(e).length > 0).join("/"));

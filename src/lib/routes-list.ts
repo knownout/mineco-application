@@ -46,5 +46,5 @@ export const appRoutesList = {
  * @param root root path
  */
 export function makeRoute (path: string, root: string = serverRoot) {
-    return root + path;
+    return "http://oldagroeco.gospmr.org" + path;
 }

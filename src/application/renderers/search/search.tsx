@@ -18,9 +18,10 @@ export default function SearchRenderer () {
     const [ error, setError ] = React.useState<any>();
     const [ query, setQuery ] = React.useState<string>();
 
+    const [ totalMaterials, setTotalMaterials ] = React.useState(0);
+
     const pathname = useLocation().pathname;
     const setPageRef = useRef<(page: number) => void>();
-    const totalMaterials = useRef(0);
     const mounted = useRef(false);
     const pageFactory = useRef<HTMLDivElement | null>(null);
 
@@ -32,7 +33,7 @@ export default function SearchRenderer () {
 
         useMaterialsSearch({
             materialsPerPage,
-            totalMaterialsRef: totalMaterials,
+            setTotalMaterials,
 
             pathname, mounted, query,
             setLoading, setError, setMaterials
@@ -43,7 +44,7 @@ export default function SearchRenderer () {
         };
     }, [ params.tag, params.page ]);
 
-    const materialsList = <PaginationRenderer total={ Math.floor(totalMaterials.current / materialsPerPage) }
+    const materialsList = <PaginationRenderer total={ Math.ceil(totalMaterials / materialsPerPage) }
                                               setPageRef={ setPageRef } onPageChange={ () => {
         if (!pageFactory.current) return;
 
@@ -57,7 +58,7 @@ export default function SearchRenderer () {
     const onMaterialsSearch = () => {
         useMaterialsSearch({
             materialsPerPage,
-            totalMaterialsRef: totalMaterials,
+            setTotalMaterials,
 
             pathname, mounted, query,
             setLoading, setError, setMaterials

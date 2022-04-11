@@ -7,7 +7,7 @@ import { MaterialSearchOptions, RequestOptions, Response } from "../../../lib/ty
 
 interface MaterialSearchProps
 {
-    totalMaterialsRef: React.MutableRefObject<number>;
+    setTotalMaterials: React.Dispatch<React.SetStateAction<number>>;
     materialsPerPage: number;
     pathname: string;
     mounted: React.MutableRefObject<boolean>;
@@ -44,20 +44,20 @@ export default async function useMaterialsSearch (props: MaterialSearchProps) {
 
     if (!props.query) {
         const totalMaterials = await fetch(makeRoute(serverRoutesList.getTotalMaterials), new MakeFormData({
-            [MaterialSearchOptions.tags]: params.tag ? params.tag : props.query && "NOT_EMPTY"
+            [MaterialSearchOptions.tags]: params.tag ? params.tag : "NOT_EMPTY"
         }).fetchObject).then(res => res.json())
             .catch(props.setError) as Response<number>;
 
         if (!totalMaterials.success) props.setError && props.setError("total-fetch-error");
 
-        props.totalMaterialsRef.current = totalMaterials.responseContent as number;
+        props.setTotalMaterials(totalMaterials.responseContent as number);
     }
 
     const elapsed = Date.now() - startTime;
     await new Promise(resolve => setTimeout(resolve, elapsed < 300 ? 300 : 300 - elapsed));
 
     if (!props.mounted.current) return;
-    if (props.query) props.totalMaterialsRef.current = 0;
+    if (props.query) props.setTotalMaterials(0);
 
     props.setMaterials && props.setMaterials(materialsList.responseContent || []);
     props.setLoading && props.setLoading(false);
