@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../../common/button";
@@ -120,7 +126,7 @@ export default function Header () {
         if (!current) return;
 
         // Bind navigation menu width to resize handler
-        if(window.innerWidth < current.offsetWidth)
+        if (window.innerWidth < current.offsetWidth)
             setMobile(true);
     }, [ navigationMenu.current ]);
 

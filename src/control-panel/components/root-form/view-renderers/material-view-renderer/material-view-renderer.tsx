@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import EditorJS from "@editorjs/editorjs";
 import React from "react";
 import Button from "../../../../../common/button";
@@ -180,11 +186,13 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                     Изменить превью
                 </Button>
                 <Button onClick={ backgroundChangeHandler }>
-                    { materialProps.background && materialProps.background != "none" && <span className="preview-image-wrapper">
+                    { materialProps.background && materialProps.background != "none" &&
+                        <span className="preview-image-wrapper">
                         <img src={ serverRoutesList.getFile(materialProps.background, false) } alt=""
                              className="preview-image" /> Открыть
                     </span> }
-                    { materialProps.background && materialProps.background != "none" ? <><i className="bi bi-x" />Удалить обложку</> : "Установить" +
+                    { materialProps.background && materialProps.background != "none" ? <><i className="bi bi-x" />Удалить
+                        обложку</> : "Установить" +
                         " обложку" }
                 </Button>
                 <Button icon="bi bi-trash-fill" onClick={ materialDeleteHandler }>Удалить</Button>
@@ -389,7 +397,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     }
 
     async function backgroundChangeHandler () {
-        if(materialProps.background && materialProps.background != "none") {
+        if (materialProps.background && materialProps.background != "none") {
             setMaterialProps({ background: "none" });
             return;
         }
@@ -398,7 +406,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
         fileSelectCallback.current = (file?: ItemObject.File) => {
-            if(file) setMaterialProps({ background: file.filename });
+            if (file) setMaterialProps({ background: file.filename });
         };
     }
 

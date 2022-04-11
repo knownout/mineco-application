@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";

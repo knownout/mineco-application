@@ -1,16 +1,23 @@
-import {make} from './ui';
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
+import { make } from "./ui";
 
 /**
  * Working with Block Tunes
  */
-export default class Tunes {
+export default class Tunes
+{
     /**
      * @param {object} tune - image tool Tunes managers
      * @param {object} tune.api - Editor API
      * @param {object} tune.actions - list of user defined tunes
      * @param {Function} tune.onChange - tune toggling callback
      */
-    constructor({api, actions, onChange}) {
+    constructor ({ api, actions, onChange }) {
         this.api = api;
         this.actions = actions;
         this.onChange = onChange;
@@ -22,7 +29,7 @@ export default class Tunes {
      *
      * @returns {{name: string, icon: string, title: string}[]}
      */
-    static get tunes() {
+    static get tunes () {
         return [
             // {
             //   name: 'withBorder',
@@ -47,12 +54,12 @@ export default class Tunes {
      *
      * @returns {{wrapper: string, buttonBase: *, button: string, buttonActive: *}}
      */
-    get CSS() {
+    get CSS () {
         return {
-            wrapper: '',
+            wrapper: "",
             buttonBase: this.api.styles.settingsButton,
-            button: 'image-tool__tune',
-            buttonActive: this.api.styles.settingsButtonActive,
+            button: "image-tool__tune",
+            buttonActive: this.api.styles.settingsButtonActive
         };
     }
 
@@ -62,8 +69,8 @@ export default class Tunes {
      * @param {ImageToolData} toolData - generate Elements of tunes
      * @returns {Element}
      */
-    render(toolData) {
-        const wrapper = make('div', this.CSS.wrapper);
+    render (toolData) {
+        const wrapper = make("div", this.CSS.wrapper);
 
         this.buttons = [];
 
@@ -71,12 +78,12 @@ export default class Tunes {
 
         tunes.forEach(tune => {
             const title = this.api.i18n.t(tune.title);
-            const el = make('div', [this.CSS.buttonBase, this.CSS.button], {
+            const el = make("div", [ this.CSS.buttonBase, this.CSS.button ], {
                 innerHTML: tune.icon,
-                title,
+                title
             });
 
-            el.addEventListener('click', () => {
+            el.addEventListener("click", () => {
                 this.tuneClicked(tune.name, tune.action);
             });
 
@@ -86,7 +93,7 @@ export default class Tunes {
             this.buttons.push(el);
 
             this.api.tooltip.onHover(el, title, {
-                placement: 'top',
+                placement: "top"
             });
 
             wrapper.appendChild(el);
@@ -101,8 +108,8 @@ export default class Tunes {
      * @param {string} tuneName - clicked tune name
      * @param {Function} customFunction - function to execute on click
      */
-    tuneClicked(tuneName, customFunction) {
-        if (typeof customFunction === 'function') {
+    tuneClicked (tuneName, customFunction) {
+        if (typeof customFunction === "function") {
             if (!customFunction(tuneName)) {
                 return false;
             }

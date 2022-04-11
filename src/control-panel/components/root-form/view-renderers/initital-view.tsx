@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 
 import Button from "../../../../common/button";
@@ -6,7 +12,8 @@ import { ItemObject } from "../item-object-renderers/renderers";
 import classNames from "../../../../lib/class-names";
 import Type = ItemObject.Type;
 
-interface InitialViewProps {
+interface InitialViewProps
+{
     type: ItemObject.Type;
     waitContent: boolean;
 

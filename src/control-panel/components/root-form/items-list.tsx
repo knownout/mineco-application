@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 
 import Input from "../../../common/input";
@@ -8,7 +14,11 @@ import MakeFormData from "../../../lib/make-form-data";
 import { appRoutesList, makeRoute, serverRoutesList } from "../../../lib/routes-list";
 
 import {
-    FileSearchOptions, MaterialSearchOptions, RequestOptions, Response, VariableOptions
+    FileSearchOptions,
+    MaterialSearchOptions,
+    RequestOptions,
+    Response,
+    VariableOptions
 } from "../../../lib/types/requests";
 import useRecaptcha from "../../../lib/use-recaptcha";
 

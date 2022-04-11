@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 /**
  * Image Tool for the Editor.js
  *
@@ -42,9 +48,9 @@
  */
 
 // eslint-disable-next-line
-import Ui from './ui';
-import Tunes from './tunes';
-import Uploader from './uploader';
+import Ui from "./ui";
+import Tunes from "./tunes";
+import Uploader from "./uploader";
 import "./index.scss";
 
 /**
@@ -73,7 +79,8 @@ import "./index.scss";
  *                           also can contain any additional data that will be saved and passed back
  * @property {string} file.url - [Required] image source URL
  */
-export default class ImageTool {
+export default class ImageTool
+{
     /**
      * @param {object} tool - tool properties got from editor.js
      * @param {ImageToolData} tool.data - previously saved data
@@ -81,7 +88,7 @@ export default class ImageTool {
      * @param {object} tool.api - Editor.js API
      * @param {boolean} tool.readOnly - read-only mode flag
      */
-    constructor({data, config, api, readOnly}) {
+    constructor ({ data, config, api, readOnly }) {
         this.api = api;
         this.readOnly = readOnly;
 
@@ -89,15 +96,15 @@ export default class ImageTool {
          * Tool's initial config
          */
         this.config = {
-            endpoints: config.endpoints || '',
+            endpoints: config.endpoints || "",
             additionalRequestData: config.additionalRequestData || {},
             additionalRequestHeaders: config.additionalRequestHeaders || {},
-            field: config.field || 'image',
-            types: config.types || 'image/*',
-            captionPlaceholder: this.api.i18n.t(config.captionPlaceholder || 'Caption'),
-            buttonContent: config.buttonContent || '',
+            field: config.field || "image",
+            types: config.types || "image/*",
+            captionPlaceholder: this.api.i18n.t(config.captionPlaceholder || "Caption"),
+            buttonContent: config.buttonContent || "",
             uploader: config.uploader || undefined,
-            actions: config.actions || [],
+            actions: config.actions || []
         };
 
         /**
@@ -106,7 +113,7 @@ export default class ImageTool {
         this.uploader = new Uploader({
             config: this.config,
             onUpload: (response) => this.onUpload(response),
-            onError: (error) => this.uploadingFailed(error),
+            onError: (error) => this.uploadingFailed(error)
         });
 
         /**
@@ -122,7 +129,7 @@ export default class ImageTool {
                     this.onUpload(response);
                 }
             },
-            readOnly,
+            readOnly
         });
 
         /**
@@ -131,7 +138,7 @@ export default class ImageTool {
         this.tunes = new Tunes({
             api,
             actions: this.config.actions,
-            onChange: (tuneName) => this.tuneToggled(tuneName),
+            onChange: (tuneName) => this.tuneToggled(tuneName)
         });
 
         /**
@@ -146,7 +153,7 @@ export default class ImageTool {
      *
      * @returns {boolean}
      */
-    static get isReadOnlySupported() {
+    static get isReadOnlySupported () {
         return true;
     }
 
@@ -157,10 +164,10 @@ export default class ImageTool {
      *
      * @returns {{icon: string, title: string}}
      */
-    static get toolbox() {
+    static get toolbox () {
         return {
             icon: `<svg width="17" height="15" viewBox="0 0 336 276" xmlns="http://www.w3.org/2000/svg"><path d="M291 150.242V79c0-18.778-15.222-34-34-34H79c-18.778 0-34 15.222-34 34v42.264l67.179-44.192 80.398 71.614 56.686-29.14L291 150.242zm-.345 51.622l-42.3-30.246-56.3 29.884-80.773-66.925L45 174.187V197c0 18.778 15.222 34 34 34h178c17.126 0 31.295-12.663 33.655-29.136zM79 0h178c43.63 0 79 35.37 79 79v118c0 43.63-35.37 79-79 79H79c-43.63 0-79-35.37-79-79V79C0 35.37 35.37 0 79 0z"/></svg>`,
-            title: 'Image',
+            title: "Image"
         };
     }
 
@@ -169,8 +176,8 @@ export default class ImageTool {
      *
      * @see {@link https://github.com/codex-team/editor.js/blob/master/docs/tools.md#paste-handling}
      */
-    static get pasteConfig() {
-        return {}
+    static get pasteConfig () {
+        return {};
         // return {
         //     /**
         //      * Paste HTML into Editor
@@ -200,7 +207,7 @@ export default class ImageTool {
      *
      * @returns {ImageToolData}
      */
-    get data() {
+    get data () {
         return this._data;
     }
 
@@ -211,14 +218,14 @@ export default class ImageTool {
      *
      * @param {ImageToolData} data - data in Image Tool format
      */
-    set data(data) {
+    set data (data) {
         this.image = data.file;
 
-        this._data.caption = data.caption || '';
+        this._data.caption = data.caption || "";
         this.ui.fillCaption(this._data.caption);
 
-        Tunes.tunes.forEach(({name: tune}) => {
-            const value = typeof data[tune] !== 'undefined' ? data[tune] === true || data[tune] === 'true' : false;
+        Tunes.tunes.forEach(({ name: tune }) => {
+            const value = typeof data[tune] !== "undefined" ? data[tune] === true || data[tune] === "true" : false;
 
             this.setTune(tune, value);
         });
@@ -231,7 +238,7 @@ export default class ImageTool {
      *
      * @param {object} file - uploaded file data
      */
-    set image(file) {
+    set image (file) {
         this._data.file = file || {};
 
         if (file && file.url) {
@@ -246,7 +253,7 @@ export default class ImageTool {
      *
      * @returns {HTMLDivElement}
      */
-    render() {
+    render () {
         return this.ui.render(this.data);
     }
 
@@ -257,7 +264,7 @@ export default class ImageTool {
      * @returns {string} false if saved data is not correct, otherwise true
      * @public
      */
-    validate(savedData) {
+    validate (savedData) {
         return savedData.file && savedData.file.url;
     }
 
@@ -268,7 +275,7 @@ export default class ImageTool {
      *
      * @returns {ImageToolData}
      */
-    save() {
+    save () {
         const caption = this.ui.nodes.caption;
 
         this._data.caption = caption.innerHTML;
@@ -288,7 +295,7 @@ export default class ImageTool {
      *
      * @returns {Element}
      */
-    renderSettings() {
+    renderSettings () {
         return this.tunes.render(this.data);
     }
 
@@ -298,7 +305,7 @@ export default class ImageTool {
      *
      * @public
      */
-    appendCallback() {
+    appendCallback () {
         this.ui.nodes.fileButton.click();
     }
 
@@ -311,7 +318,7 @@ export default class ImageTool {
      *                              {@link https://github.com/codex-team/editor.js/blob/master/types/tools/paste-events.d.ts}
      * @returns {void}
      */
-    async onPaste(event) {
+    async onPaste (event) {
         return null;
         // switch (event.type) {
         //     case 'tag': {
@@ -352,12 +359,12 @@ export default class ImageTool {
      * @param {UploadResponseFormat} response - uploading server response
      * @returns {void}
      */
-    onUpload(response) {
+    onUpload (response) {
         if (!response) return;
         if (response.success && response.file) {
             this.image = response.file;
         } else {
-            this.uploadingFailed('incorrect response: ' + JSON.stringify(response));
+            this.uploadingFailed("incorrect response: " + JSON.stringify(response));
         }
     }
 
@@ -368,12 +375,12 @@ export default class ImageTool {
      * @param {string} errorText - uploading error text
      * @returns {void}
      */
-    uploadingFailed(errorText) {
-        console.log('Image Tool: uploading failed because of', errorText);
+    uploadingFailed (errorText) {
+        console.log("Image Tool: uploading failed because of", errorText);
 
         this.api.notifier.show({
-            message: this.api.i18n.t('Couldn’t upload image. Please try another.'),
-            style: 'error',
+            message: this.api.i18n.t("Couldn’t upload image. Please try another."),
+            style: "error"
         });
         this.ui.hidePreloader();
     }
@@ -386,7 +393,7 @@ export default class ImageTool {
      * @param {string} tuneName - tune that has been clicked
      * @returns {void}
      */
-    tuneToggled(tuneName) {
+    tuneToggled (tuneName) {
         // inverse tune state
         this.setTune(tuneName, !this._data[tuneName]);
     }
@@ -398,12 +405,12 @@ export default class ImageTool {
      * @param {boolean} value - tune state
      * @returns {void}
      */
-    setTune(tuneName, value) {
+    setTune (tuneName, value) {
         this._data[tuneName] = value;
 
         this.ui.applyTune(tuneName, value);
 
-        if (tuneName === 'stretched') {
+        if (tuneName === "stretched") {
             /**
              * Wait until the API is ready
              */
@@ -424,11 +431,11 @@ export default class ImageTool {
      * @param {File} file - file that is currently uploading (from paste)
      * @returns {void}
      */
-    uploadFile(file) {
+    uploadFile (file) {
         this.uploader.uploadByFile(file, {
             onPreview: (src) => {
                 this.ui.showPreloader(src);
-            },
+            }
         });
     }
 
@@ -438,7 +445,7 @@ export default class ImageTool {
      * @param {string} url - url pasted
      * @returns {void}
      */
-    uploadUrl(url) {
+    uploadUrl (url) {
         this.ui.showPreloader(url);
         this.uploader.uploadByUrl(url);
     }

@@ -1,4 +1,10 @@
-import buttonIcon from './svg/button-icon.svg';
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
+import buttonIcon from "./svg/button-icon.svg";
 
 /**
  * Class for working with UI:
@@ -6,7 +12,8 @@ import buttonIcon from './svg/button-icon.svg';
  *  - show/hide preview
  *  - apply tune view
  */
-export default class Ui {
+export default class Ui
+{
     /**
      * @param {object} ui - image tool Ui module
      * @param {object} ui.api - Editor.js API
@@ -14,20 +21,20 @@ export default class Ui {
      * @param {Function} ui.onSelectFile - callback for clicks on Select file button
      * @param {boolean} ui.readOnly - read-only mode flag
      */
-    constructor({api, config, onSelectFile, readOnly}) {
+    constructor ({ api, config, onSelectFile, readOnly }) {
         this.api = api;
         this.config = config;
         this.onSelectFile = onSelectFile;
         this.readOnly = readOnly;
         this.nodes = {
-            wrapper: make('div', [this.CSS.baseClass, this.CSS.wrapper]),
-            imageContainer: make('div', [this.CSS.imageContainer]),
+            wrapper: make("div", [ this.CSS.baseClass, this.CSS.wrapper ]),
+            imageContainer: make("div", [ this.CSS.imageContainer ]),
             fileButton: this.createFileButton(),
             imageEl: undefined,
-            imagePreloader: make('div', this.CSS.imagePreloader),
-            caption: make('div', [this.CSS.input, this.CSS.caption], {
-                contentEditable: !this.readOnly,
-            }),
+            imagePreloader: make("div", this.CSS.imagePreloader),
+            caption: make("div", [ this.CSS.input, this.CSS.caption ], {
+                contentEditable: !this.readOnly
+            })
         };
 
         /**
@@ -55,11 +62,11 @@ export default class Ui {
      *
      * @returns {{EMPTY: string, UPLOADING: string, FILLED: string}}
      */
-    static get status() {
+    static get status () {
         return {
-            EMPTY: 'empty',
-            UPLOADING: 'loading',
-            FILLED: 'filled',
+            EMPTY: "empty",
+            UPLOADING: "loading",
+            FILLED: "filled"
         };
     }
 
@@ -68,7 +75,7 @@ export default class Ui {
      *
      * @returns {object}
      */
-    get CSS() {
+    get CSS () {
         return {
             baseClass: this.api.styles.block,
             loading: this.api.styles.loader,
@@ -78,11 +85,11 @@ export default class Ui {
             /**
              * Tool's classes
              */
-            wrapper: 'image-tool',
-            imageContainer: 'image-tool__image',
-            imagePreloader: 'image-tool__image-preloader',
-            imageEl: 'image-tool__image-picture',
-            caption: 'image-tool__caption',
+            wrapper: "image-tool",
+            imageContainer: "image-tool__image",
+            imagePreloader: "image-tool__image-preloader",
+            imageEl: "image-tool__image-picture",
+            caption: "image-tool__caption"
         };
     };
 
@@ -92,7 +99,7 @@ export default class Ui {
      * @param {ImageToolData} toolData - saved tool data
      * @returns {Element}
      */
-    render(toolData) {
+    render (toolData) {
         if (!toolData.file || Object.keys(toolData.file).length === 0) {
             this.toggleStatus(Ui.status.EMPTY);
         } else {
@@ -107,12 +114,12 @@ export default class Ui {
      *
      * @returns {Element}
      */
-    createFileButton() {
-        const button = make('div', [this.CSS.button]);
+    createFileButton () {
+        const button = make("div", [ this.CSS.button ]);
 
-        button.innerHTML = this.config.buttonContent || `${buttonIcon} ${this.api.i18n.t('Select an Image')}`;
+        button.innerHTML = this.config.buttonContent || `${ buttonIcon } ${ this.api.i18n.t("Select an Image") }`;
 
-        button.addEventListener('click', () => {
+        button.addEventListener("click", () => {
             this.onSelectFile();
         });
 
@@ -125,8 +132,8 @@ export default class Ui {
      * @param {string} src - preview source
      * @returns {void}
      */
-    showPreloader(src) {
-        this.nodes.imagePreloader.style.backgroundImage = `url(${src})`;
+    showPreloader (src) {
+        this.nodes.imagePreloader.style.backgroundImage = `url(${ src })`;
 
         this.toggleStatus(Ui.status.UPLOADING);
     }
@@ -136,8 +143,8 @@ export default class Ui {
      *
      * @returns {void}
      */
-    hidePreloader() {
-        this.nodes.imagePreloader.style.backgroundImage = '';
+    hidePreloader () {
+        this.nodes.imagePreloader.style.backgroundImage = "";
         this.toggleStatus(Ui.status.EMPTY);
     }
 
@@ -147,14 +154,14 @@ export default class Ui {
      * @param {string} url - image source
      * @returns {void}
      */
-    fillImage(url) {
+    fillImage (url) {
         /**
          * Check for a source extension to compose element correctly: video tag for mp4, img — for others
          */
-        const tag = /\.mp4$/.test(url) ? 'VIDEO' : 'IMG';
+        const tag = /\.mp4$/.test(url) ? "VIDEO" : "IMG";
 
         const attributes = {
-            src: url,
+            src: url
         };
 
         /**
@@ -164,12 +171,12 @@ export default class Ui {
          *
          * @type {string}
          */
-        let eventName = 'load';
+        let eventName = "load";
 
         /**
          * Update attributes and eventName if source is a mp4 video
          */
-        if (tag === 'VIDEO') {
+        if (tag === "VIDEO") {
             /**
              * Add attributes for playing muted mp4 as a gif
              *
@@ -185,7 +192,7 @@ export default class Ui {
              *
              * @type {string}
              */
-            eventName = 'loadeddata';
+            eventName = "loadeddata";
         }
 
         /**
@@ -205,7 +212,7 @@ export default class Ui {
              * Preloader does not exists on first rendering with presaved data
              */
             if (this.nodes.imagePreloader) {
-                this.nodes.imagePreloader.style.backgroundImage = '';
+                this.nodes.imagePreloader.style.backgroundImage = "";
             }
         });
 
@@ -218,7 +225,7 @@ export default class Ui {
      * @param {string} text - caption text
      * @returns {void}
      */
-    fillCaption(text) {
+    fillCaption (text) {
         if (this.nodes.caption) {
             this.nodes.caption.innerHTML = text;
         }
@@ -230,10 +237,11 @@ export default class Ui {
      * @param {string} status - see {@link Ui.status} constants
      * @returns {void}
      */
-    toggleStatus(status) {
+    toggleStatus (status) {
         for (const statusType in Ui.status) {
             if (Object.prototype.hasOwnProperty.call(Ui.status, statusType)) {
-                this.nodes.wrapper.classList.toggle(`${this.CSS.wrapper}--${Ui.status[statusType]}`, status === Ui.status[statusType]);
+                this.nodes.wrapper.classList.toggle(`${ this.CSS.wrapper }--${ Ui.status[statusType] }`,
+                    status === Ui.status[statusType]);
             }
         }
     }
@@ -245,8 +253,8 @@ export default class Ui {
      * @param {boolean} status - true for enable, false for disable
      * @returns {void}
      */
-    applyTune(tuneName, status) {
-        this.nodes.wrapper.classList.toggle(`${this.CSS.wrapper}--${tuneName}`, status);
+    applyTune (tuneName, status) {
+        this.nodes.wrapper.classList.toggle(`${ this.CSS.wrapper }--${ tuneName }`, status);
     }
 }
 
@@ -258,7 +266,7 @@ export default class Ui {
  * @param  {object} attributes        - any attributes
  * @returns {Element}
  */
-export const make = function make(tagName, classNames = null, attributes = {}) {
+export const make = function make (tagName, classNames = null, attributes = {}) {
     const el = document.createElement(tagName);
 
     if (Array.isArray(classNames)) {

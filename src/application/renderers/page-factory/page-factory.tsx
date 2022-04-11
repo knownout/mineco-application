@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 
 import Footer from "../../footer";
@@ -22,16 +28,16 @@ const PageFactory = React.forwardRef<HTMLDivElement, PageFactoryProps>((props, r
     };
 
     return <>
-        {props.loader}
-        <div className="page-factory ui container scroll-y h-100" ref={ref} onScroll={onComponentScroll}>
+        { props.loader }
+        <div className="page-factory ui container scroll-y h-100" ref={ ref } onScroll={ onComponentScroll }>
             <div className="content-holder ui flex center">
-                <Header/>
+                <Header />
                 <div className="child-content-holder ui grid center">
-                    {props.children}
+                    { props.children }
                 </div>
             </div>
             <div className="footer-holder">
-                <Footer/>
+                <Footer />
             </div>
         </div>
     </>;

@@ -1,7 +1,14 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 /**
  * Module for file uploading.
  */
-export default class Uploader {
+export default class Uploader
+{
     /**
      * @param config.config
      * @param {object} config
@@ -10,7 +17,7 @@ export default class Uploader {
      * @param config.onUpload
      * @param config.onError
      */
-    constructor({config, onUpload, onError}) {
+    constructor ({ config, onUpload, onError }) {
         this.config = config;
         this.onUpload = onUpload;
         this.onError = onError;
@@ -18,29 +25,17 @@ export default class Uploader {
 
     /**
      * Handle clicks on the upload file button
-     *
-     * @fires ajax.transport()
-     * @param {Function} onPreview - callback fired when preview is ready
      */
-    async uploadSelectedFile({onPreview}) {
+    async uploadSelectedFile () {
         /**
          * Custom uploading
          * or default uploading
          */
 
         if (this.config.uploader) {
+            // noinspection JSValidateTypes
             const response = await this.config.uploader();
             if (response) this.onUpload(response);
         }
     }
-}
-
-/**
- * Check if passed object is a Promise
- *
- * @param  {*}  object - object to check
- * @returns {boolean}
- */
-function isPromise(object) {
-    return object && typeof object.then === 'function';
 }

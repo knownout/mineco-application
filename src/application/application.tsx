@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 
 import { Helmet } from "react-helmet";
@@ -56,6 +62,8 @@ export const ApplicationContext = React.createContext<ApplicationContextStorage>
  */
 export default class Application extends React.PureComponent<{}, ApplicationState>
 {
+    public readonly state: ApplicationState = { loading: true };
+
     /**
      * Shortcut for fetching data from server
      * @param path data processor path
@@ -71,8 +79,6 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
                 }
             }) as Promise<Response<T>>;
     }
-
-    public readonly state: ApplicationState = { loading: true };
 
     async componentDidMount () {
         const genericFetchFunction = Application.genericFetchFunction.bind(this);

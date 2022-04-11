@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 import MakeFormData from "../../../../lib/make-form-data";
 
@@ -38,7 +44,8 @@ const codeMirrorStringsMode = () => ({
 /**
  * Common view renderers properties list
  */
-export interface CommonViewRendererProps {
+export interface CommonViewRendererProps
+{
     // Fires only when load state changed to true
     onLoadStart? (): void;
 
@@ -49,11 +56,13 @@ export interface CommonViewRendererProps {
     onLoadStateChange? (loadState: boolean): void;
 }
 
-export interface CommonRootComponentProps {
+export interface CommonRootComponentProps
+{
     notify?: Notify;
 }
 
-interface FileViewRendererProps extends CommonViewRendererProps, ItemObject.File {
+interface FileViewRendererProps extends CommonViewRendererProps, ItemObject.File
+{
     // Fires when file successfully deleted
     onFileDelete? (): void;
 }
@@ -237,7 +246,8 @@ export function FileViewRenderer (props: FileViewRendererProps) {
     </div>;
 }
 
-interface VariableViewRendererProps extends CommonViewRendererProps, ItemObject.Variable, CommonRootComponentProps {
+interface VariableViewRendererProps extends CommonViewRendererProps, ItemObject.Variable, CommonRootComponentProps
+{
     onContentUpdate? (): void;
 }
 

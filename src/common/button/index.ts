@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 
 export { default } from "./button";
@@ -5,7 +11,8 @@ export { default } from "./button";
 /**
  * Custom properties for button component
  */
-export interface ButtonProps {
+export interface ButtonProps
+{
     // Button text
     children: any;
 

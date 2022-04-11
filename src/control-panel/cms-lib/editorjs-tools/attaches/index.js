@@ -1,10 +1,15 @@
-import './index.scss';
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
 
-import Uploader from './uploader';
-import Icon from './svg/toolbox.svg';
-import FileIcon from './svg/standard.svg';
-import CustomFileIcon from './svg/custom.svg';
-import DownloadIcon from './svg/arrow-download.svg';
+import "./index.scss";
+
+import Uploader from "./uploader";
+import Icon from "./svg/toolbox.svg";
+import FileIcon from "./svg/standard.svg";
+import CustomFileIcon from "./svg/custom.svg";
 
 const LOADER_TIMEOUT = 500;
 
@@ -48,24 +53,26 @@ const LOADER_TIMEOUT = 500;
  * @property {string} placeholder
  * @property {string} errorMessage
  * @property {object} [uploader] - optional custom uploader
- * @property {function(File): Promise.<UploadResponseFormat>} [uploader.uploadByFile] - custom method that upload file and returns response
+ * @property {function(File): Promise.<UploadResponseFormat>} [uploader.uploadByFile] - custom method that upload file
+ *     and returns response
  */
 
 /**
  * @class AttachesTool
  * @classdesc AttachesTool for Editor.js 2.0
  *
- * @property {API} api - Editor.js API
+ * @property api - Editor.js API
  * @property {AttachesToolData} data
  * @property {AttachesToolConfig} config
  */
-export default class AttachesTool {
+export default class AttachesTool
+{
     /**
      * @param {AttachesToolData} data
      * @param {object} config
-     * @param {API} api
+     * @param api
      */
-    constructor({data, config, api}) {
+    constructor ({ data, config, api }) {
         this.api = api;
 
         this.nodes = {
@@ -76,15 +83,15 @@ export default class AttachesTool {
 
         this._data = {
             file: {},
-            title: ''
+            title: ""
         };
 
         this.config = {
-            endpoint: config.endpoint || '',
-            field: config.field || 'file',
-            types: config.types || '*',
-            buttonText: config.buttonText || 'Select file to upload',
-            errorMessage: config.errorMessage || 'File upload failed',
+            endpoint: config.endpoint || "",
+            field: config.field || "file",
+            types: config.types || "*",
+            buttonText: config.buttonText || "Select file to upload",
+            errorMessage: config.errorMessage || "File upload failed",
             uploader: config.uploader || undefined,
             additionalRequestHeaders: config.additionalRequestHeaders || {}
         };
@@ -108,17 +115,17 @@ export default class AttachesTool {
      * icon - Tool icon's SVG
      * title - title to show in toolbox
      */
-    static get toolbox() {
+    static get toolbox () {
         return {
             icon: Icon,
-            title: 'Файл'
+            title: "Файл"
         };
     }
 
     /**
      * Tool's CSS classes
      */
-    get CSS() {
+    get CSS () {
         return {
             baseClass: this.api.styles.block,
             apiButton: this.api.styles.button,
@@ -126,52 +133,52 @@ export default class AttachesTool {
             /**
              * Tool's classes
              */
-            wrapper: 'cdx-attaches',
-            wrapperWithFile: 'cdx-attaches--with-file',
-            wrapperLoading: 'cdx-attaches--loading',
-            button: 'cdx-attaches__button',
-            title: 'cdx-attaches__title',
-            size: 'cdx-attaches__size',
-            downloadButton: 'cdx-attaches__download-button',
-            fileInfo: 'cdx-attaches__file-info',
-            fileIcon: 'cdx-attaches__file-icon'
+            wrapper: "cdx-attaches",
+            wrapperWithFile: "cdx-attaches--with-file",
+            wrapperLoading: "cdx-attaches--loading",
+            button: "cdx-attaches__button",
+            title: "cdx-attaches__title",
+            size: "cdx-attaches__size",
+            downloadButton: "cdx-attaches__download-button",
+            fileInfo: "cdx-attaches__file-info",
+            fileIcon: "cdx-attaches__file-icon"
         };
     }
 
     /**
      * Possible files' extension colors
      */
-    get EXTENSIONS() {
+    get EXTENSIONS () {
         return {
-            doc: '#3e74da',
-            docx: '#3e74da',
-            odt: '#3e74da',
-            pdf: '#d47373',
-            rtf: '#656ecd',
-            tex: '#5a5a5b',
-            txt: '#5a5a5b',
-            pptx: '#e07066',
-            ppt: '#e07066',
-            mp3: '#eab456',
-            mp4: '#f676a6',
-            xls: '#3f9e64',
-            html: '#2988f0',
-            htm: '#2988f0',
-            png: '#f676a6',
-            jpg: '#f67676',
-            jpeg: '#f67676',
-            gif: '#f6af76',
-            zip: '#4f566f',
-            rar: '#4f566f',
-            exe: '#e26f6f',
-            svg: '#bf5252',
-            key: '#e07066',
-            sketch: '#df821c',
-            ai: '#df821c',
-            psd: '#388ae5',
-            dmg: '#e26f6f',
-            json: '#2988f0',
-            csv: '#3f9e64'
+            doc: "#3e74da",
+            docx: "#3e74da",
+            odt: "#3e74da",
+            pdf: "#d47373",
+            rtf: "#656ecd",
+            tex: "#5a5a5b",
+            txt: "#5a5a5b",
+            pptx: "#e07066",
+            ppt: "#e07066",
+            mp3: "#eab456",
+            mp4: "#f676a6",
+            xls: "#3f9e64",
+            html: "#2988f0",
+            htm: "#2988f0",
+            png: "#f676a6",
+            jpg: "#f67676",
+            jpeg: "#f67676",
+            gif: "#f6af76",
+            zip: "#4f566f",
+            rar: "#4f566f",
+            exe: "#e26f6f",
+            svg: "#bf5252",
+            key: "#e07066",
+            sketch: "#df821c",
+            ai: "#df821c",
+            psd: "#388ae5",
+            dmg: "#e26f6f",
+            json: "#2988f0",
+            csv: "#3f9e64"
         };
     }
 
@@ -180,7 +187,7 @@ export default class AttachesTool {
      *
      * @returns {AttachesToolData}
      */
-    get data() {
+    get data () {
         return this._data;
     }
 
@@ -189,7 +196,7 @@ export default class AttachesTool {
      *
      * @param {AttachesToolData} data
      */
-    set data({file, title}) {
+    set data ({ file, title }) {
         this._data = Object.assign({}, {
             file: {
                 url: (file && file.url) || this._data.file.url,
@@ -206,15 +213,11 @@ export default class AttachesTool {
      * - check for emptiness
      *
      * @param {AttachesToolData} savedData — data received after saving
-     * @returns {boolean} false if saved data is not correct, otherwise true
+     * @returns {string} false if saved data is not correct, otherwise true
      * @public
      */
-    validate(savedData) {
-        if (!savedData.file.url) {
-            return false;
-        }
-
-        return true;
+    validate (savedData) {
+        return savedData.file.url;
     }
 
     /**
@@ -223,14 +226,14 @@ export default class AttachesTool {
      * @param {HTMLElement} toolsContent
      * @returns {AttachesToolData}
      */
-    save(toolsContent) {
+    save (toolsContent) {
         /**
          * If file was uploaded
          */
         if (this.pluginHasData()) {
-            const title = toolsContent.querySelector(`.${this.CSS.title}`).innerHTML;
+            const title = toolsContent.querySelector(`.${ this.CSS.title }`).innerHTML;
 
-            Object.assign(this.data, {title});
+            Object.assign(this.data, { title });
         }
 
         return this.data;
@@ -241,10 +244,10 @@ export default class AttachesTool {
      *
      * @returns {HTMLDivElement}
      */
-    render() {
-        const holder = this.make('div', this.CSS.baseClass);
+    render () {
+        const holder = this.make("div", this.CSS.baseClass);
 
-        this.nodes.wrapper = this.make('div', this.CSS.wrapper);
+        this.nodes.wrapper = this.make("div", this.CSS.wrapper);
 
         if (this.pluginHasData()) {
             this.showFileData();
@@ -260,10 +263,10 @@ export default class AttachesTool {
     /**
      * Prepares button for file uploading
      */
-    prepareUploadButton() {
-        this.nodes.button = this.make('div', [this.CSS.apiButton, this.CSS.button]);
-        this.nodes.button.innerHTML = `${Icon} ${this.config.buttonText}`;
-        this.nodes.button.addEventListener('click', this.enableFileUpload);
+    prepareUploadButton () {
+        this.nodes.button = this.make("div", [ this.CSS.apiButton, this.CSS.button ]);
+        this.nodes.button.innerHTML = `${ Icon } ${ this.config.buttonText }`;
+        this.nodes.button.addEventListener("click", this.enableFileUpload);
         this.nodes.wrapper.appendChild(this.nodes.button);
     }
 
@@ -273,7 +276,7 @@ export default class AttachesTool {
      *
      * @public
      */
-    appendCallback() {
+    appendCallback () {
         this.nodes.button.click();
     }
 
@@ -282,14 +285,14 @@ export default class AttachesTool {
      *
      * @returns {boolean}
      */
-    pluginHasData() {
-        return this.data.title !== '' || Object.values(this.data.file).some(item => item !== undefined);
+    pluginHasData () {
+        return this.data.title !== "" || Object.values(this.data.file).some(item => item !== undefined);
     }
 
     /**
      * Allow to upload files on button click
      */
-    async enableFileUpload() {
+    async enableFileUpload () {
         this.uploader.uploadSelectedFile({
             onPreview: () => {
                 this.nodes.wrapper.classList.add(this.CSS.wrapperLoading, this.CSS.loader);
@@ -303,20 +306,20 @@ export default class AttachesTool {
      *
      * @param {UploadResponseFormat} response
      */
-    onUpload(response) {
+    onUpload (response) {
         const body = response;
 
         if (body.success && body.file) {
-            const {url, name, size, title} = body.file;
+            const { url, name, size, title } = body.file;
 
             this.data = {
                 file: {
                     url,
-                    extension: name ? name.split('.').pop() : '',
+                    extension: name ? name.split(".").pop() : "",
                     name,
-                    size,
+                    size
                 },
-                title,
+                title
             };
 
             this.nodes.button.remove();
@@ -332,17 +335,17 @@ export default class AttachesTool {
     /**
      * Handles uploaded file's extension and appends corresponding icon
      */
-    appendFileIcon() {
-        const extension = this.data.file.extension || '';
+    appendFileIcon () {
+        const extension = this.data.file.extension || "";
         const extensionColor = this.EXTENSIONS[extension];
 
-        const fileIcon = this.make('div', this.CSS.fileIcon, {
+        const fileIcon = this.make("div", this.CSS.fileIcon, {
             innerHTML: extensionColor ? CustomFileIcon : FileIcon
         });
 
         if (extensionColor) {
             fileIcon.style.color = extensionColor;
-            fileIcon.setAttribute('data-extension', extension);
+            fileIcon.setAttribute("data-extension", extension);
         }
 
         this.nodes.wrapper.appendChild(fileIcon);
@@ -351,24 +354,24 @@ export default class AttachesTool {
     /**
      * Removes tool's loader
      */
-    removeLoader() {
+    removeLoader () {
         setTimeout(() => this.nodes.wrapper.classList.remove(this.CSS.wrapperLoading, this.CSS.loader), LOADER_TIMEOUT);
     }
 
     /**
      * If upload is successful, show info about the file
      */
-    showFileData() {
+    showFileData () {
         this.nodes.wrapper.classList.add(this.CSS.wrapperWithFile);
 
-        const {file: {size, url}, title} = this.data;
+        const { file: { size }, title } = this.data;
 
         this.appendFileIcon();
 
-        const fileInfo = this.make('div', this.CSS.fileInfo);
+        const fileInfo = this.make("div", this.CSS.fileInfo);
 
         if (title) {
-            this.nodes.title = this.make('div', this.CSS.title, {
+            this.nodes.title = this.make("div", this.CSS.title, {
                 contentEditable: true
             });
 
@@ -379,29 +382,22 @@ export default class AttachesTool {
         if (size) {
             let sizePrefix;
             let formattedSize;
-            const fileSize = this.make('div', this.CSS.size);
+            const fileSize = this.make("div", this.CSS.size);
 
             if (Math.log10(+size) >= 6) {
-                sizePrefix = 'MiB';
+                sizePrefix = "MiB";
                 formattedSize = size / Math.pow(2, 20);
             } else {
-                sizePrefix = 'KiB';
+                sizePrefix = "KiB";
                 formattedSize = size / Math.pow(2, 10);
             }
 
             fileSize.textContent = formattedSize.toFixed(1);
-            fileSize.setAttribute('data-size', sizePrefix);
+            fileSize.setAttribute("data-size", sizePrefix);
             fileInfo.appendChild(fileSize);
         }
 
         this.nodes.wrapper.appendChild(fileInfo);
-
-        const downloadIcon = this.make('a', this.CSS.downloadButton, {
-            innerHTML: DownloadIcon,
-            href: url,
-            target: '_blank',
-            rel: 'nofollow noindex noreferrer'
-        });
 
         // this.nodes.wrapper.appendChild(downloadIcon);
     }
@@ -411,10 +407,10 @@ export default class AttachesTool {
      *
      * @param {string} errorMessage -  error message
      */
-    uploadingFailed(errorMessage) {
+    uploadingFailed (errorMessage) {
         this.api.notifier.show({
             message: errorMessage,
-            style: 'error'
+            style: "error"
         });
 
         this.removeLoader();
@@ -425,7 +421,7 @@ export default class AttachesTool {
      *
      * @param {HTMLElement} element - contentEditable element
      */
-    moveCaretToEnd(element) {
+    moveCaretToEnd (element) {
         const range = document.createRange();
         const selection = window.getSelection();
 
@@ -443,7 +439,7 @@ export default class AttachesTool {
      * @param attributes
      * @returns {HTMLElement}
      */
-    make(tagName, classNames = null, attributes = {}) {
+    make (tagName, classNames = null, attributes = {}) {
         const el = document.createElement(tagName);
 
         if (Array.isArray(classNames)) {

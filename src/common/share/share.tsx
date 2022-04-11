@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Alexandr <re-knownout> knownout@hotmail.com
+ * Licensed under the GNU Affero General Public License v3.0 License (AGPL-3.0)
+ * https://github.com/re-knownout/mineco-application
+ */
+
 import React from "react";
 import "./share.scss";
 
@@ -21,7 +27,8 @@ const sourcesList = {
     "facebook": [ "www.facebook.com/sharer/sharer.php?u={link}", [ 526, 460 ], "facebook-color" ]
 };
 
-interface ShareButtonProps {
+interface ShareButtonProps
+{
     // Share link with {title} and {url} placeholders
     link: string;
 
@@ -40,7 +47,8 @@ interface ShareButtonProps {
     current: string;
 }
 
-interface ShareComponentProps {
+interface ShareComponentProps
+{
     // Which buttons display
     sources: Partial<{ [key in keyof typeof sourcesList]: boolean }>;
 
