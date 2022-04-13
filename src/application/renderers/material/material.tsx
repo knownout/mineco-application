@@ -4,7 +4,7 @@
  * https://github.com/re-knownout/mineco-application
  */
 
-import Blocks from "editorjs-blocks-react-renderer";
+import Blocks, { Block } from "editorjs-blocks-react-renderer";
 import React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Link, useLocation } from "react-router-dom";
@@ -16,7 +16,6 @@ import { ItemObject } from "../../../control-panel/components/root-form/item-obj
 import classNames from "../../../lib/class-names";
 import convertDate from "../../../lib/convert-date";
 import MakeFormData from "../../../lib/make-form-data";
-import mergeImages from "../../../lib/merge-images";
 
 import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
 import { RequestOptions, Response } from "../../../lib/types/requests";
@@ -39,6 +38,7 @@ import {
     WarningRenderer
 } from "./renderers";
 import ScrollController from "../../../lib/scroll-controller";
+import { mergeObjects, Random } from "@knownout/lib";
 
 interface UseMaterialDataProps
 {
@@ -78,7 +78,16 @@ export function useMaterialData ({ setMaterial, setError, setLoading, identifier
         }
 
         // Merge images (if can)
-        mergeImages(content.content.blocks);
+        content.content.blocks = mergeObjects(content.content.blocks, [ "type", "image" ]).map(block => {
+            if (!Array.isArray(block)) return block as Block;
+            return {
+                id: Random.string(10),
+                type: "carousel",
+                data: {
+                    files: block.map(item => item.data.file.url)
+                }
+            } as Block;
+        });
 
         // Load all material images before complete loading
         ApplicationBuilder.waitForImages([

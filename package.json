@@ -92,5 +92,8 @@
         "build": "webpack --mode=\"production\" --devtool=\"none\"",
         "start": "webpack-dev-server --mode=\"development\" --devtool=\"eval-source-map\" --",
         "start:8090": "webpack-dev-server --mode=\"development\" --port 8090 --no-live-reload --devtool=\"hidden-source-map\" --"
+    },
+    "devDependencies": {
+        "@knownout/lib": "^0.0.8"
     }
 }
