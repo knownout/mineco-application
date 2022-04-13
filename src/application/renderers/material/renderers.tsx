@@ -86,7 +86,7 @@ const CarouselRenderer: RenderFn<{ files: string[] }> = props => {
 
     return <div className="carousel editor-block ui flex row no-wrap">
         <div className="arrow left ui grid center" onClick={ () => onButtonClick(true) }>
-            <i className="bi bi-arrow-left-square-fill" />
+            <i className="bi bi-caret-left-fill" />
         </div>
         <div className="display-layer ui flex row">
             <div className="wrapper ui flex row w-100" style={ { transform: `translateX(-${ 100 * current }%)` } }>
@@ -95,7 +95,7 @@ const CarouselRenderer: RenderFn<{ files: string[] }> = props => {
             </div>
         </div>
         <div className="arrow right ui grid center margin-left-auto" onClick={ () => onButtonClick(false) }>
-            <i className="bi bi-arrow-right-square-fill" />
+            <i className="bi bi-caret-right-fill" />
         </div>
     </div>;
 };

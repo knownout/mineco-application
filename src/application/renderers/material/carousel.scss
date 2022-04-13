@@ -7,51 +7,80 @@
 div.carousel.editor-block {
     position: relative;
 
+    overflow: hidden;
+    align-items: center;
+
     width: 100%;
     height: fit-content;
-
-    overflow: hidden;
+    gap: 10px;
 
     div.arrow {
-        width: 30px;
+        font-size: 26px;
 
-        font-size: 20px;
+        position: absolute !important;
+        z-index: 10;
+        display: grid;
+        width: 50px;
+        min-width: 50px;
+
+        height: 100px;
+        min-height: 100px;
+
         cursor: pointer;
         transition: 100ms ease all;
 
-        color: rgba(#2D5041, .7);
+        opacity: .7;
+        color: lighten(#5CB68C, 40%);
+        //color: rgba(#2D5041, .7);
 
-        border-radius: 10px 0 0 10px;
-        background: rgba(#3E725B, .12);
+        border-radius: 10px;
+
+        background: #3E725B;
+        box-shadow: 0 0 10px rgba(#000, .1);
+
+        place-items: center;
 
         &:hover {
-            background: rgba(#3E725B, .2);
+            transform: scale(1.1, 1.1);
+            opacity: 1;
         }
 
         &:active {
             i { transform: scale(0.9, 0.9) }
         }
 
+        &.left {
+            left: 10px;
+        }
+
         &.right {
-            border-radius: 0 10px 10px 0;
+            right: 10px;
+            left: unset;
         }
     }
 
     div.display-layer {
         position: relative;
-        width: calc(100% - 60px);
-        height: fit-content;
-
+        display: block;
         overflow: hidden;
+        width: 100%;
+
+        height: min-content;
+        border-radius: 10px;
+        background: rgba(#3E725B, .1);
 
         div.wrapper {
+            align-items: center;
+            height: min-content;
+
             transition: 300ms ease all;
         }
 
         img {
             position: relative;
             width: 100%;
-            height: auto;
+            height: min-content;
+            border-radius: 10px;
         }
     }
 }
