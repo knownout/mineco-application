@@ -4,18 +4,23 @@
  * https://github.com/re-knownout/mineco-application
  */
 
+import { StringProcessor } from "@knownout/lib";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { ItemObject } from "../../../../control-panel/components/root-form/item-object-renderers/renderers";
 import convertDate from "../../../../lib/convert-date";
 import { appRoutesList, makeRoute, serverRoutesList } from "../../../../lib/routes-list";
-import { setWordsLimit } from "../../../../lib/words-limit";
 import remarkConfig from "../../remark-config";
 
 export default function SearchResultItem (props: { material: ItemObject.Material }) {
-    const getDescription = (description: string) =>
-        setWordsLimit(description.replace(/<[^>]+>/g, "").trim(), 40);
+    const getDescription = (description: string) => {
+        const stringProcessor = new StringProcessor(description);
+        stringProcessor.clean;
+        stringProcessor.limitWordsCount(40);
+
+        return stringProcessor.entry;
+    };
 
     const material = <div className="search-result-item ui flex column">
         <div className="preview-image ui w-100"
