@@ -4,6 +4,7 @@
  * https://github.com/re-knownout/mineco-application
  */
 
+import { StringProcessor } from "@knownout/lib";
 import React from "react";
 
 import ReactMarkdown from "react-markdown";
@@ -14,7 +15,6 @@ import { ItemObject } from "../../../../control-panel/components/root-form/item-
 import convertDate from "../../../../lib/convert-date";
 
 import { appRoutesList, serverRoutesList } from "../../../../lib/routes-list";
-import { setWordsLimit } from "../../../../lib/words-limit";
 
 import remarkConfig from "../../remark-config";
 
@@ -76,6 +76,11 @@ export function Material (props: MaterialProps) {
     const previewImage = serverRoutesList.getFile(props.material.preview, false);
 
     const description = props.material.description.replace(/<[^>/]+>(.*)<\/[^>]>/g, "$1");
+    const stringProcessor = new StringProcessor(description);
+
+    stringProcessor.clean;
+    stringProcessor.limitWordsCount(props.wordsLimit || 60);
+
     return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link w-fit"
                  ref={ ref => props.reference && props.reference(ref) }>
         <article className="material ui">
@@ -87,10 +92,7 @@ export function Material (props: MaterialProps) {
                 </span>
                 <div className="description ui clean">
                     <ReactMarkdown remarkPlugins={ remarkConfig }
-                                   children={ setWordsLimit(description.replace(/<[^>]+>/g, "")
-                                       .replace(/s{2,}/g, " ")
-                                       .trim(), props.wordsLimit
-                                       ? props.wordsLimit : 60) } />
+                                   children={ stringProcessor.entry } />
                 </div>
             </div>
             <div className="extra-controls ui absolute flex row">
