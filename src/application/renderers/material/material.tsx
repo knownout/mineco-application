@@ -4,6 +4,7 @@
  * https://github.com/re-knownout/mineco-application
  */
 
+import { mergeObjects, Random } from "@knownout/lib";
 import Blocks, { Block } from "editorjs-blocks-react-renderer";
 import React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -18,6 +19,7 @@ import convertDate from "../../../lib/convert-date";
 import MakeFormData from "../../../lib/make-form-data";
 
 import { makeRoute, serverRoutesList } from "../../../lib/routes-list";
+import ScrollController from "../../../lib/scroll-controller";
 import { RequestOptions, Response } from "../../../lib/types/requests";
 import { ApplicationContext } from "../../application";
 
@@ -37,8 +39,6 @@ import {
     TableRenderer,
     WarningRenderer
 } from "./renderers";
-import ScrollController from "../../../lib/scroll-controller";
-import { mergeObjects, Random } from "@knownout/lib";
 
 interface UseMaterialDataProps
 {
@@ -157,9 +157,6 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
 
     const identifier = useMaterialData({ setMaterial, setError, setLoading });
 
-    // If material not found or no identifier provided, show 404 page
-    if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
-
     const onComponentScroll = React.useCallback((scrollTop: number) => {
         if (loading) return;
 
@@ -167,6 +164,9 @@ export default function MaterialRenderer (props: { strict?: boolean }) {
             scrollTop != scrollController.scrollState && scrollController.saveScrollState(scrollTop);
         else scrollController.scrollState != 0 && scrollController.saveScrollState(0);
     }, [ path, loading ]);
+
+    // If material not found or no identifier provided, show 404 page
+    if (!identifier || (error && error == "no-material-file")) return <NotFoundPage />;
 
     return <PageFactory loader={ <Loading display={ !material || loading } error={ error } /> }
                         normalWidth={ normalWidth } ref={ pageFactory } onScroll={ onComponentScroll }>
