@@ -6,23 +6,23 @@
 
 div.file-selector.ui.container.scroll {
     position: fixed;
-    top: 0;
-    left: 0;
-
     z-index: 200;
+    top: 0;
+
+    left: 0;
+    display: block !important;
+    overflow: hidden;
+
+    overflow-y: auto;
+
+    height: 100%;
+
     transition: 100ms ease all;
     transform: scale(0.9, 0.9);
 
-    display: block !important;
-
     pointer-events: none;
-
     opacity: 0;
     background: rgba(#ccc, .95);
-
-    height: 100%;
-    overflow: hidden;
-    overflow-y: auto;
 
     button {
         min-height: 58px !important;
@@ -39,10 +39,16 @@ div.file-selector.ui.container.scroll {
         height: fit-content !important;
 
         margin: 0 auto;
+        padding-bottom: 0 !important;
 
         div.items-list {
             position: relative;
             height: fit-content !important;
+            padding: 3px 3px 0;
+
+            div.file-object:last-child {
+                margin-bottom: 10px;
+            }
         }
 
         button {
