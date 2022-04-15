@@ -79,7 +79,9 @@ div.carousel.editor-block {
 
         img {
             position: relative;
-            width: min-content;
+
+            width: max-content;
+            min-width: 100%;
             max-width: 100%;
             height: min-content;
             border-radius: 10px;
