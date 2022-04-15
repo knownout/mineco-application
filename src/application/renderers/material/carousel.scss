@@ -63,7 +63,8 @@ div.carousel.editor-block {
         position: relative;
         display: block;
         overflow: hidden;
-        width: 100%;
+        //width: 100%;
+        width: max-content;
 
         height: min-content;
         border-radius: 10px;
@@ -78,7 +79,8 @@ div.carousel.editor-block {
 
         img {
             position: relative;
-            width: 100%;
+            width: min-content;
+            max-width: 100%;
             height: min-content;
             border-radius: 10px;
         }

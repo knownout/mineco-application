@@ -89,7 +89,7 @@ const CarouselRenderer: RenderFn<{ files: string[] }> = props => {
             <i className="bi bi-caret-left-fill" />
         </div>
         <div className="display-layer ui flex row">
-            <div className="wrapper ui flex row w-100" style={ { transform: `translateX(-${ 100 * current }%)` } }>
+            <div className="wrapper ui flex row" style={ { transform: `translateX(-${ 100 * current }%)` } }>
                 { props.data.files.map((file, index) =>
                     <img src={ file } alt="" key={ index } />) }
             </div>
