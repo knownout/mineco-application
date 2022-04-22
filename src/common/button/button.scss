@@ -5,19 +5,21 @@
  */
 
 button.button-component {
-    min-width: fit-content;
     overflow: hidden;
+    min-width: fit-content;
     transition: 300ms ease all;
 
     i.button-icon {
+        font-size: 14px;
+        overflow: hidden;
+
         width: 16px;
         height: 16px;
-
         margin-right: 6px;
-        overflow: hidden;
-        font-size: 14px;
         transition: inherit;
         transition-delay: 50ms;
+        pointer-events: none;
+
         opacity: 1;
     }
 
@@ -25,18 +27,23 @@ button.button-component {
         margin-right: 15px;
         transition: inherit;
         transition-delay: 50ms;
+        pointer-events: none;
+    }
+
+    span {
+        pointer-events: none;
     }
 
     // Hide loading spinner when not performing async content
     &:not(.waiting) {
         i.ui.loading-spinner.dark {
+            overflow: hidden;
             width: 0;
-            min-width: 0;
 
+            min-width: 0;
             height: 0;
             min-height: 0;
             margin-right: 0;
-            overflow: hidden;
             transition: inherit;
             opacity: 0;
             border-width: 0;
@@ -48,10 +55,10 @@ button.button-component {
         opacity: .4;
 
         i.button-icon {
+            font-size: 0;
             width: 0;
             height: 0;
             margin: 0;
-            font-size: 0;
             opacity: 0;
         }
 

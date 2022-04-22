@@ -29,6 +29,7 @@ import FileSelect from "../file-select";
 
 import { CommonViewRendererProps } from "../item-objects-view";
 import { defaultLocalization, defaultToolsList } from "./editor-js-config";
+import copyToClipboard from "../../../../../lib/copy-to-clipboard";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file.
@@ -228,6 +229,14 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                           onChange={ checkState => setMaterialProps({ pinned: checkState }) }>
                     Закрепить материал
                 </CheckBox>
+
+                <Button onClick={ (event) => {
+                    const target = event.target as HTMLButtonElement;
+                    copyToClipboard(appRoutesList.material + materialProps.identifier)
+                        .catch(() => props.notify?.add("Ошибка копирования ссылки, попробуйте перезагрузить страницу"))
+                        .then(() => props.notify?.add("Ссылка на материал скопирована в буфер"))
+                        .finally(() => target.focus());
+                } }>Копировать ссылку</Button>
             </div>
 
             {/* Material tags list */ }
