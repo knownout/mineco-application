@@ -50,7 +50,7 @@ export default function SearchRenderer () {
         };
     }, [ params.tag, params.page ]);
 
-    const materialsList = <PaginationRenderer total={ Math.ceil(totalMaterials / materialsPerPage) }
+    const materialsList = <PaginationRenderer total={ Math.ceil(totalMaterials / materialsPerPage) } tag={ params.tag }
                                               setPageRef={ setPageRef } onPageChange={ () => {
         if (!pageFactory.current) return;
 

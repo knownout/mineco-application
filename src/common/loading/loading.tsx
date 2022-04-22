@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import classNames from "../../lib/class-names";
 import Button from "../button";
 import "./loading.scss";
+import { createPortal } from "react-dom";
 
 interface LoadingProps
 {
@@ -51,13 +52,13 @@ export default function Loading (props: LoadingProps) {
     const errorForm = props.errorHandlerProxy ? props.errorHandlerProxy(props.error, defaultErrorForm)
         : defaultErrorForm;
 
-    return <div className={ rootClassName }>
+    return createPortal(<div className={ rootClassName }>
         <div className="ui content-wrapper padding grid center">
             { !props.error && <i className={ classNames("ui loading-spinner", { big: !props.children }) } /> }
             { !props.error && props.children && <span className="text">{ props.children }</span> }
             { props.error && errorForm }
         </div>
-    </div>;
+    </div>, document.body);
 }
 
 /**

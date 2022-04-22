@@ -125,7 +125,7 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
 
     // Separate file name and extension
     const fileName = {
-        name: fileNameArray.slice(0, -1).join("."),
+        name: fileNameArray.slice(0, -1).join(".").replace(/@\d{6}-\d{6}/g, ""),
         extension: fileNameArray.slice(-1)[0]
     };
 
@@ -137,7 +137,7 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
     if (renderer.filter && !renderer.filter.includes(renderer.filename.split(".").slice(-1)[0].toLowerCase()))
         return null;
 
-    const name = fileName.name.split("/").slice(1).join("/");
+    const name = fileName.name.split("/").slice(1).join("/").replace(/@\d{6}-\d{6}/g, "");
 
     const canRenderPreview = [ "png", "jpg", "jpeg" ]
         .includes(String(renderer.filename.split(".").pop()).toLocaleLowerCase());
