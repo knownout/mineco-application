@@ -35,6 +35,7 @@ import {
     CarouselRenderer,
     FileRenderer,
     HeaderRenderer,
+    ImageRenderer,
     RawHTMLRenderer,
     TableRenderer,
     WarningRenderer
@@ -223,7 +224,8 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
                     attaches: FileRenderer,
                     warning: WarningRenderer,
                     header: HeaderRenderer,
-                    carousel: CarouselRenderer
+                    carousel: CarouselRenderer,
+                    image: ImageRenderer
                 } } />
             </div>
 

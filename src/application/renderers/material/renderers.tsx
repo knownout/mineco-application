@@ -6,6 +6,8 @@
 
 import { RenderFn } from "editorjs-blocks-react-renderer";
 import Table from "editorjs-blocks-react-renderer/dist/renderers/table";
+import Image from "editorjs-blocks-react-renderer/dist/renderers/image";
+
 import HTMLReactParser from "html-react-parser";
 import React from "react";
 import classNames from "../../../lib/class-names";
@@ -100,11 +102,19 @@ const CarouselRenderer: RenderFn<{ files: string[] }> = props => {
     </div>;
 };
 
+const ImageRenderer: RenderFn<{ caption: string, file: { url: string } }> = props => {
+    props.data.file.url = props.data.file.url
+        .replace(/https?:\/\/.*\.gospmr\.org/, "")
+        .replace(/https?:\/\/192\.168\.\d{1,3}\.\d{1,3}:?\d{0,5}(?=\/)/g, "");
+    return Image(props as any);
+};
+
 export {
     TableRenderer,
     FileRenderer,
     WarningRenderer,
     HeaderRenderer,
     CarouselRenderer,
-    RawHTMLRenderer
+    RawHTMLRenderer,
+    ImageRenderer
 };
