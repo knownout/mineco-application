@@ -15,14 +15,15 @@ import Carousel from "../../../../common/carousel";
  * @constructor
  */
 export default function UsefulLinks (props: { links: VariablesStorage["usefulLinks"] }) {
-    function Link (props: { title: string; link: string }) {
-        const generateIcon = (domain: string) => `/public/link-icons/${ domain }.png`;
+    function Link (props: { title: string; link: [ string, string ] }) {
+        if (!Array.isArray(props.link)) return null;
 
-        const { hostname } = new URL(props.link);
-        return <a href={ props.link } className="useful-link ui clean color-white flex column center gap"
+        const url = props.link[0],
+            image = props.link[1];
+        return <a href={ url } className="useful-link ui clean color-white flex column center gap"
                   target="_blank">
             <div className="icon-holder ui grid center">
-                <img src={ generateIcon(hostname) } alt={ props.title } />
+                <img src={ image } alt={ props.title } />
             </div>
             <span className="link-title ui upper fw-700 fz-14 lh-22">{ props.title }</span>
         </a>;
@@ -34,6 +35,8 @@ export default function UsefulLinks (props: { links: VariablesStorage["usefulLin
     Object.entries(props.links).forEach((entry, index) => {
         // Each chunk will have N items (4)
         if (index % 4 == 0) chunks.push([]);
+
+
         chunks[chunks.length - 1].push(<Link title={ entry[0] } link={ entry[1] } key={ Math.random() } />);
     });
 

@@ -79,7 +79,7 @@ interface CommonRendererProps
 {
     selected: boolean;
 
-    onClick? (event: React.MouseEvent<HTMLDivElement>): void;
+    onClick? (event: React.MouseEvent<HTMLElement>): void;
 }
 
 /**
@@ -129,7 +129,7 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
         extension: fileNameArray.slice(-1)[0]
     };
 
-    const rootClassName = classNames("file-object ui flex column gap-5 padding-20", {
+    const rootClassName = classNames("file-object ui flex row gap padding-20 center-ai", {
         selected: renderer.selected
     });
 
@@ -142,23 +142,29 @@ export function FileRenderer (renderer: ItemObject.File & CommonRendererProps & 
     const canRenderPreview = [ "png", "jpg", "jpeg" ]
         .includes(String(renderer.filename.split(".").pop()).toLocaleLowerCase());
 
-    return <div className={ rootClassName } onClick={ renderer.onClick }>
-        <div className="file-header ui word-break-all flex row wrap center-ai gap-5">
-            <span className="extension-badge ui badge opacity-65 fz-14 lh-22">
-                { fileName.extension.toLowerCase() }
-            </span>
-            { canRenderPreview && <span className="preview-image-wrapper ui">
+    return <a className={ rootClassName } onClick={ event => {
+        event.preventDefault();
+        renderer.onClick && renderer.onClick(event);
+    } } href={ serverRoutesList.getFile(renderer.filename, false) }>
+        { canRenderPreview && <span className="preview-image-wrapper ui">
                 <img src={ serverRoutesList.getFile(renderer.filename, false) }
                      alt="" className="preview-image" />
             </span> }
-            { name.length > 0 ? name : fileName.name }
-        </div>
 
-        <div className="file-additional-data ui fz-12 opacity-50 flex row wrap gap-5">
-            <span className="identifier">#{ renderer.identifier }</span>
-            <span className="date">{ convertDate(new Date(parseInt(renderer.datetime) * 1000)) }</span>
+        <div className="wrapper ui flex column">
+            <div className="file-header ui word-break-all flex row wrap center-ai gap-5">
+            <span className="extension-badge ui badge opacity-65 fz-14 lh-22">
+                { fileName.extension.toLowerCase() }
+            </span>
+                { name.length > 0 ? name : fileName.name }
+            </div>
+
+            <div className="file-additional-data ui fz-12 opacity-50 flex row wrap gap-5">
+                <span className="date">#{ renderer.identifier } { convertDate(
+                    new Date(parseInt(renderer.datetime) * 1000)) }</span>
+            </div>
         </div>
-    </div>;
+    </a>;
 }
 
 export function VariableRenderer (renderer: ItemObject.Variable & CommonRendererProps) {

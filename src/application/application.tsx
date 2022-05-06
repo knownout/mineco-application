@@ -27,7 +27,7 @@ export interface VariablesStorage<Obj = { [key: string]: string }>
     websiteTitle: string;
 
     socialData: Obj[];
-    usefulLinks: Obj;
+    usefulLinks: { [key: string]: [ string, string ] };
 
     extraButtons: { [key: string]: [ string | null, string, string, boolean | undefined ] };
     contactData: string;

@@ -78,7 +78,7 @@ export default class ApplicationBuilder
             importantData: getValue("Важная информация", "special") as string[],
 
             socialData: getValue("Социальные сети", "json") as Obj[],
-            usefulLinks: getValue("Полезные ссылки", "json") as Obj,
+            usefulLinks: getValue("Полезные ссылки", "json") as { [key: string]: [ string, string ] },
 
             extraButtons: getValue("Кнопки (главная страница)", "json") as VariablesStorage["extraButtons"],
             contactData: getValue("Контакты (подвал)"),

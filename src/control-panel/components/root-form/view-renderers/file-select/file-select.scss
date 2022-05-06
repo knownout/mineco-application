@@ -34,11 +34,13 @@ div.file-selector.ui.container.scroll {
         opacity: 1;
     }
 
-    div.content-wrapper.ui.flex.column.limit-380.h-fit.padding.gap {
+    div.content-wrapper.ui.flex.column.h-fit.padding.gap {
         position: relative;
-        height: fit-content !important;
+        max-width: 460px !important;
 
+        height: fit-content !important;
         margin: 0 auto;
+
         padding-bottom: 0 !important;
 
         div.items-list {
@@ -46,7 +48,7 @@ div.file-selector.ui.container.scroll {
             height: fit-content !important;
             padding: 3px 3px 0;
 
-            div.file-object:last-child {
+            .file-object:last-child {
                 margin-bottom: 10px;
             }
         }

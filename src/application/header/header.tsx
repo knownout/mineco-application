@@ -16,8 +16,6 @@ import { ApplicationContext, VariablesStorage } from "../application";
 import Navigation from "../navigation";
 import "./header.scss";
 
-import Icons from "./icons";
-
 /**
  * Component for rendering social icons (like telegram, email, etc.)
  * @constructor
@@ -33,15 +31,14 @@ export function SocialDataRenderer (props: { socialData: { [key: string]: string
         // Entries that should be specially processed (like mailto:..., tel:..., etc.)
         const staticEntries = [ "email", "phone" ];
 
+        if (!Array.isArray(keyData[1])) return null;
         const title = staticEntries.includes(keyData[0])
-            ? keyData[1].split(":").slice(1).join(":")
+            ? keyData[1][0].split(":").slice(1).join(":")
             : keyData[0][0].toLocaleUpperCase() + keyData[0].slice(1).toLocaleLowerCase();
 
-        // Get icon link
-        const icon = Icons[keyData[0] as keyof typeof Icons];
         return <a href={ keyData[1] } className="ui clean flex row gap" target="_blank" key={ index }>
             <span className="icon-holder ui flex center">
-                { icon }
+                { Array.isArray(keyData[1]) && <img src={ keyData[1][1] } alt="" /> }
             </span>
             <span className="item-title">{ title }</span>
         </a>;

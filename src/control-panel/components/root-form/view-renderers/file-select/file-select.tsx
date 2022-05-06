@@ -41,7 +41,7 @@ export default function FileSelect (props: IFileSelectComponentProps) {
     return <div
         className={ classNames("file-selector ui container scroll", { display: props.display }) }>
         <Loading display={ waitContent } />
-        <div className="content-wrapper ui flex column limit-380 h-fit padding gap">
+        <div className="content-wrapper ui flex column h-fit padding gap">
             <Button icon="bi bi-cloud-arrow-up-fill" onClick={
                 () => props.uploadFile
                     && props.uploadFile(state => setContentVersion(contentVersion + Number(state)))

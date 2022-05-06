@@ -4,12 +4,14 @@
  * https://github.com/re-knownout/mineco-application
  */
 
-div.material-object, div.file-object, div.variable-object {
+div.material-object, div.file-object, a.file-object, div.variable-object {
     line-height: 20px;
     cursor: pointer;
     transition: 100ms ease all;
-
+    text-decoration: none;
     opacity: .75;
+
+    color: #111;
     background: #EEE;
 
     &:hover {
@@ -36,18 +38,37 @@ div.material-object, div.file-object, div.variable-object {
         position: relative;
         display: block;
 
-        width: 28px;
-        height: 28px;
-
         overflow: hidden;
-        border-radius: 4px;
+        width: 28px;
+
+        height: fit-content;
+        border-radius: 10px;
 
         img.preview-image {
             width: auto;
             min-width: 28px;
 
             height: 28px;
+            border-radius: 10px;
         }
+    }
+}
+
+a.file-object {
+    span.preview-image-wrapper {
+        width: 84px;
+        height: auto;
+
+        img.preview-image {
+            width: 84px;
+            height: auto;
+            border-radius: 10px;
+        }
+    }
+
+    div.file-additional-data span {
+        line-height: 14px;
+        margin-top: 4px;
     }
 }
 
