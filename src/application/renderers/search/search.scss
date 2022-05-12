@@ -6,16 +6,17 @@
 
 div.search-result {
     width: 100%;
-    max-width: 420px * 3 + 80px;
+    max-width: 100%;
 
     padding: 20px;
 
     div.pagination-page-content {
-        margin: 20px 0;
         flex-direction: row !important;
         flex-wrap: wrap;
-
         justify-content: center;
+
+        margin: 20px 0;
+
         gap: 20px;
     }
 
@@ -24,8 +25,8 @@ div.search-result {
     span, p { word-break: break-word; }
 
     div.materials-search-block, div.no-materials {
-        padding: 20px;
         line-height: 26px;
+        padding: 20px;
         color: #333;
 
         border-radius: 10px;
@@ -69,16 +70,13 @@ div.search-result {
     }
 
     a.search-result-item-holder {
-        width: 100%;
-        max-width: 420px;
+        width: 320px;
 
         div.search-result-item {
-            width: 100%;
-            max-width: 420px;
+            overflow: hidden;
+            width: 320px;
 
             height: fit-content !important;
-
-            overflow: hidden;
             cursor: pointer;
 
             transition: 100ms ease all;
@@ -93,14 +91,15 @@ div.search-result {
             }
 
             div.preview-image {
+                height: 220px !important;
                 border-radius: 10px;
                 background-color: #DDD;
-                background-position: center center;
 
+                background-position: center center;
                 background-size: cover;
             }
 
-            p { margin: 0; line-height: 24px; }
+            p { line-height: 24px; margin: 0; }
         }
     }
 }

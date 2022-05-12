@@ -6,10 +6,10 @@
 
 div.title-page section.latest-materials-block {
     display: flex;
-    margin-bottom: 20px;
     flex-direction: row;
-
     justify-content: center;
+
+    margin-bottom: 20px;
     gap: 20px;
 
     @media screen and (max-width: 720px) {
@@ -25,12 +25,12 @@ div.title-page section.latest-materials-block {
 article.material {
     position: relative;
     display: flex;
-    max-width: 320px;
-    
-    height: 610px;
     overflow: hidden;
 
     flex-direction: column;
+    max-width: 320px;
+
+    height: 610px;
     cursor: pointer;
     transition: 100ms ease all;
 
@@ -44,8 +44,8 @@ article.material {
 
     div.material-data {
         position: relative;
-        width: calc(100% - 2px);
         overflow: hidden;
+        width: calc(100% - 2px);
         transition: 100ms ease all;
 
         transform-origin: center center;
@@ -57,14 +57,14 @@ article.material {
 
     div.extra-controls {
         position: absolute;
-        width: 100%;
+        z-index: 10;
 
         bottom: 0;
         left: 0;
 
-        padding: 40px 10px 10px;
+        width: 100%;
 
-        z-index: 10;
+        padding: 40px 10px 10px;
         background: linear-gradient(0deg, #FFF 60%, transparent);
 
         button {
@@ -79,9 +79,9 @@ article.material {
     }
 
     div.preview-image {
+        overflow: hidden;
         width: 100%;
         min-height: 210px;
-        overflow: hidden;
         border-radius: 10px;
 
         background-repeat: no-repeat;

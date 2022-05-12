@@ -177,16 +177,29 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         };
 
         return <React.Fragment>
-            <div className="material-controls ui flex row border-radius-10 gap">
+            <div className="material-controls ui flex row border-radius-10">
                 <Button icon="bi bi-arrow-clockwise" onClick={ materialUpdateHandler }>Обновить</Button>
                 <Button onClick={ previewChangeHandler }>
-                    <span className="preview-image-wrapper">
+                    { materialProps.preview !== "none" && <div className="hover-large-preview">
+                        <div className="cover-image" style={ {
+                            backgroundImage: `url("${ serverRoutesList.getFile(materialProps.preview, false) }")`
+                        } } />
+                    </div> }
+
+                    { materialProps.preview !== "none" && <span className="preview-image-wrapper">
                         <img src={ serverRoutesList.getFile(materialProps.preview, false) } alt=""
                              className="preview-image" /> Открыть
-                    </span>
-                    Изменить превью
+                    </span> }
+                    { materialProps.preview === "none" ? "Установить превью" : <><i className="bi bi-x" />Удалить
+                        превью</> }
                 </Button>
                 <Button onClick={ backgroundChangeHandler }>
+                    { materialProps.background && materialProps.background !== "none" &&
+                        <div className="hover-large-preview">
+                            <div className="cover-image" style={ {
+                                backgroundImage: `url("${ serverRoutesList.getFile(materialProps.background, false) }")`
+                            } } />
+                        </div> }
                     { materialProps.background && materialProps.background != "none" &&
                         <span className="preview-image-wrapper">
                         <img src={ serverRoutesList.getFile(materialProps.background, false) } alt=""
@@ -397,6 +410,11 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
      * (will be visible after update)
      */
     async function previewChangeHandler () {
+        if (materialProps.preview !== "none") {
+            setMaterialProps({ preview: "none" });
+            return;
+        }
+
         setFileSelectDisplay(true);
 
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];

@@ -12,8 +12,9 @@ import HTMLReactParser from "html-react-parser";
 import React from "react";
 import classNames from "../../../lib/class-names";
 
-const TableRenderer: RenderFn = props => {
-    return <div className="table-wrapper">
+const TableRenderer: RenderFn<{ withHeadings?: boolean; content: string[][] }> = props => {
+    return <div className={ classNames("table-wrapper",
+        { "hide-border": props.data.withHeadings && props.data.content.length == 1 }) }>
         { Table(props as any) }
     </div>;
 };

@@ -36,7 +36,7 @@ export function SocialDataRenderer (props: { socialData: { [key: string]: string
             ? keyData[1][0].split(":").slice(1).join(":")
             : keyData[0][0].toLocaleUpperCase() + keyData[0].slice(1).toLocaleLowerCase();
 
-        return <a href={ keyData[1] } className="ui clean flex row gap" target="_blank" key={ index }>
+        return <a href={ keyData[1][0] } className="ui clean flex row gap" target="_blank" key={ index }>
             <span className="icon-holder ui flex center">
                 { Array.isArray(keyData[1]) && <img src={ keyData[1][1] } alt="" /> }
             </span>

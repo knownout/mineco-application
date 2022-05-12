@@ -12,10 +12,10 @@ div.view {
     min-height: 100%;
 
     div.view-content-wrapper {
-        width: fit-content;
-        height: 100%;
         overflow: hidden;
         overflow-y: auto;
+        width: fit-content;
+        height: 100%;
     }
 
     textarea {
@@ -61,12 +61,12 @@ div.initial-view {
 div.view.files-view {
     div.file-controls {
         position: absolute;
-        width: fit-content;
-        max-width: calc(100% - 20px);
-
         bottom: 10px;
-
         left: 10px;
+
+        width: fit-content;
+
+        max-width: calc(100% - 20px);
         padding: 10px;
         border: 1px solid rgba(#000, .1);
         border-radius: 10px;
@@ -98,11 +98,11 @@ div.view.variable-view {
     overflow-y: auto;
 
     div.view-content-wrapper {
-        width: calc(100% - 20px);
+        overflow: hidden;
 
+        width: calc(100% - 20px);
         height: calc(100% - 20px);
         padding: 20px;
-        overflow: hidden;
 
         .react-codemirror2 {
             overflow: hidden;
@@ -134,10 +134,10 @@ div.view.variable-view {
         position: relative;
         display: flex;
 
+        flex-direction: row;
         height: fit-content;
         min-height: fit-content;
         margin-top: 10px;
-        flex-direction: row;
 
         span.save-hint {
             max-width: calc(100% - 160px);
@@ -170,14 +170,54 @@ div.view.variable-view {
 
 div.view.material-view {
     button {
+        position: relative;
+        display: block;
+
+        overflow: visible;
+        pointer-events: all;
+        opacity: 1 !important;
+
+        div.hover-large-preview {
+            position: absolute;
+            bottom: 90px;
+
+            left: 0;
+
+            display: block;
+            overflow: hidden;
+
+            width: 240px;
+            height: 180px;
+
+            transition: 100ms ease all;
+            transform: translateY(10px);
+            pointer-events: none;
+            opacity: 0;
+            border: 1px solid #AAA;
+
+            border-radius: 10px;
+            background: #000;
+
+            div.cover-image {
+                width: 100%;
+                height: 100%;
+
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+            }
+        }
+
+        &:hover div.hover-large-preview { transform: translateY(0); opacity: 1; }
+
         span.preview-image-wrapper {
             position: relative;
             display: block;
 
-            width: 16px;
-            height: 16px;
-
             overflow: hidden;
+            width: 16px;
+
+            height: 16px;
             border-radius: 4px;
 
             img.preview-image {
@@ -197,12 +237,12 @@ div.view.material-view {
         padding: 20px 20px 100px;
 
         textarea {
+            line-height: 22px;
             height: 200px;
             min-height: 200px;
             margin-bottom: 20px;
-            padding: 20px;
 
-            line-height: 22px;
+            padding: 20px;
 
             opacity: .8;
         }
@@ -267,22 +307,69 @@ div.view.material-view {
 
         div.material-controls {
             position: absolute;
-            max-width: calc(100% - 20px);
+            z-index: 20;
             bottom: 10px;
 
             left: 10px;
-            padding: 10px;
-
-            z-index: 20;
             overflow: hidden;
             overflow-x: auto;
 
-            border: 1px solid rgba(#000, .1);
-            background: rgba(#D1D1D1, .75);
+            max-width: calc(100% - 20px);
+            padding: 220px 0 0;
 
-            //backdrop-filter: blur(6px);
+            pointer-events: none;
 
-            button { min-width: fit-content; }
+
+            //&::before {
+            //    position: absolute;
+            //    bottom: 9px;
+            //
+            //    left: 0;
+            //    display: block;
+            //
+            //    width: calc(100% - 2px);
+            //    height: 80px;
+            //
+            //    content: "";
+            //    pointer-events: all;
+            //
+            //    border: 1px solid rgba(#000, .1);
+            //    border-radius: inherit;
+            //    background: rgba(#D1D1D1, .75);
+            //}
+
+            button {
+                position: relative;
+                z-index: 1;
+                display: block;
+
+                min-width: fit-content;
+                color: darken(#06F, 20%);
+                border: 1px solid rgba(darken(#06F, 10%), .4);
+                background: rgba(lighten(#06F, 45%), .95);
+
+                &:hover { background: rgba(lighten(#06F, 40%), .95); }
+
+                &:active, &:focus { box-shadow: none; }
+
+                backdrop-filter: blur(5px);
+
+                &:first-child:not(:last-child) {
+                    border-right-color: transparent;
+                    border-radius: 10px 0 0 10px;
+                }
+
+                &:not(:first-child):not(:last-child) {
+                    border-right-color: transparent;
+                    border-left-color: transparent;
+                    border-radius: 0;
+                }
+
+                &:last-child:not(:first-child) {
+                    border-left-color: transparent;
+                    border-radius: 0 10px 10px 0;
+                }
+            }
         }
 
         div.ui.attachments {

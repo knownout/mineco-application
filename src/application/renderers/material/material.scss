@@ -194,6 +194,11 @@ div.material-container {
                     border: 1px solid rgba(#000, .07);
                 }
             }
+
+            &.hide-border table {
+                border-color: transparent;
+                background: transparent;
+            }
         }
 
         hr {

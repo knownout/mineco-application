@@ -36,7 +36,7 @@ div.file-selector.ui.container.scroll {
 
     div.content-wrapper.ui.flex.column.h-fit.padding.gap {
         position: relative;
-        max-width: 460px !important;
+        max-width: 520px !important;
 
         height: fit-content !important;
         margin: 0 auto;
@@ -50,6 +50,24 @@ div.file-selector.ui.container.scroll {
 
             .file-object:last-child {
                 margin-bottom: 10px;
+            }
+
+            a.file-object {
+                span.preview-image-wrapper {
+                    width: 160px;
+                    height: auto;
+
+                    img.preview-image {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 10px;
+                    }
+                }
+
+                div.file-additional-data span {
+                    line-height: 14px;
+                    margin-top: 4px;
+                }
             }
         }
 
