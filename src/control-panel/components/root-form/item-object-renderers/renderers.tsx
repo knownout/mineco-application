@@ -99,8 +99,9 @@ export function MaterialRenderer (renderer: ItemObject.Material & CommonRenderer
 
     return <div className={ rootClassName } onClick={ renderer.onClick }>
         <div className="material-header ui flex row center-ai gap">
-            <img src={ serverRoutesList.getFile(renderer.preview, false) } alt={ renderer.title }
-                 className="preview-image" />
+            { renderer.preview !== "none" &&
+                <img src={ serverRoutesList.getFile(renderer.preview, false) } alt={ renderer.title }
+                     className="preview-image" /> }
 
             <span className="material-title">{ renderer.title }</span>
         </div>

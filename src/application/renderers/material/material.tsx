@@ -251,8 +251,9 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
 function TitleBlock (props: { material: ItemObject.Material, strict?: boolean }) {
     return <div
         className="title-block ui">
-        { !props.strict && <img src={ serverRoutesList.getFile(props.material.preview, false) }
-                                alt={ props.material.title } className="preview-image ui border-radius-10" /> }
+        { !props.strict && props.material.preview !== "none" &&
+            <img src={ serverRoutesList.getFile(props.material.preview, false) }
+                 alt={ props.material.title } className="preview-image ui border-radius-10" /> }
 
         <div className="title-block-content ui flex column gap">
             <span className="material-title ui fz-28 fw-700">{ props.material.title }</span>

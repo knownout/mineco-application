@@ -101,6 +101,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     // File select dialog extension filters
     const fileSelectFilter = React.useRef<string[] | undefined>();
 
+    const fileSelectAllowDefault = React.useRef<boolean | undefined>(false);
+
     // Editor instance
     const editorJSInstance = React.useRef<EditorJS | null>(null);
 
@@ -300,6 +302,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
      */
     function editorAttachmentAddHandler () {
         fileSelectFilter.current = undefined;
+        fileSelectAllowDefault.current = false;
         setFileSelectDisplay(true);
 
         return new Promise(resolve => {
@@ -321,6 +324,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
 
     function editorImageAddHandler () {
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
+        fileSelectAllowDefault.current = false;
         setFileSelectDisplay(true);
 
         return new Promise((resolve) => {
@@ -418,6 +422,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         setFileSelectDisplay(true);
 
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
+        fileSelectAllowDefault.current = true;
         fileSelectCallback.current = (file?: ItemObject.File) => {
             if (file) setMaterialProps({ preview: file.filename });
         };
@@ -432,6 +437,7 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
         setFileSelectDisplay(true);
 
         fileSelectFilter.current = [ "jpg", "png", "jpeg" ];
+        fileSelectAllowDefault.current = true;
         fileSelectCallback.current = (file?: ItemObject.File) => {
             if (file) setMaterialProps({ background: file.filename });
         };
@@ -440,7 +446,8 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
     // Render the things that was before
     return <div className="view material-view ui grid center">
         <FileSelect callback={ fileSelectCallback } display={ fileSelectDisplay } uploadFile={ props.uploadFile }
-                    onSelectCancel={ () => setFileSelectDisplay(false) } exclude={ fileSelectFilter } />
+                    onSelectCancel={ () => setFileSelectDisplay(false) } exclude={ fileSelectFilter }
+                    allowDefault={ fileSelectAllowDefault } />
         <div className="view-content-wrapper ui flex scroll w-100 h-100 gap">
             { material && getControlsList() }
             { !material && loading && <div className="ui flex gap row w-100 h-100 center opacity-75">
