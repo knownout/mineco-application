@@ -116,24 +116,25 @@ div.title-page div.pinned-data-block {
     }
 
     section.important-data {
-        overflow: visible;
+        overflow: hidden;
 
         max-width: 380px;
         height: fit-content;
 
         max-height: 100%;
 
+        margin-right: -1px;
         border: 1px solid rgba(darken(#FFF, 10%), .2);
         border-radius: 10px;
 
         background: rgba(darken(#FFF, 10%), .1);
 
         a.infographics {
-            position: absolute;
+            margin-top: -15px;
 
-            bottom: 0;
-            width: 100%;
-            transform: translateY(calc(100% + 10px));
+            button {
+                border-radius: 0;
+            }
         }
 
         div.blocks-wrapper {
