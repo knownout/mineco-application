@@ -32,13 +32,7 @@ import PageFactory from "../page-factory";
 
 import "./material.scss";
 import {
-    CarouselRenderer,
-    FileRenderer,
-    HeaderRenderer,
-    ImageRenderer,
-    RawHTMLRenderer,
-    TableRenderer,
-    WarningRenderer
+    CarouselRenderer, FileRenderer, HeaderRenderer, ImageRenderer, RawHTMLRenderer, TableRenderer, WarningRenderer
 } from "./renderers";
 
 interface UseMaterialDataProps
@@ -79,7 +73,7 @@ export function useMaterialData ({ setMaterial, setError, setLoading, identifier
         }
 
         // Merge images (if can)
-        content.content.blocks = mergeObjects(content.content.blocks, [ "type", "image" ]).map(block => {
+        content.content.blocks = mergeObjects(content.content.blocks, { type: "image" }).map(block => {
             if (!Array.isArray(block)) return block as Block;
             return {
                 id: Random.string(10),
