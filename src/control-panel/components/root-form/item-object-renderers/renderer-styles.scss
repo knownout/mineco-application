@@ -70,6 +70,10 @@ a.file-object {
         line-height: 14px;
         margin-top: 4px;
     }
+
+    span.file-title, span.file-real-name {
+        word-break: break-word;
+    }
 }
 
 div.material-object {
