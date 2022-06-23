@@ -13,6 +13,7 @@ import CheckBox from "../../../../../common/checkbox";
 import Input from "../../../../../common/input";
 import Notify from "../../../../../common/notify";
 import classNames from "../../../../../lib/class-names";
+import copyToClipboard from "../../../../../lib/copy-to-clipboard";
 
 import MakeFormData from "../../../../../lib/make-form-data";
 
@@ -29,7 +30,6 @@ import FileSelect from "../file-select";
 
 import { CommonViewRendererProps } from "../item-objects-view";
 import { defaultLocalization, defaultToolsList } from "./editor-js-config";
-import copyToClipboard from "../../../../../lib/copy-to-clipboard";
 
 // This renderer may be too complex, so I decided
 // to move it to a separate file.
@@ -234,8 +234,10 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
             <span className="ui opacity-75">Параметры материала</span>
             <div className="material-options ui flex row wrap margin optimize gap">
                 <Input placeholder="Идентификатор" className="identifier-input" maxLength={ 156 }
-                       mask={ [ [ /\s+/g, "-" ], [ /[^A-Za-z0-9\-_]/g, "" ],
-                           [ /[A-Z]/g, (f: string) => f.toLocaleLowerCase() ] ] }
+                       mask={ [
+                           [ /\s+/g, "-" ], [ /[^A-Za-z0-9\-_]/g, "" ],
+                           [ /[A-Z]/g, (f: string) => f.toLocaleLowerCase() ]
+                       ] }
                        onInput={ value => setMaterialProps({ identifier: value }) }>
                     { materialProps.identifier }
                 </Input>
@@ -345,6 +347,12 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
      * Handler for deleting material on the server
      */
     async function materialDeleteHandler () {
+        const approve = confirm(
+            `Вы действительно хотите удалить материал #${ materialProps.identifier } ${ materialProps.title }?`
+        );
+
+        if (!approve) return;
+
         setLoading(true);
         const { formDataEntries } = await useFullAuthentication();
 
