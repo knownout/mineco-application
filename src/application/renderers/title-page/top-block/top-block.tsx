@@ -6,17 +6,18 @@
 
 import React from "react";
 
-import { ItemObject } from "../../../../control-panel/components/root-form/item-object-renderers/renderers";
-
-import { ApplicationContext } from "../../../application";
-import { appRoutesList, serverRoutesList } from "../../../../lib/routes-list";
-import convertDate from "../../../../lib/convert-date";
-
-import RemarkConfig from "../../remark-config";
-import Carousel from "../../../../common/carousel";
-
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
+import Button from "../../../../common/button";
+import Carousel from "../../../../common/carousel";
+
+import { ItemObject } from "../../../../control-panel/components/root-form/item-object-renderers/renderers";
+import convertDate from "../../../../lib/convert-date";
+import { appRoutesList, serverRoutesList } from "../../../../lib/routes-list";
+
+import { ApplicationContext } from "../../../application";
+
+import RemarkConfig from "../../remark-config";
 
 import "./top-block.scss";
 
@@ -89,6 +90,12 @@ export default function TopContentBlock (props: { pinnedMaterial: ItemObject.Mat
             <div className="blocks-wrapper ui flex row relative">
                 { carouselItems && <Carousel items={ carouselItems } /> }
             </div>
+            <Link to={ "/economic-efficiency-indicators-infographic" } className="ui clean infographics">
+                <Button>
+                    Инфографика показателей экономической эффективности сельскохозяйственного производства
+                </Button>
+            </Link>
+
         </section>
     </div>;
 }

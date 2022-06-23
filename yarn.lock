@@ -321,10 +321,10 @@
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.4.2.tgz#87e264f190dbebbf8dfdd900530da973dad24576"
   integrity sha512-N8tv7kLhg9qGKBkVdtg572BvKvWhmiudmeEpOCyNwzOsZHCXBtl8AazGikIfUS+vBoub20Fse3BjawXDVPPdug==
 
-"@knownout/lib@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@knownout/lib/-/lib-0.0.9.tgz#a5f9b6c6c6b87933c105d5dc4b6d4548607f9a42"
-  integrity sha512-fipKq0Kw5hrOZlpjQSpV49Le6prR/CuTus4X4MjHz/KdKM2AqXwaeyeIKsJnBIplntaXooP7t1Ve1BqJ975Ipw==
+"@knownout/lib@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@knownout/lib/-/lib-0.1.2.tgz#6524cf925b51a60d6c4a086bb084d87c1a344e1e"
+  integrity sha512-vdHz9P7gdnZKE4JHyIGERB6zQ9RGjspOZ2lKkqnpeb57CLU4Cj0bx+TzQPl/2xOKj17Np0fOZ4lPyirAzot0Cg==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

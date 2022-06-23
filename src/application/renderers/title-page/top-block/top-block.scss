@@ -8,15 +8,15 @@ div.title-page div.pinned-data-block {
     position: relative;
     display: flex;
 
-    height: fit-content;
-    margin-bottom: 20px;
-    padding: 20px;
-
     overflow: hidden;
-
     flex-direction: row;
-
     justify-content: center;
+
+    height: fit-content;
+
+    margin-bottom: 20px;
+
+    padding: 20px;
     color: #FFF;
 
     gap: 20px;
@@ -24,16 +24,16 @@ div.title-page div.pinned-data-block {
     div.background-image {
         display: block;
 
-        width: 100%;
-        height: 100%;
-
-        max-height: calc(100% - 40px);
-
         top: 0;
         left: 0;
 
         z-index: 1;
+
         overflow: hidden;
+        width: 100%;
+
+        height: 100%;
+        max-height: calc(100% - 40px);
 
         background-repeat: no-repeat;
 
@@ -47,14 +47,14 @@ div.title-page div.pinned-data-block {
         z-index: 3;
 
         p, a, h1, h2, h3, h4, p a {
-            word-break: break-word !important;
             white-space: normal;
+            word-break: break-word !important;
         }
 
         p {
-            margin: 0;
-
             line-height: 26px;
+
+            margin: 0;
             opacity: .8;
 
             &:not(:last-child) {
@@ -116,27 +116,35 @@ div.title-page div.pinned-data-block {
     }
 
     section.important-data {
+        overflow: visible;
+
         max-width: 380px;
-
         height: fit-content;
-        max-height: 100%;
 
-        overflow: hidden;
+        max-height: 100%;
 
         border: 1px solid rgba(darken(#FFF, 10%), .2);
         border-radius: 10px;
 
         background: rgba(darken(#FFF, 10%), .1);
 
-        div.blocks-wrapper {
+        a.infographics {
+            position: absolute;
+
+            bottom: 0;
             width: 100%;
+            transform: translateY(calc(100% + 10px));
+        }
+
+        div.blocks-wrapper {
             overflow: hidden;
+            width: 100%;
         }
 
         span.section-title {
-            padding: 20px 20px 0;
             font-size: 24px;
             font-weight: 700;
+            padding: 20px 20px 0;
 
             text-transform: uppercase;
             word-break: break-word;
@@ -151,22 +159,22 @@ div.title-page div.pinned-data-block {
         }
 
         div.carousel-component div.carousel-content {
-            height: 100%;
             overflow: hidden;
+            height: 100%;
         }
 
         div.carousel-component div.carousel-item-wrapper {
-            height: 100%;
             overflow: hidden;
             overflow-y: auto;
+            height: 100%;
 
             article.important-data-block {
                 width: 100%;
                 padding: 5px 20px 20px;
 
                 p, a, p a {
-                    word-break: break-word !important;
                     white-space: normal;
+                    word-break: break-word !important;
                 }
             }
         }
@@ -187,10 +195,10 @@ div.title-page div.pinned-data-block {
     }
 
     @media screen and (max-width: 960px) {
-        padding: 10px;
         align-items: center;
-
         flex-direction: column-reverse;
+
+        padding: 10px;
 
         section.important-data, section.pinned-material {
             width: 100%;

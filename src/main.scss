@@ -29,15 +29,15 @@ body {
     position: fixed;
     display: block;
 
-    width: 100%;
-    height: 100%;
-
     top: 0;
     right: 0;
+
     bottom: 0;
     left: 0;
-
     overflow: hidden;
+    width: 100%;
+
+    height: 100%;
 }
 
 /*
@@ -56,10 +56,10 @@ div.grecaptcha-badge { display: none !important; pointer-events: none; opacity: 
 
 div.not-found.ui.container.grid.center.cs-loading-gray.padding-20 {
     position: fixed !important;
-    width: 100vw;
-
-    height: 100vh;
     z-index: 2000 !important;
+
+    width: 100vw;
+    height: 100vh;
 }
 
 div#app-root {
@@ -72,4 +72,20 @@ div#app-root {
     left: 0;
 
     user-select: none;
+}
+
+div.infographic-image {
+    position: relative;
+    display: block;
+
+    overflow: hidden;
+    width: 100%;
+    border-radius: 10px;
+
+    & > img {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+    }
 }
