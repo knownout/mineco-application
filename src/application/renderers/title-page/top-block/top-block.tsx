@@ -37,12 +37,21 @@ export default function TopContentBlock (props: { pinnedMaterial: ItemObject.Mat
     // Calculate top block important data section height
     React.useLayoutEffect(() => {
         if (!pinnedMaterialElement.current) return;
+        let iterations = 0;
 
-        setTimeout(() => {
+        const interval = setInterval(() => {
+            if (iterations > 30) {
+                clearInterval(interval);
+                return;
+            }
+
+            iterations++;
             if (!pinnedMaterialElement.current) return;
 
             setTopBlockHeight(pinnedMaterialElement.current.offsetHeight + 40);
         }, 100);
+
+        return () => clearInterval(interval);
     }, [ pinnedMaterialElement.current ]);
 
     const importantData = context.variablesData?.importantData;
