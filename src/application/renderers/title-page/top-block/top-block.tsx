@@ -101,7 +101,8 @@ export default function TopContentBlock (props: { pinnedMaterial: ItemObject.Mat
             </div>
             <Link to={ "/economic-efficiency-indicators-infographic" } className="ui clean infographics">
                 <Button>
-                    Инфографика показателей экономической эффективности сельскохозяйственного производства
+                    Инфографика показателей экономической эффективности сельскохозяйственного производства за 2017-2021
+                    года
                 </Button>
             </Link>
 
