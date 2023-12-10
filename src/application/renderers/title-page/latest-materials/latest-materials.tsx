@@ -19,50 +19,56 @@ import { appRoutesList, serverRoutesList } from "../../../../lib/routes-list";
 import remarkConfig from "../../remark-config";
 
 import "./latest-materials.scss";
+import Carousel from "../../../../common/carousel/carousel";
+import { ApplicationContext } from "../../../application";
 
 /**
  * Component for rendering the latest materials list
  * @constructor
  * @internal
  */
-export default function MaterialsList (props: { materials: ItemObject.Material[] }) {
-    // Materials limit for current window size
-    const [ limit, setLimit ] = React.useState(2);
+export default function MaterialsList(props: { materials: ItemObject.Material[] }) {
 
+    const context = React.useContext(ApplicationContext);
+
+    // Calculate top block important data section height
+
+    const importantData = context.variablesData?.importantData;
     /**
      * Window resize event handler for recalculating materials limit
      */
-    function windowResizeHandler () {
-        let nextLimit = Math.floor(window.innerWidth / 360);
-        nextLimit = nextLimit > 2 ? nextLimit : 2;
+    const carouselItems = importantData?.map(item =>
+        <article className="important-data-block ui flex column relative">
+            <ReactMarkdown remarkPlugins={remarkConfig}>{item}</ReactMarkdown>
+        </article>);
 
-        if (nextLimit != limit) setLimit(nextLimit);
-    }
 
-    React.useLayoutEffect(() => {
-        window.addEventListener("resize", windowResizeHandler);
-        windowResizeHandler();
-
-        return () => window.removeEventListener("resize", windowResizeHandler);
-    });
 
     return <>
-        <section className="latest-materials-block ui padding-20">
-            { props.materials.slice(0, limit).map((material, index) =>
-                <Material material={ material } key={ index } />) }
+        <section className="important-data">
+                <Link to={"/economic-efficiency-indicators-infographic"} className="important-data_link">
+                <Button>
+                    Инфографика показателей экономической эффективности сельскохозяйственного производства за 2017-2021
+                    года
+                </Button>
+            </Link>
+            <div className="important-data_carousel">
+                {carouselItems && <Carousel items={carouselItems} />}
+
+            
+            </div>
+
         </section>
-        <Link to="search/Новости" className="ui clean color-white materials-archive-link">
-            <Button className="materials-archive-button">Перейти в архив новостей</Button>
-        </Link>
+
+      
     </>;
 }
 
-interface MaterialProps
-{
+interface MaterialProps {
     material: ItemObject.Material;
     wordsLimit?: number;
 
-    reference? (ref: HTMLAnchorElement | null): void;
+    reference?(ref: HTMLAnchorElement | null): void;
 }
 
 /**
@@ -72,7 +78,7 @@ interface MaterialProps
  * @constructor
  * @internal
  */
-export function Material (props: MaterialProps) {
+export function Material(props: MaterialProps) {
     const previewImage = serverRoutesList.getFile(props.material.preview, false);
 
     const description = props.material.description.replace(/<[^>/]+>(.*)<\/[^>]>/g, "$1");
@@ -81,19 +87,20 @@ export function Material (props: MaterialProps) {
     stringProcessor.clean;
     stringProcessor.limitWordsCount(props.wordsLimit || 60);
 
-    return <Link to={ appRoutesList.material + props.material.identifier } className="ui clean material-link w-fit"
-                 ref={ ref => props.reference && props.reference(ref) }>
+    return <Link to={appRoutesList.material + props.material.identifier} className="ui clean material-link w-fit"
+        ref={ref => props.reference && props.reference(ref)}>
         <article className="material ui">
-            <div className="preview-image" style={ { backgroundImage: `url(${ previewImage })` } } />
+            <div className="preview-image" style={{ backgroundImage: `url(${previewImage})` }} />
             <div className="material-data ui flex column gap-5 lh-22 padding-20">
-                <span className="material-title ui fz-20 fw-700 lh-26">{ props.material.title }</span>
                 <span className="date ui opacity-65">
-                    { convertDate(new Date(parseInt(props.material.datetime) * 1000)) }
+                    {convertDate(new Date(parseInt(props.material.datetime) * 1000))}
                 </span>
-                <div className="description ui clean">
+                <span className="material-title ui fz-20 fw-700 lh-26">{props.material.title}</span>
+
+                {/* <div className="description ui clean">
                     <ReactMarkdown remarkPlugins={ remarkConfig }
                                    children={ stringProcessor.entry } />
-                </div>
+                </div> */}
             </div>
             <div className="extra-controls ui absolute flex row">
                 <Button>Читать далее</Button>

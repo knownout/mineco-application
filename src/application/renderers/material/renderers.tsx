@@ -58,6 +58,17 @@ const RawHTMLRenderer: RenderFn<{ html: string }> = props => {
     </>;
 };
 
+const ParagraphRenderer: RenderFn<{ text: string  }> = props => {
+
+    return <>
+    <div dangerouslySetInnerHTML={ { __html: props.data.text.replace(/(?<=<a.*)href="(.*)"(?=.*>)/g, (href) => {
+        if (/(http(s?):\/\/).*(#)/g.test(href)) return href.slice(0, -2) + '"' + ' target="_blank" rel="noreferrer"'
+
+    return href
+})}}/>
+        </>
+};
+
 const WarningRenderer: RenderFn<{ title: string, message: string }> = props => {
     return <div className="warning ui flex column padding-20 border-radius-10">
         <div className="warning-title ui flex row gap">
@@ -117,5 +128,6 @@ export {
     HeaderRenderer,
     CarouselRenderer,
     RawHTMLRenderer,
-    ImageRenderer
+    ImageRenderer,
+    ParagraphRenderer
 };

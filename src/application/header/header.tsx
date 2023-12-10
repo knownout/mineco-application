@@ -144,10 +144,10 @@ export default function Header () {
         // Define the name of additional buttons (should be identical with navigation item names)
         const itemNames = [ "Виртуальная приемная", "Горячие линии" ];
 
-        return <div className="extra-buttons ui flex column margin-left-auto flex flex-end-ai gap">
+        return <div className="extra-buttons ui flex row margin-left-auto flex flex-end-ai gap">
             { itemNames.map((item, key) =>
                 <Link to={ "/" + navigationPanel["Контакты"][item] } className="ui clean" key={ key }>
-                    <Button className="w-fit" spanClassName="no-text-wrap-ellipsis">{ item }</Button>
+                    <Button className="w-fit header_button" spanClassName="no-text-wrap-ellipsis">{ item }</Button>
                 </Link>
             ) }
         </div>;
@@ -166,7 +166,6 @@ export default function Header () {
                             </div>
                             <h1 className="mineco-title-text">{ variablesData.websiteTitle }</h1>
                         </Link>
-                        { !mobile && <SocialDataRenderer socialData={ variablesData.socialData } /> }
                     </div>
 
                     { !mobile && <ExtraButtons /> }

@@ -32,7 +32,7 @@ import PageFactory from "../page-factory";
 
 import "./material.scss";
 import {
-    CarouselRenderer, FileRenderer, HeaderRenderer, ImageRenderer, RawHTMLRenderer, TableRenderer, WarningRenderer
+    CarouselRenderer, FileRenderer, HeaderRenderer, ImageRenderer, ParagraphRenderer, RawHTMLRenderer, TableRenderer, WarningRenderer
 } from "./renderers";
 
 interface UseMaterialDataProps
@@ -217,6 +217,7 @@ export function RawMaterialRenderer (props: RawMaterialRendererProps) {
                     table: TableRenderer,
                     attaches: FileRenderer,
                     warning: WarningRenderer,
+                    paragraph: ParagraphRenderer,
                     header: HeaderRenderer,
                     carousel: CarouselRenderer,
                     image: ImageRenderer

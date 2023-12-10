@@ -97,7 +97,7 @@ export default function TitlePage () {
     return <PageFactory loader={ <Loading display={ loading } error={ error } /> }>
         <div className="title-page-holder ui flex w-100 h-fit relative client-view">
             <div className="title-page ui flex column w-100 h-fit center-ai relative">
-                { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } /> }
+                { pinnedMaterial && <TopContentBlock pinnedMaterial={ pinnedMaterial } materials={ materialsList }/> }
                 { materialsList && <MaterialsList materials={ materialsList } /> }
 
                 { context.variablesData?.extraButtons &&

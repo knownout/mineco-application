@@ -11,7 +11,7 @@
  * @param date javascript Date object
  * @param time if false, time will not be rendered
  */
-export default function convertDate (date: Date, time = true) {
+export default function convertDate (date: Date, time = true, number?: boolean) {
     // get Date object properties in specific format
     const [ day, month, year, hours, minutes ] = [
         date.getDate(), date.getMonth(), date.getFullYear(),
@@ -34,8 +34,13 @@ export default function convertDate (date: Date, time = true) {
         "декабря"
     ];
 
+    if (number) {
+        return `${day}.${month + 1}.${year}`
+    } else {
+
     const dateString = `${ day } ${ monthsNameList[month] } ${ year } года`;
     const timeString = ` в ${ hours }:${ minutes }`;
 
     return (dateString + (time ? timeString : "")).trim();
+    }
 }

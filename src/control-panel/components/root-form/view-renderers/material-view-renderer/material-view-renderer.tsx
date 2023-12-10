@@ -242,10 +242,15 @@ export default function MaterialViewRenderer (props: MaterialViewRendererProps) 
                     { materialProps.identifier }
                 </Input>
 
-                <CheckBox checked={ materialProps.pinned }
+                {
+                    Date.now() > new Date(materialProps.datetime).getTime() && (
+                        <CheckBox checked={ materialProps.pinned }
+                
                           onChange={ checkState => setMaterialProps({ pinned: checkState }) }>
                     Закрепить материал
                 </CheckBox>
+                    )
+                }
 
                 <Button onClick={ (event) => {
                     const target = event.target as HTMLButtonElement;

@@ -30,7 +30,7 @@ article.material {
     flex-direction: column;
     max-width: 320px;
 
-    height: 610px;
+    height: 390px;
     cursor: pointer;
     transition: 100ms ease all;
 
@@ -95,6 +95,72 @@ article.material {
 
         &:not(:last-child) {
             margin-top: 10px;
+        }
+    }
+}
+
+
+.important-data {
+    width: 100%;
+    margin-bottom: 20px;
+    background: #fff;
+
+    &_carousel {
+        width: 100%;
+        padding: 30px;
+        background: rgba(#000, .08);
+
+        z-index: 3;
+
+        p, a, h1, h2, h3, h4, p a {
+            white-space: normal;
+            text-align: center;
+            word-break: break-word !important;
+        }
+
+        h1, h2, h3, h4 {
+            color: rgba(#000, 0.6);
+            font-size: 30px;
+            margin: 10px 0;
+        }
+
+        p {
+
+            margin: 0;
+            opacity: .8;
+
+            line-height: 26px;
+
+            &:not(:last-child) {
+                margin-bottom: 15px;
+            }
+
+            a[href] {
+                padding: 3px;
+                transition: 100ms ease all;
+                white-space: normal;
+                text-align: center;
+                word-break: break-word !important;
+                text-decoration: none;
+
+                color: rgba(#000, 0.6);
+                border-radius: 4px;
+                background: rgba(#A5CEBB, .4);
+
+                &:hover {
+                    background: rgba(#A5CEBB, .5);
+                }
+            }
+        }
+    }
+
+    &_link {
+        width: 100%;
+        text-decoration: none !important;
+
+        button {
+            border-radius: 0 !important;
+            width: 100%;
         }
     }
 }

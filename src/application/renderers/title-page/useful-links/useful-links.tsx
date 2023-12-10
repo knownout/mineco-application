@@ -4,7 +4,7 @@
  * https://github.com/re-knownout/mineco-application
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import "./useful-links.scss";
 import { VariablesStorage } from "../../../application";
 import Carousel from "../../../../common/carousel";
@@ -29,21 +29,44 @@ export default function UsefulLinks (props: { links: VariablesStorage["usefulLin
         </a>;
     }
 
-    const chunks: Array<JSX.Element[]> = [];
+    const [chunks, setChunks]= React.useState<Array<JSX.Element[]>>([]);
 
-    // Split links array to chunks
-    Object.entries(props.links).forEach((entry, index) => {
-        // Each chunk will have N items (4)
-        if (index % 4 == 0) chunks.push([]);
+    const [ limit, setLimit ] = React.useState(2);
 
+    function windowResizeHandler () {
+        let nextLimit = Math.floor(window.innerWidth / 250);
+        nextLimit = nextLimit > 2 ? nextLimit : 2;
 
-        chunks[chunks.length - 1].push(<Link title={ entry[0] } link={ entry[1] } key={ Math.random() } />);
+        setLimit(nextLimit);
+    }
+
+    React.useLayoutEffect(() => {
+        window.addEventListener("resize", windowResizeHandler);
+        windowResizeHandler();
+
+        return () => window.removeEventListener("resize", windowResizeHandler);
     });
 
-    return <div className="useful-links-block ui flex column w-100 relative gap"
-                style={ { backgroundImage: `url("/public/link-icons/background.jpg")` } }>
+    // Split links array to chunks
+    useEffect(() => {
+        setChunks(_chunks => {
+            const chunks: any = []
+            Object.entries(props.links).forEach((entry, index) => {
+       
+                // Each chunk will have N items (4)
+                if (index % limit == 0) chunks.push([]);
+        
+        
+                chunks[chunks.length - 1].push(<Link title={ entry[0] } link={ entry[1] } key={ Math.random() } />);
+            });
 
-        <span className="block-title ui fz-14 color-white fz-28 fw-700 relative">Полезные ссылки</span>
+            return chunks
+        })
+    }, [limit])
+
+    return <div className="useful-links-block ui flex column w-100 relative gap">
+
+        <span className="block-title ui fz-14 fz-28 fw-700 relative">Полезные ссылки</span>
         <div className="links-list ui flex row no-wrap relative">
             <Carousel items={ chunks } />
         </div>

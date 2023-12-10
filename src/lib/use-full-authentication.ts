@@ -10,7 +10,7 @@ import CacheController, { cacheKeysList } from "./cache-controller";
 import { appRoutesList } from "./routes-list";
 import useRecaptcha from "./use-recaptcha";
 import { RequestOptions } from "./types/requests";
-
+ 
 /**
  * Function for requiring full authentication data and recaptcha token
  */

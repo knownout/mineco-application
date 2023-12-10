@@ -24,7 +24,7 @@ header.header-component {
         width: 100%;
 
         max-width: 1380px;
-        padding: 40px;
+        padding: 20px 40px;
 
         a.website-title {
             max-width: 560px;
@@ -33,7 +33,7 @@ header.header-component {
 
         h1.mineco-title-text {
             margin: 0;
-            font-size: 20px;
+            font-size: 16px;
 
             font-weight: 700;
 
@@ -105,6 +105,10 @@ button.mobile-menu {
             transform: rotate(0deg);
         }
     }
+}
+
+.header_button {
+    padding: 18px 20px !important;
 }
 
 nav div.social-data-holder {

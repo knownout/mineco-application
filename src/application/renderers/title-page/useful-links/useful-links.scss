@@ -10,6 +10,8 @@ div.useful-links-block {
 
     overflow: hidden;
 
+    background: #fff;
+
     &::before {
         position: absolute;
         display: block;
@@ -31,6 +33,7 @@ div.useful-links-block {
 
     span.block-title {
         padding: 60px 60px 0;
+        color: rgba(#000, .6);
     }
 
     a.useful-link {
@@ -44,10 +47,10 @@ div.useful-links-block {
 
         border-radius: 10px;
 
-        background: rgba(#FFF, .1);
+        background: rgba(#000, .1);
 
         &:hover {
-            background: rgba(#FFF, .2);
+            background: rgba(#000, .2);
         }
 
         span.link-title { text-align: center; word-break: break-word; }
@@ -62,6 +65,7 @@ div.useful-links-block {
         width: 100%;
         padding: 0 20px 20px;
         overflow: hidden;
+
     }
 
 
@@ -73,10 +77,10 @@ div.useful-links-block {
             justify-content: flex-start !important;
 
             div.switch-button {
-                background: rgba(#FFF, .4);
+                background: rgba(#000, .2);
 
                 &.active {
-                    background: #FFF;
+                    background: rgba(#000, .6);
                 }
             }
         }
@@ -85,6 +89,11 @@ div.useful-links-block {
             width: 100%;
             margin-top: 40px;
             align-items: center;
+
+            span {
+
+        color: rgba(#000, .6) !important;
+            }
 
             div.carousel-item-wrapper {
                 width: 100%;

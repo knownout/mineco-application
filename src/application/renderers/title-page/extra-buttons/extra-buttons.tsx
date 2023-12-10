@@ -34,7 +34,7 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
                      className={ classNames("extra-button ui flex row relative clean color-white",
                          { disabled: props.d }) }>
             { backgroundImage &&
-                <div className="background-image ui absolute block w-100 h-100" style={ { backgroundImage } } /> }
+                <div className="ui absolute block w-100 h-100 extra-button-button"/> }
             <span className="button-title relative flex column gap ui fw-700">
                 <span className="ui fw-700">{ props.title }</span>
                 { props.d && <span className="ui fw-700 opacity-65 fz-18">Недоступно в данный момент</span> }
@@ -58,11 +58,11 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
     // Render buttons about its count
     return <div className="extra-buttons-container ui flex column w-100 relative padding-20 gap-20">
         <div className="extra-buttons-block ui limit-1280">
-            <div className="long-buttons-holder ui flex column gap-20" style={ { width: defaultWidth + "%" } }>
+            <div className="long-buttons-holder ui flex column gap-20 w-100">
                 { longButtons.map(renderButton) }
             </div>
             { shortButton &&
-                <div className="short-button-holder ui flex" style={ { width: (100 - defaultWidth) + "%" } }>
+                <div className="short-button-holder ui flex w-100" >
                     { renderButton(shortButton) }
                 </div> }
         </div>

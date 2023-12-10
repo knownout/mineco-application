@@ -49,7 +49,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(scss|sass)$/g,
-                loaders: [ MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader" ]
+                use: [ MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader" ]
             },
             { test: /\.tsx?$/, loader: "ts-loader", exclude: resolve("tests") },
             {

@@ -118,6 +118,6 @@ export default class Application extends React.PureComponent<{}, ApplicationStat
                     { !this.state.loading && !this.state.error && <ApplicationRouter /> }
                 </ApplicationContext.Provider>
             </React.StrictMode>
-        </React.Fragment>;
-    }
+        </React.Fragment>;     
+    } 
 }
