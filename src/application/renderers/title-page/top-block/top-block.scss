@@ -361,6 +361,10 @@ div.title-page div.pinned-data-block {
                 }
             }
 
+            &_title:hover &_description {
+                color: rgba(#000, 0.5);
+            }
+
             &_all {
                &_title {
                 color: rgba(#000, 0.6);
