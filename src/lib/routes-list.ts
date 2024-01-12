@@ -7,7 +7,7 @@
 /**
  * Application server root location
  */
-export const serverRoot = window.location.protocol + "//" + window.location.hostname;
+export const serverRoot = process.env.BACKEND_PATH === "local-based" ? (window.location.protocol + "//" + window.location.hostname) : process.env.BACKEND_PATH as string;
 
 /**
  * Server routes list

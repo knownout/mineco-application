@@ -14,7 +14,7 @@ import Button from "../../../../common/button";
 import { ItemObject } from "../../../../control-panel/components/root-form/item-object-renderers/renderers";
 import convertDate from "../../../../lib/convert-date";
 
-import { appRoutesList, serverRoutesList } from "../../../../lib/routes-list";
+import { appRoutesList, serverRoot, serverRoutesList } from "../../../../lib/routes-list"
 
 import remarkConfig from "../../remark-config";
 
@@ -50,7 +50,7 @@ export default function MaterialsList(props: { materials: ItemObject.Material[] 
                 <Button>
                     Инфографика показателей экономической эффективности сельскохозяйственного производства за 2017-2021
                     года
-                    <img src="public/chart.png" />
+                    <img src={`${serverRoot}public/chart.png`} />
                 </Button>
                 
             </Link>

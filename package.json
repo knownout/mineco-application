@@ -91,8 +91,9 @@
     ],
     "scripts": {
         "build": "webpack --mode=\"production\" --devtool=\"none\"",
-        "start": "webpack-dev-server --mode=\"development\" --devtool=\"eval-source-map\" --",
-        "start:8090": "webpack-dev-server --mode=\"development\" --port 8090 --no-live-reload --devtool=\"hidden-source-map\" --"
+        "install": "npm install --legacy-peer-deps",
+        "start": "webpack-dev-server --mode=\"production\" --client-logging=\"none\" --no-client-overlay --devtool=\"eval-source-map\" --",
+        "start:8090": "webpack-dev-server --mode=\"production\" --client-logging=\"none\" --no-client-overlay --port 8090 --no-live-reload --devtool=\"hidden-source-map\" --"
     },
     "devDependencies": {}
 }

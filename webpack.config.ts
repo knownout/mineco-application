@@ -17,7 +17,9 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 
 // Common node module functions import
-import { resolve } from "path";
+import path, { resolve } from "path";
+import fs from "fs"
+import webpack from "webpack"
 
 /*
 	Webpack preferences
@@ -31,7 +33,7 @@ const entryPoints = { main: "./src/main.tsx" };
 // };
 
 // Webpack configuration
-module.exports = {
+const config = {
     target: "web",
     mode: "production",
 
@@ -154,7 +156,7 @@ module.exports = {
         liveReload: true,
 
         host: "0.0.0.0",
-        port: 8080,
+        port: 8089,
         hot: true,
 
         compress: false,
@@ -166,3 +168,38 @@ module.exports = {
         // https: certificates
     }
 } as Webpack.Configuration;
+
+module.exports = (env: any) => {
+    if (process.env.NODE_ENV === "production") config.mode = "production"
+    else config.mode = "development"
+
+    if (env.ALLOW_DEBUG === undefined) env.ALLOW_DEBUG = config.mode === "development"
+
+    const dotenvFileData = Object.fromEntries(
+      fs.readFileSync(path.resolve(__dirname, ".env"), "utf-8")
+        .trim().replace(/\r/g, "").split("\n")
+        .filter(Boolean)
+        .map(item => item.split("="))
+        .filter(item => item[0][0] !== "#" && item[1] !== undefined)
+    )
+
+    console.log(dotenvFileData, "\n\n\n\n\n\n\n\n\n\n\n\n")
+
+    config.plugins = [
+        new webpack["EnvironmentPlugin"]({
+            "NODE_ENV": typeof process.env.NODE_ENV === "string" ? process.env.NODE_ENV : "development",
+            "ALLOW_DEBUG": env.ALLOW_DEBUG,
+            ...dotenvFileData
+        }),
+        new webpack["DefinePlugin"]({
+            "process.env": JSON.stringify({
+                "NODE_ENV": typeof process.env.NODE_ENV === "string" ? process.env.NODE_ENV : "development",
+                "ALLOW_DEBUG": env.ALLOW_DEBUG,
+                ...dotenvFileData
+            })
+        }),
+        ...config.plugins as any
+    ]
+
+    return config
+}
