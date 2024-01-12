@@ -33,6 +33,7 @@ div.useful-links-block {
 
     span.block-title {
         padding: 60px 60px 0;
+        text-align: center;
         color: rgba(#000, .6);
     }
 
@@ -73,8 +74,7 @@ div.useful-links-block {
         width: 100%;
 
         div.switch-buttons {
-            margin-left: 40px;
-            justify-content: flex-start !important;
+            justify-content: center !important;
 
             div.switch-button {
                 background: rgba(#000, .2);

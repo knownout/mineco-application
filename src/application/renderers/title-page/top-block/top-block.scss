@@ -80,7 +80,7 @@ div.title-page div.pinned-data-block {
             backdrop-filter: blur(10px);
             background: rgba(darken(#000, 10%), .1);
 
-            
+
 
             span.title {
                 font-size: 32px;
@@ -285,7 +285,7 @@ div.title-page div.pinned-data-block {
             border-left: 2px solid rgba(#eaeaea, 1);
             margin-left: 10px;
 
-         
+
             &:last-child {
                 margin-bottom: 0px;
             }
@@ -366,13 +366,13 @@ div.title-page div.pinned-data-block {
             }
 
             &_all {
-               &_title {
-                color: rgba(#000, 0.6);
-                font-size: 13px !important;
+                &_title {
+                    color: rgba(#000, 0.6);
+                    font-size: 13px !important;
 
-                font-weight: 520;
-                padding-top: 3px !important;
-               }
+                    font-weight: 520;
+                    padding-top: 3px !important;
+                }
             }
 
 

@@ -168,7 +168,7 @@ export default function Header () {
                         </Link>
                     </div>
 
-                    { !mobile && <ExtraButtons /> }
+                    {/* { !mobile && <ExtraButtons /> } */}
                 </div>
 
                 {/* Dynamic content (navigation menu) */ }

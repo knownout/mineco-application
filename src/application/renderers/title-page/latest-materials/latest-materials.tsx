@@ -50,7 +50,9 @@ export default function MaterialsList(props: { materials: ItemObject.Material[] 
                 <Button>
                     Инфографика показателей экономической эффективности сельскохозяйственного производства за 2017-2021
                     года
+                    <img src="public/chart.png" />
                 </Button>
+                
             </Link>
             <div className="important-data_carousel">
                 {carouselItems && <Carousel items={carouselItems} />}

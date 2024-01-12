@@ -58,7 +58,7 @@ export default function ExtraButtons (props: { buttons: VariablesStorage["extraB
     // Render buttons about its count
     return <div className="extra-buttons-container ui flex column w-100 relative padding-20 gap-20">
         <div className="extra-buttons-block ui limit-1280">
-            <div className="long-buttons-holder ui flex column gap-20 w-100">
+            <div className="long-buttons-holder ui flex row gap-20 w-100">
                 { longButtons.map(renderButton) }
             </div>
             { shortButton &&

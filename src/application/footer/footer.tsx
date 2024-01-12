@@ -10,6 +10,7 @@ import { SocialDataRenderer } from "../header/header";
 import { ApplicationContext } from "../application";
 import ReactMarkdown from "react-markdown";
 import remarkConfig from "../renderers/remark-config";
+import { Link } from "react-router-dom";
 
 export default function Footer () {
     const context = React.useContext(ApplicationContext);
@@ -25,6 +26,7 @@ export default function Footer () {
             <div className="contact-data ui flex column">
                 { variables?.contactData &&
                     <ReactMarkdown remarkPlugins={ remarkConfig } children={ variables.contactData } /> }
+                    <Link to="/address-and-directions" style={{color: '#fff'}} className="menu-sub-item padding">Контакты</Link>
             </div>
             <img src="/public/qr-code-contact.jpg" alt="Контактные данные Министерства" className="qr-code-contact" />
         </div>

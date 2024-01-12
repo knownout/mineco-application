@@ -161,6 +161,31 @@ article.material {
         button {
             border-radius: 0 !important;
             width: 100%;
+            gap: 10px;
+
+            span {
+                display: flex !important;
+            align-items: center !important;
+            width: 100%;
+            font-size: 18px;
+            text-align: left !important;
+            justify-content: space-between;
+
+      
+
+            @media screen and (max-width: 525px) {
+                text-align: center !important;
+                justify-content: center !important;
+                img {
+                    display: none;
+                }
+            }
+            }
+
+            img {
+                width: 100px;
+                margin: -20px;
+            }
         }
     }
 }
